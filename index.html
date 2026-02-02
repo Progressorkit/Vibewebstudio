@@ -3,126 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Web Studio | OS v6.1</title>
+    <title>Vibe OS | Interactive</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; min-height: 100%; background: #000; font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
+        body, html { width: 100%; height: 100%; background: #000; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
 
-        /* POPRAWIONE TŁO - DODANE ROZJAŚNIENIE */
-        #main-viewport {
+        /* TŁO FULL SCREEN */
+        #viewport {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2; background-size: cover; background-position: center;
             transition: background-image 0.8s ease-in-out;
             background-image: url('bg1.jpg');
-            /* Ten filtr sprawi, że ciemne grafiki staną się widoczne */
-            filter: brightness(1.4) contrast(1.2); 
+            filter: brightness(1.2) contrast(1.1);
         }
 
-        /* DELIKATNA SIATKA, ŻEBY COŚ SIĘ DZIAŁO W TLE */
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: 
-                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
+        /* PASEK PRZYCISKÓW PO PRAWEJ */
+        .side-nav {
+            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 15px; z-index: 100;
         }
 
-        .wrapper { display: flex; justify-content: center; padding: 40px 20px; }
-
-        /* OKNO Z POŚWIATĄ (NEON GLOW) */
-        .terminal-container {
-            width: 100%; max-width: 600px;
-            background: rgba(0, 5, 0, 0.8);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 65, 0.4);
-            border-radius: 12px;
-            /* Poświata wokół okna */
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.15);
-            overflow: hidden;
+        .btn-trigger {
+            width: 50px; height: 50px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid rgba(0, 255, 65, 0.5);
+            border-radius: 8px; color: #00ff41;
+            font-family: monospace; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .btn-trigger:hover, .btn-trigger.active {
+            background: rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+            transform: scale(1.1);
         }
 
-        .t-header { 
-            background: rgba(0, 255, 65, 0.2); padding: 15px 20px; 
-            display: flex; justify-content: space-between;
-            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+        /* WYSUWANE OKNO Z LEWEJ */
+        .info-panel {
+            position: fixed; left: -450px; top: 50%; transform: translateY(-50%);
+            width: 100%; max-width: 400px;
+            background: rgba(10, 15, 10, 0.85);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 0 20px 20px 0;
+            padding: 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50; box-shadow: 20px 0 50px rgba(0,0,0,0.5);
         }
+        .info-panel.open { left: 0; }
 
-        .content { padding: 25px; display: flex; flex-direction: column; gap: 15px; }
+        .info-panel h2 { color: #00ff41; font-family: monospace; margin-bottom: 15px; border-bottom: 1px solid rgba(0,255,65,0.2); padding-bottom: 5px; }
+        .info-panel p { color: #eee; font-size: 0.95rem; line-height: 1.6; opacity: 0.9; }
 
-        .nav-btn {
-            padding: 20px; 
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 4px solid #00ff41; /* Wyraźna zielona linia z Twojego screena */
-            border-radius: 4px;
-            cursor: pointer; transition: 0.2s;
-        }
-        .nav-btn:active { transform: scale(0.98); background: rgba(0, 255, 65, 0.1); }
-
-        .nav-btn h3 { color: #00ff41; font-family: monospace; font-size: 1.1rem; margin-bottom: 5px; }
-        .nav-btn p { font-size: 0.85rem; opacity: 0.8; line-height: 1.4; color: #fff; }
-
-        .status-footer {
-            position: fixed; bottom: 0; width: 100%; padding: 12px 20px;
-            background: rgba(0,0,0,0.9); border-top: 1px solid rgba(0, 255, 65, 0.3);
-            color: #00ff41; font-family: monospace; font-size: 10px;
-            display: flex; justify-content: space-between;
+        /* PASEK DOLNY */
+        .status-bar {
+            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
+            background: rgba(0,0,0,0.8); border-top: 1px solid rgba(0, 255, 65, 0.2);
+            color: #00ff41; font-family: monospace; font-size: 10px; z-index: 110;
         }
     </style>
 </head>
 <body>
 
-    <div id="main-viewport"></div>
-    <div class="overlay"></div>
+    <div id="viewport"></div>
 
-    <div class="wrapper">
-        <div class="terminal-container">
-            <div class="t-header">
-                <span style="color: #00ff41; font-weight: bold; font-family: monospace;">VIBE_SYSTEM_v6.1</span>
-                <span id="current-mod" style="font-size: 10px; opacity: 0.8; font-family: monospace;">[READY]</span>
-            </div>
-            
-            <div class="content">
-                <div class="nav-btn" onclick="updateView('bg1.jpg', 'CORE_HUB')">
-                    <h3>// 01_CORE</h3>
-                    <p>Inicjalizacja głównego węzła. Kliknij, aby zmienić tło.</p>
-                </div>
-
-                <div class="nav-btn" onclick="updateView('bg2.jpg', 'STRATEGY')">
-                    <h3>// 02_VIBE</h3>
-                    <p>Podgląd strumienia wizualnego marki.</p>
-                </div>
-
-                <div class="nav-btn" onclick="updateView('bg3.jpg', 'BUSINESS')">
-                    <h3>// 03_DATA</h3>
-                    <p>Architektura rozwiązań biznesowych.</p>
-                </div>
-
-                <div class="nav-btn" onclick="updateView('bg4.jpg', 'MASTERY')">
-                    <h3>// 04_CODE</h3>
-                    <p>Finalna optymalizacja i wsparcie.</p>
-                </div>
-            </div>
-        </div>
+    <div class="side-nav">
+        <div class="btn-trigger" onclick="togglePanel(1, 'bg1.jpg', 'CORE SYSTEM', 'Witamy w głównym węźle operacyjnym Vibe Studio. Tutaj zaczyna się Twoja cyfrowa transformacja.')">01</div>
+        <div class="btn-trigger" onclick="togglePanel(2, 'bg2.jpg', 'STRATEGY', 'Nasza strategia opiera się na analizie danych i nowoczesnym UX. Każdy piksel ma swoje znaczenie.')">02</div>
+        <div class="btn-trigger" onclick="togglePanel(3, 'bg3.jpg', 'BUSINESS', 'Skalujemy rozwiązania biznesowe, optymalizując procesy za pomocą autorskich algorytmów.')">03</div>
+        <div class="btn-trigger" onclick="togglePanel(4, 'bg4.jpg', 'MASTERY', 'Pełne wsparcie techniczne i bezpieczeństwo Twoich danych w standardzie military-grade.')">04</div>
     </div>
 
-    <div class="status-footer">
-        <span>DEVICE: MOBILE_ACTIVE</span>
-        <span>BRIGHTNESS_BOOST: ON</span>
+    <div id="panel" class="info-panel">
+        <h2 id="panel-title">// TYTUŁ</h2>
+        <p id="panel-text">Treść modułu...</p>
+        <button onclick="closePanel()" style="margin-top: 20px; background: none; border: 1px solid #00ff41; color: #00ff41; padding: 5px 10px; cursor: pointer; font-family: monospace;">ZAMKNIJ _</button>
+    </div>
+
+    <div class="status-bar">
+        <span>MODE: INTERACTIVE_OS</span>
+        <span id="stat-info">STATUS: STANDBY</span>
     </div>
 
     <script>
-        function updateView(img, name) {
-            const viewport = document.getElementById('main-viewport');
-            const modLabel = document.getElementById('current-mod');
-            
-            // Zmiana tła
+        let currentActive = null;
+
+        function togglePanel(id, img, title, text) {
+            const panel = document.getElementById('panel');
+            const viewport = document.getElementById('viewport');
+            const stat = document.getElementById('stat-info');
+
+            // Zmień tło
             viewport.style.backgroundImage = "url('" + img + "')";
-            modLabel.innerText = "[" + name + "]";
             
-            // Log do konsoli dla testu
-            console.log("Switched to: " + img);
+            // Jeśli klikamy w to samo co jest otwarte - zamknij
+            if (currentActive === id) {
+                closePanel();
+                return;
+            }
+
+            // Podmień treść
+            document.getElementById('panel-title').innerText = "// " + title;
+            document.getElementById('panel-text').innerText = text;
+            stat.innerText = "STATUS: LOADING_MODULE_" + id;
+
+            // Otwórz panel
+            panel.classList.add('open');
+            currentActive = id;
+        }
+
+        function closePanel() {
+            document.getElementById('panel').classList.remove('open');
+            document.getElementById('stat-info').innerText = "STATUS: STANDBY";
+            currentActive = null;
         }
     </script>
 </body>
