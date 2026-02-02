@@ -5,80 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Web Studio | OS</title>
     <style>
-        /* PODSTAWA */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body, html { 
             width: 100%; min-height: 100%; background: #000; 
             font-family: 'Segoe UI', sans-serif; color: white;
             overflow-x: hidden; overflow-y: auto; 
         }
 
-        /* TŁO - ANIMACJA MATRIX */
-        #canvas-code {
+        /* PANCERNY DESZCZ KODU W CSS */
+        .matrix-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -10; background: #000; display: block;
+            z-index: -10;
+            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)),
+                        url('https://www.transparenttextures.com/patterns/matrix-code.png');
+            background-repeat: repeat;
+            animation: matrix-fall 20s linear infinite;
+            filter: hue-rotate(0deg) brightness(1.2);
         }
 
-        /* NAKŁADKA CRT (LINIE TELEWIZYJNE) */
+        @keyframes matrix-fall {
+            from { background-position: 0 0; }
+            to { background-position: 0 1000px; }
+        }
+
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -5; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
             background-size: 100% 4px;
         }
 
         .wrapper {
             display: flex; justify-content: center; align-items: flex-start;
-            padding: 60px 20px 120px 20px; min-height: 100vh;
+            padding: 40px 20px 100px 20px; min-height: 100vh;
         }
 
-        /* GŁÓWNE OKNO - EFEKT SZKŁA/MGŁY */
+        /* GŁÓWNE OKNO - TAK JAK CHCIAŁEŚ */
         .glass-window {
             width: 100%; max-width: 800px;
-            background: rgba(15, 25, 15, 0.4); /* Półprzezroczysty spód */
-            backdrop-filter: blur(30px) saturate(150%); 
-            -webkit-backdrop-filter: blur(30px) saturate(150%);
-            border: 1px solid rgba(0, 255, 65, 0.3); /* Zielona ramka okna */
-            border-radius: 20px; overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            background: rgba(0, 20, 0, 0.45);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 2px solid #00ff41; /* Wyraźna zielona ramka */
+            border-radius: 15px; overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
         }
 
         .header { 
-            background: rgba(0, 255, 65, 0.1); padding: 14px 20px; 
+            background: rgba(0, 255, 65, 0.2); padding: 12px 20px; 
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+            border-bottom: 2px solid #00ff41;
         }
 
         .dots { display: flex; gap: 8px; }
-        .dot { width: 11px; height: 11px; border-radius: 50%; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
         
         .content { display: flex; flex-direction: column; padding: 25px; gap: 20px; }
         
-        /* KARTY - TWOJA MGŁA */
         .card { 
-            padding: 25px; 
-            background: rgba(255, 255, 255, 0.07); /* To daje ten mglisty, mleczny efekt */
-            border-radius: 14px; 
-            border: 1px solid rgba(0, 255, 65, 0.2); /* Zielona ramka karty */
-            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.02);
+            padding: 20px; 
+            background: rgba(255, 255, 255, 0.05); /* MGŁA */
+            border-radius: 12px; 
+            border: 1px solid rgba(0, 255, 65, 0.4); 
         }
 
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.25rem; }
-        .card p { font-size: 0.95rem; opacity: 0.85; line-height: 1.6; font-weight: 300; }
+        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 8px; font-size: 1.3rem; }
+        .card p { font-size: 0.95rem; opacity: 0.9; line-height: 1.5; }
 
-        /* PASEK DOLNY */
         .status-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 12px 25px;
-            background: rgba(0, 0, 0, 0.85); border-top: 1px solid rgba(0, 255, 65, 0.3);
-            color: #00ff41; font-family: monospace; font-size: 10px;
+            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
+            background: #000; border-top: 1px solid #00ff41;
+            color: #00ff41; font-family: monospace; font-size: 11px;
             display: flex; justify-content: space-between; z-index: 100;
-            backdrop-filter: blur(10px);
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-code"></canvas>
+    <div class="matrix-bg"></div>
     <div class="crt-overlay"></div>
 
     <div class="wrapper">
@@ -89,65 +93,29 @@
                     <div class="dot" style="background: #ffbd2e;"></div>
                     <div class="dot" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px;">VIBE_OS_v3.0_FINAL</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 10px; font-weight: bold;">VIBE_OS_v3.5_STABLE</div>
             </div>
             <div class="content">
                 <div class="card">
                     <h3>01_VIBE</h3>
-                    <p>Design generatywny. Tworzymy systemy wizualne, które zapadają w pamięć i definiują markę.</p>
+                    <p>Design generatywny. Tworzymy systemy wizualne, które zapadają w pamięć.</p>
                 </div>
                 <div class="card">
-                    <h3>02_BUSINESS</h3>
-                    <p>Implementacja nowoczesnych narzędzi i strategii, które skalują Twój biznes w świecie cyfrowym.</p>
+                    <h3>02_BIZ</h3>
+                    <p>Skalowalne rozwiązania oparte o nowoczesne technologie.</p>
                 </div>
                 <div class="card">
-                    <h3>03_MASTERY</h3>
-                    <p>Pełna kontrola nad kodem i architekturą. Bezpieczeństwo i wydajność na najwyższym poziomie.</p>
+                    <h3>03_MASTER</h3>
+                    <p>Pełna kontrola nad każdym bitem informacji.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="status-bar">
-        <span>USER: PROGRESSORKIT</span>
-        <span>STATUS: SYSTEM_STABLE // MATRIX_ACTIVE</span>
+        <span>CORE: CSS_ANIMATION</span>
+        <span>STATUS: SYSTEM_READY</span>
     </div>
 
-    <script>
-        const canvas = document.getElementById('canvas-code');
-        const ctx = canvas.getContext('2d');
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/[]{}_+=-*^%$#@!";
-        const fontSize = 16;
-        const columns = Math.floor(canvas.width / fontSize);
-        const drops = Array(columns).fill(1);
-
-        function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#00ff41";
-            ctx.font = fontSize + "px monospace";
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-            requestAnimationFrame(draw);
-        }
-        draw();
-    </script>
 </body>
 </html>
