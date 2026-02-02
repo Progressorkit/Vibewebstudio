@@ -12,33 +12,30 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: transparent;   /* ważne: nie zabija tła na mobile */
+      background: transparent;
       font-family: monospace;
     }
 
-    /* WARSTWA TŁA (bez czarnych pasów na mobile) */
+    /* TŁO */
     #bg-layer {
       position: fixed;
-      inset: 0;                 /* top/right/bottom/left: 0 */
+      inset: 0;
       z-index: 1;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-image: url('./bg1.jpg'); /* lokalnie z repo */
+      background: url('./bg1.jpg') center/cover no-repeat;
       filter: brightness(1.1) contrast(1.05) saturate(1.05);
-      transition: background-image 0.6s ease-in-out, filter 0.6s ease-in-out;
+      transition: background-image .6s ease, filter .6s ease;
     }
 
-    /* delikatna warstwa „dymu” / przyciemnienia dla czytelności UI */
+    /* delikatne przyciemnienie pod UI */
     #bg-overlay {
       position: fixed;
       inset: 0;
       z-index: 2;
-      background: radial-gradient(circle at 30% 40%, rgba(0,0,0,0.15), rgba(0,0,0,0.75));
+      background: radial-gradient(circle at 30% 40%, rgba(0,0,0,.15), rgba(0,0,0,.75));
       pointer-events: none;
     }
 
-    /* NAWIGACJA - KAFELKI */
+    /* NAWIGACJA */
     .nav-container {
       position: fixed;
       right: 20px;
@@ -48,13 +45,12 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
-      transition: 0.5s ease;
     }
 
     .btn {
       width: 55px;
       height: 55px;
-      background: rgba(0, 255, 65, 0.10);
+      background: rgba(0,255,65,.10);
       border: 2px solid #00ff41;
       color: #00ff41;
       border-radius: 12px;
@@ -64,41 +60,38 @@
       font-weight: bold;
       font-size: 20px;
       backdrop-filter: blur(10px);
-      transition: 0.35s ease;
+      transition: .35s ease;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
+    .btn:active { transform: scale(.97); }
 
-    .btn:active { transform: scale(0.97); }
-
-    /* TRYB: OTWARTY MODUŁ – chowamy wszystkie kafelki poza aktywnym */
+    /* TRYB MODUŁU: chowamy wszystkie kafelki poza aktywnym */
     body.module-open .nav-container .btn {
       opacity: 0;
       transform: translateX(100px);
       pointer-events: none;
     }
-
     body.module-open .nav-container .btn.active {
       opacity: 1;
       transform: translateX(0);
       pointer-events: auto;
     }
 
-    /* PANEL Z TEKSTEM */
+    /* PANEL */
     #panel {
       position: fixed;
       left: -110%;
       top: 50%;
       transform: translateY(-50%);
-      width: min(80%, 320px);
-      background: rgba(0, 15, 0, 0.92);
+      width: min(80%, 340px);
+      background: rgba(0, 15, 0, .92);
       border: 1px solid #00ff41;
       padding: 25px;
       z-index: 120;
-      transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 0 30px rgba(0, 255, 65, 0.08);
+      transition: .45s cubic-bezier(.175,.885,.32,1.275);
+      box-shadow: 0 0 30px rgba(0,255,65,.08);
     }
-
     #panel.active { left: 10px; }
 
     #p-title {
@@ -107,12 +100,13 @@
       font-size: 22px;
       letter-spacing: 1px;
     }
-
     #p-text {
       color: #fff;
       line-height: 1.5;
       font-size: 14px;
-      opacity: 0.95;
+      opacity: .95;
+      min-height: 60px;
+      white-space: pre-wrap;
     }
 
     .close-btn {
@@ -127,9 +121,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .close-btn:active { transform: scale(0.99); }
-
-    /* Pasek statusu na dole (opcjonalny) */
+    /* STATUS */
     #statusbar {
       position: fixed;
       left: 0;
@@ -139,9 +131,9 @@
       padding: 10px 14px;
       color: #00ff41;
       font-size: 12px;
-      background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0));
+      background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,0));
       letter-spacing: 1px;
-      opacity: 0.8;
+      opacity: .8;
       pointer-events: none;
     }
   </style>
@@ -167,172 +159,83 @@
   <div id="statusbar">MODE: INTERACTIVE_OS  STATUS: IDLE</div>
 
   <script>
+    // ====== JEDEN JS. Bez duplikatów. ======
     let activeId = null;
+    let typingTimer = null;
 
-    function setStatus(text) {
-      const bar = document.getElementById('statusbar');
-      if (bar) bar.textContent = text;
-    }
+    const bg = document.getElementById('bg-layer');
+    const panel = document.getElementById('panel');
+    const titleEl = document.getElementById('p-title');
+    const textEl = document.getElementById('p-text');
+    const statusbar = document.getElementById('statusbar');
+
+    function setStatus(t) { statusbar.textContent = t; }
 
     function preloadImages(list) {
-      list.forEach(src => {
-        const img = new Image();
-        img.src = './' + src;
-      });
+      list.forEach(src => { const i = new Image(); i.src = './' + src; });
     }
+    preloadImages(['bg1.jpg','bg2.jpg','bg3.jpg','bg4.jpg']);
 
-    // preload – żeby nie było czarnych “mignięć” przy zmianie
-    preloadImages(['bg1.jpg', 'bg2.jpg', 'bg3.jpg', 'bg4.jpg']);
-
-    function openMod(id, img, title, text) {
-      activeId = id;
-
-      const bg = document.getElementById('bg-layer');
-      const panel = document.getElementById('panel');
-      const btns = document.querySelectorAll('.nav-container .btn');
-
-      // 1) tło lokalnie (GitHub Pages)
-      bg.style.backgroundImage = `url('./${img}')`;
-
-      // 2) tryb UI
-      document.body.classList.add('module-open');
-
-      // 3) aktywny kafelek
-      btns.forEach(btn => {
-        btn.classList.toggle('active', btn.id === 'btn' + id);
-      });
-
-      // 4) tekst
-      document.getElementById('p-title').innerText = "// " + title;
-      document.getElementById('p-text').innerText = text;
-
-      panel.classList.add('active');
-      panel.setAttribute('aria-hidden', 'false');
-
-      setStatus(`MODE: INTERACTIVE_OS  STATUS: LOADING_MODULE_${id}`);
-    }
-
-    function closeMod() {
-      activeId = null;
-
-      const panel = document.getElementById('panel');
-      panel.classList.remove('active');
-      panel.setAttribute('aria-hidden', 'true');
-
-      document.body.classList.remove('module-open');
-      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
-
-      setStatus('MODE: INTERACTIVE_OS  STATUS: IDLE');
-    }
-
-    // UX: zamknij ESC na desktop
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeMod();
-    });
-
-    // UX: klik poza panelem zamyka (na mobile też)
-    document.addEventListener('click', (e) => {
-      if (!document.body.classList.contains('module-open')) return;
-
-      const panel = document.getElementById('panel');
-      const nav = document.getElementById('nav-box');
-
-      // klik w panel albo nav – ignoruj
-      if (panel.contains(e.target) || nav.contains(e.target)) return;
-
-      closeMod();
-    }, { passive: true });
-  </script>
-</body>
-</html>
-    let activeId = null;
-    let typingTimer = null; // Do kontrolowania efektu pisania
-
-    function setStatus(text) {
-      const bar = document.getElementById('statusbar');
-      if (bar) bar.textContent = text;
-    }
-
-    function preloadImages(list) {
-      list.forEach(src => {
-        const img = new Image();
-        img.src = './' + src;
-      });
-    }
-
-    preloadImages(['bg1.jpg', 'bg2.jpg', 'bg3.jpg', 'bg4.jpg']);
-
-    // FUNKCJA EFEKTU PISANIA
-    function typeWriter(elementId, text, speed = 30) {
-      const element = document.getElementById(elementId);
-      element.innerHTML = ""; // Czyścimy na start
+    function typeWriter(el, text, speed = 20) {
+      el.textContent = '';
       let i = 0;
-      
-      if (typingTimer) clearInterval(typingTimer); // Przerywamy stare pisanie
-
+      if (typingTimer) clearInterval(typingTimer);
       typingTimer = setInterval(() => {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-        } else {
-          clearInterval(typingTimer);
-        }
+        el.textContent += text.charAt(i++);
+        if (i >= text.length) clearInterval(typingTimer);
       }, speed);
     }
 
     function openMod(id, img, title, text) {
       activeId = id;
 
-      const bg = document.getElementById('bg-layer');
-      const panel = document.getElementById('panel');
-      const btns = document.querySelectorAll('.nav-container .btn');
-
-      // 1) tło
+      // tło lokalnie
       bg.style.backgroundImage = `url('./${img}')`;
 
-      // 2) tryb UI
+      // tryb modułu
       document.body.classList.add('module-open');
 
-      // 3) aktywny kafelek
-      btns.forEach(btn => {
-        btn.classList.toggle('active', btn.id === 'btn' + id);
+      // aktywny kafelek
+      document.querySelectorAll('.nav-container .btn').forEach(b => {
+        b.classList.toggle('active', b.id === 'btn' + id);
       });
 
-      // 4) Animowane tekst
+      // panel
+      titleEl.textContent = '// ' + title;
       panel.classList.add('active');
       panel.setAttribute('aria-hidden', 'false');
-      
-      // Najpierw tytuł z prefixem hakerskim
-      document.getElementById('p-title').innerText = "// " + title + "_"; 
-      
-      // Potem efekt pisania dla opisu
-      typeWriter('p-text', text, 25);
+
+      // tekst z efektem pisania
+      typeWriter(textEl, text, 18);
 
       setStatus(`MODE: INTERACTIVE_OS  STATUS: LOADING_MODULE_${id}`);
     }
 
     function closeMod() {
       activeId = null;
-      if (typingTimer) clearInterval(typingTimer); // Stop pisania przy zamykaniu
+      if (typingTimer) clearInterval(typingTimer);
 
-      const panel = document.getElementById('panel');
       panel.classList.remove('active');
       panel.setAttribute('aria-hidden', 'true');
 
       document.body.classList.remove('module-open');
-      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.nav-container .btn').forEach(b => b.classList.remove('active'));
 
       setStatus('MODE: INTERACTIVE_OS  STATUS: IDLE');
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeMod();
-    });
-
+    // klik poza panelem zamyka
     document.addEventListener('click', (e) => {
       if (!document.body.classList.contains('module-open')) return;
-      const panel = document.getElementById('panel');
       const nav = document.getElementById('nav-box');
       if (panel.contains(e.target) || nav.contains(e.target)) return;
       closeMod();
     }, { passive: true });
+
+    // ESC na desktop
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMod();
+    });
+  </script>
+</body>
+</html>
