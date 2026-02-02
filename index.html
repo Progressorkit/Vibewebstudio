@@ -5,24 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Web Studio | OS</title>
     <style>
+        /* PODSTAWA */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body, html { 
             width: 100%; min-height: 100%; background: #000; 
             font-family: 'Segoe UI', sans-serif; color: white;
             overflow-x: hidden; overflow-y: auto; 
         }
 
-        /* SILNIK DESZCZU W TLE */
+        /* TŁO - ANIMACJA MATRIX */
         #canvas-code {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -10; background: #000; display: block;
         }
 
+        /* NAKŁADKA CRT (LINIE TELEWIZYJNE) */
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -5; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
             background-size: 100% 4px;
         }
 
@@ -31,20 +32,21 @@
             padding: 60px 20px 120px 20px; min-height: 100vh;
         }
 
-        /* EFEKT MGLISTEGO OKNA */
+        /* GŁÓWNE OKNO - EFEKT SZKŁA/MGŁY */
         .glass-window {
             width: 100%; max-width: 800px;
-            background: rgba(10, 10, 10, 0.75); /* Bardzo ciemny, głęboki środek */
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); /* Mocna mgła */
-            border: 1px solid rgba(0, 255, 65, 0.25); /* Cienka zielona ramka */
-            border-radius: 18px; overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            background: rgba(15, 25, 15, 0.4); /* Półprzezroczysty spód */
+            backdrop-filter: blur(30px) saturate(150%); 
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid rgba(0, 255, 65, 0.3); /* Zielona ramka okna */
+            border-radius: 20px; overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
         }
 
         .header { 
-            background: rgba(0, 255, 65, 0.08); padding: 14px 20px; 
+            background: rgba(0, 255, 65, 0.1); padding: 14px 20px; 
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 65, 0.15);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
         }
 
         .dots { display: flex; gap: 8px; }
@@ -52,26 +54,27 @@
         
         .content { display: flex; flex-direction: column; padding: 25px; gap: 20px; }
         
-        /* MGLISTE KARTY */
+        /* KARTY - TWOJA MGŁA */
         .card { 
-            padding: 22px; 
-            background: rgba(255, 255, 255, 0.03); /* Delikatne rozjaśnienie środka */
-            border-radius: 12px; 
-            border: 1px solid rgba(0, 255, 65, 0.1); 
+            padding: 25px; 
+            background: rgba(255, 255, 255, 0.07); /* To daje ten mglisty, mleczny efekt */
+            border-radius: 14px; 
+            border: 1px solid rgba(0, 255, 65, 0.2); /* Zielona ramka karty */
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.02);
         }
 
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 8px; font-size: 1.2rem; letter-spacing: 1px; }
-        .card p { font-size: 0.95rem; opacity: 0.7; line-height: 1.6; font-weight: 300; }
+        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.25rem; }
+        .card p { font-size: 0.95rem; opacity: 0.85; line-height: 1.6; font-weight: 300; }
 
+        /* PASEK DOLNY */
         .status-bar {
             position: fixed; bottom: 0; width: 100%; padding: 12px 25px;
-            background: rgba(0, 0, 0, 0.85); border-top: 1px solid rgba(0, 255, 65, 0.2);
+            background: rgba(0, 0, 0, 0.85); border-top: 1px solid rgba(0, 255, 65, 0.3);
             color: #00ff41; font-family: monospace; font-size: 10px;
             display: flex; justify-content: space-between; z-index: 100;
             backdrop-filter: blur(10px);
         }
     </style>
-
 </head>
 <body>
 
@@ -86,20 +89,20 @@
                     <div class="dot" style="background: #ffbd2e;"></div>
                     <div class="dot" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px;">VIBE_OS_v2.5_LIVE</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 10px;">VIBE_OS_v3.0_FINAL</div>
             </div>
             <div class="content">
                 <div class="card">
                     <h3>01_VIBE</h3>
-                    <p>Wizualizacja Twojej marki. Tworzymy unikalne ekosystemy cyfrowe.</p>
+                    <p>Design generatywny. Tworzymy systemy wizualne, które zapadają w pamięć i definiują markę.</p>
                 </div>
                 <div class="card">
                     <h3>02_BUSINESS</h3>
-                    <p>Skalowanie i narzędzia. Implementacja systemów, które budują wartość.</p>
+                    <p>Implementacja nowoczesnych narzędzi i strategii, które skalują Twój biznes w świecie cyfrowym.</p>
                 </div>
                 <div class="card">
                     <h3>03_MASTERY</h3>
-                    <p>Architektura przyszłości. Pełna kontrola nad Twoim kodem.</p>
+                    <p>Pełna kontrola nad kodem i architekturą. Bezpieczeństwo i wydajność na najwyższym poziomie.</p>
                 </div>
             </div>
         </div>
@@ -107,7 +110,7 @@
 
     <div class="status-bar">
         <span>USER: PROGRESSORKIT</span>
-        <span>STATUS: SYSTEM_ANIMATED</span>
+        <span>STATUS: SYSTEM_STABLE // MATRIX_ACTIVE</span>
     </div>
 
     <script>
