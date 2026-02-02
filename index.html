@@ -13,15 +13,16 @@
             overflow-x: hidden; overflow-y: auto; 
         }
 
-        /* PANCERNY DESZCZ KODU W CSS */
+        /* PANCERNY DESZCZ - ANIMACJA CSS */
         .matrix-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -10;
-            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)),
+            /* Używamy zewnętrznej tekstury kodu Matrix */
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
                         url('https://www.transparenttextures.com/patterns/matrix-code.png');
             background-repeat: repeat;
-            animation: matrix-fall 20s linear infinite;
-            filter: hue-rotate(0deg) brightness(1.2);
+            animation: matrix-fall 30s linear infinite;
+            filter: hue-rotate(0deg) brightness(1.5);
         }
 
         @keyframes matrix-fall {
@@ -32,7 +33,7 @@
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -5; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
             background-size: 100% 4px;
         }
 
@@ -41,18 +42,19 @@
             padding: 40px 20px 100px 20px; min-height: 100vh;
         }
 
-        /* GŁÓWNE OKNO - TAK JAK CHCIAŁEŚ */
+        /* TWOJE IDEALNE OKNO ZE SCREENA */
         .glass-window {
             width: 100%; max-width: 800px;
-            background: rgba(0, 20, 0, 0.45);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 2px solid #00ff41; /* Wyraźna zielona ramka */
-            border-radius: 15px; overflow: hidden;
+            background: rgba(10, 20, 10, 0.5);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 2px solid #00ff41;
+            border-radius: 18px; overflow: hidden;
             box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
         }
 
         .header { 
-            background: rgba(0, 255, 65, 0.2); padding: 12px 20px; 
+            background: rgba(0, 255, 65, 0.15); padding: 14px 20px; 
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px solid #00ff41;
         }
@@ -63,17 +65,17 @@
         .content { display: flex; flex-direction: column; padding: 25px; gap: 20px; }
         
         .card { 
-            padding: 20px; 
-            background: rgba(255, 255, 255, 0.05); /* MGŁA */
-            border-radius: 12px; 
-            border: 1px solid rgba(0, 255, 65, 0.4); 
+            padding: 25px; 
+            background: rgba(255, 255, 255, 0.06); 
+            border-radius: 14px; 
+            border: 1px solid rgba(0, 255, 65, 0.3); 
         }
 
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 8px; font-size: 1.3rem; }
-        .card p { font-size: 0.95rem; opacity: 0.9; line-height: 1.5; }
+        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.3rem; font-weight: bold; }
+        .card p { font-size: 0.95rem; opacity: 0.9; line-height: 1.6; color: #ccffcc; }
 
         .status-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
+            position: fixed; bottom: 0; width: 100%; padding: 12px 20px;
             background: #000; border-top: 1px solid #00ff41;
             color: #00ff41; font-family: monospace; font-size: 11px;
             display: flex; justify-content: space-between; z-index: 100;
@@ -93,28 +95,28 @@
                     <div class="dot" style="background: #ffbd2e;"></div>
                     <div class="dot" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px; font-weight: bold;">VIBE_OS_v3.5_STABLE</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 10px; font-weight: bold;">VIBE_OS_v3.1_FINAL</div>
             </div>
             <div class="content">
                 <div class="card">
                     <h3>01_VIBE</h3>
-                    <p>Design generatywny. Tworzymy systemy wizualne, które zapadają w pamięć.</p>
+                    <p>Design generatywny. Tworzymy systemy wizualne, które zapadają w pamięć i definiują markę.</p>
                 </div>
                 <div class="card">
-                    <h3>02_BIZ</h3>
-                    <p>Skalowalne rozwiązania oparte o nowoczesne technologie.</p>
+                    <h3>02_BUSINESS</h3>
+                    <p>Implementacja nowoczesnych narzędzi i strategii, które skalują Twój biznes w świecie cyfrowym.</p>
                 </div>
                 <div class="card">
-                    <h3>03_MASTER</h3>
-                    <p>Pełna kontrola nad każdym bitem informacji.</p>
+                    <h3>03_MASTERY</h3>
+                    <p>Pełna kontrola nad kodem i architekturą. Bezpieczeństwo i wydajność na najwyższym poziomie.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="status-bar">
-        <span>CORE: CSS_ANIMATION</span>
-        <span>STATUS: SYSTEM_READY</span>
+        <span>USER: PROGRESSORKIT</span>
+        <span>STATUS: MATRIX_READY</span>
     </div>
 
 </body>
