@@ -245,3 +245,94 @@
   </script>
 </body>
 </html>
+    let activeId = null;
+    let typingTimer = null; // Do kontrolowania efektu pisania
+
+    function setStatus(text) {
+      const bar = document.getElementById('statusbar');
+      if (bar) bar.textContent = text;
+    }
+
+    function preloadImages(list) {
+      list.forEach(src => {
+        const img = new Image();
+        img.src = './' + src;
+      });
+    }
+
+    preloadImages(['bg1.jpg', 'bg2.jpg', 'bg3.jpg', 'bg4.jpg']);
+
+    // FUNKCJA EFEKTU PISANIA
+    function typeWriter(elementId, text, speed = 30) {
+      const element = document.getElementById(elementId);
+      element.innerHTML = ""; // Czyścimy na start
+      let i = 0;
+      
+      if (typingTimer) clearInterval(typingTimer); // Przerywamy stare pisanie
+
+      typingTimer = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(typingTimer);
+        }
+      }, speed);
+    }
+
+    function openMod(id, img, title, text) {
+      activeId = id;
+
+      const bg = document.getElementById('bg-layer');
+      const panel = document.getElementById('panel');
+      const btns = document.querySelectorAll('.nav-container .btn');
+
+      // 1) tło
+      bg.style.backgroundImage = `url('./${img}')`;
+
+      // 2) tryb UI
+      document.body.classList.add('module-open');
+
+      // 3) aktywny kafelek
+      btns.forEach(btn => {
+        btn.classList.toggle('active', btn.id === 'btn' + id);
+      });
+
+      // 4) Animowane tekst
+      panel.classList.add('active');
+      panel.setAttribute('aria-hidden', 'false');
+      
+      // Najpierw tytuł z prefixem hakerskim
+      document.getElementById('p-title').innerText = "// " + title + "_"; 
+      
+      // Potem efekt pisania dla opisu
+      typeWriter('p-text', text, 25);
+
+      setStatus(`MODE: INTERACTIVE_OS  STATUS: LOADING_MODULE_${id}`);
+    }
+
+    function closeMod() {
+      activeId = null;
+      if (typingTimer) clearInterval(typingTimer); // Stop pisania przy zamykaniu
+
+      const panel = document.getElementById('panel');
+      panel.classList.remove('active');
+      panel.setAttribute('aria-hidden', 'true');
+
+      document.body.classList.remove('module-open');
+      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
+
+      setStatus('MODE: INTERACTIVE_OS  STATUS: IDLE');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMod();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!document.body.classList.contains('module-open')) return;
+      const panel = document.getElementById('panel');
+      const nav = document.getElementById('nav-box');
+      if (panel.contains(e.target) || nav.contains(e.target)) return;
+      closeMod();
+    }, { passive: true });
