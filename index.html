@@ -1,215 +1,189 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Vibe OS | BUILD v10</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Vibe OS | Red Alert</title>
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html, body {
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:transparent;
-  font-family:monospace;
-}
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      /* SZARE TŁO BAZOWE - testujemy czy to odblokuje tapety */
+      background: #1a1a1a; 
+      font-family: monospace;
+    }
 
-/* ===== TŁO ===== */
-#bg-layer{
-  position:fixed;
-  inset:0;
-  z-index:1;
-  background:url('./bg1.jpg') center/cover no-repeat;
-  filter:brightness(1.1) contrast(1.05);
-  transition:background-image .6s ease;
-}
+    /* WARSTWA TŁA */
+    #bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url('./bg1.jpg');
+      /* TWOJE FILTRY */
+      filter: brightness(1.1) contrast(1.05) saturate(1.1);
+      transition: background-image 0.6s ease-in-out;
+    }
 
-/* lekki overlay dla czytelności */
-#bg-overlay{
-  position:fixed;
-  inset:0;
-  z-index:2;
-  background:radial-gradient(circle at 30% 40%, rgba(0,0,0,.15), rgba(0,0,0,.75));
-  pointer-events:none;
-}
+    #bg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      /* Czerwony gradient zamiast zielonego */
+      background: radial-gradient(circle at 30% 40%, rgba(255,0,0,0.05), rgba(0,0,0,0.8));
+      pointer-events: none;
+    }
 
-/* ===== NAWIGACJA ===== */
-.nav-container{
-  position:fixed;
-  right:20px;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:100;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
+    .nav-container {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-.btn{
-  width:55px;
-  height:55px;
-  border-radius:12px;
-  background:rgba(0,255,65,.1);
-  border:2px solid #00ff41;
-  color:#00ff41;
-  font-size:20px;
-  font-weight:bold;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  backdrop-filter:blur(10px);
-  transition:.35s ease;
-  user-select:none;
-}
+    .btn {
+      width: 55px;
+      height: 55px;
+      background: rgba(255, 0, 0, 0.1);
+      /* CZERWONE RAMKI */
+      border: 2px solid #ff0000;
+      color: #ff0000;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    }
 
-.btn:active{ transform:scale(.96); }
+    body.module-open .nav-container .btn {
+      opacity: 0;
+      transform: translateX(100px);
+    }
 
-/* chowamy WSZYSTKIE kafelki */
-body.module-open .btn{
-  opacity:0;
-  transform:translateX(100px);
-  pointer-events:none;
-}
+    body.module-open .nav-container .btn.active {
+      opacity: 1;
+      transform: translateX(0);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    }
 
-/* zostaje tylko aktywny */
-body.module-open .btn.active{
-  opacity:1;
-  transform:translateX(0);
-  pointer-events:auto;
-}
+    #panel {
+      position: fixed;
+      left: -110%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(85%, 320px);
+      background: rgba(15, 0, 0, 0.95);
+      /* CZERWONA RAMKA PANELU */
+      border: 1px solid #ff0000;
+      padding: 25px;
+      z-index: 120;
+      transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
-/* ===== PANEL ===== */
-#panel{
-  position:fixed;
-  left:-120%;
-  top:50%;
-  transform:translateY(-50%);
-  width:min(80%,340px);
-  padding:25px;
-  background:rgba(0,15,0,.92);
-  border:1px solid #00ff41;
-  z-index:120;
-  transition:.45s cubic-bezier(.175,.885,.32,1.275);
-}
+    #panel.active { left: 10px; }
 
-#panel.active{ left:10px; }
+    #p-title { color: #ff0000; margin-bottom: 10px; font-size: 20px; }
+    #p-text { color: #fff; line-height: 1.5; font-size: 14px; }
 
-#p-title{
-  color:#00ff41;
-  font-size:22px;
-  margin-bottom:10px;
-  letter-spacing:1px;
-}
+    .close-btn {
+      margin-top: 18px;
+      border: 1px solid #ff0000;
+      color: #ff0000;
+      padding: 10px;
+      text-align: center;
+      font-size: 11px;
+    }
 
-#p-text{
-  color:#fff;
-  font-size:14px;
-  line-height:1.5;
-  min-height:60px;
-}
-
-.close-btn{
-  margin-top:18px;
-  border:1px solid #00ff41;
-  color:#00ff41;
-  padding:10px;
-  text-align:center;
-  font-size:12px;
-  cursor:pointer;
-}
-
-/* ===== STATUS ===== */
-#statusbar{
-  position:fixed;
-  left:0;
-  bottom:0;
-  width:100%;
-  z-index:130;
-  padding:10px 14px;
-  font-size:12px;
-  color:#00ff41;
-  background:linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,0));
-  letter-spacing:1px;
-}
-</style>
+    #statusbar {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      z-index: 130;
+      padding: 10px;
+      color: #ff0000;
+      font-size: 10px;
+      background: rgba(0,0,0,0.5);
+    }
+  </style>
 </head>
-
 <body>
+  <div id="bg-layer"></div>
+  <div id="bg-overlay"></div>
 
-<div id="bg-layer"></div>
-<div id="bg-overlay"></div>
+  <div class="nav-container" id="nav-box">
+    <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'CRITICAL_STRATEGY', 'System analizuje dane wejściowe. Priorytet: Czerwony.')">01</div>
+    <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'VISUAL_CORE', 'Interfejs wizualny przełączony w tryb High-Contrast.')">02</div>
+    <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'DATA_BREACH', 'Przechwytywanie struktur biznesowych. Skalowanie...')">03</div>
+    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'MASTER_ACCESS', 'Dostęp autoryzowany. System stabilny.')">04</div>
+  </div>
 
-<div class="nav-container" id="nav">
-  <div class="btn" id="btn1" onclick="openMod(1,'bg1.jpg','CORE SYSTEM','Witamy w głównym węźle operacyjnym Vibe Studio. Tutaj zaczyna się Twoja cyfrowa transformacja.')">01</div>
-  <div class="btn" id="btn2" onclick="openMod(2,'bg2.jpg','STRATEGY','Nasza strategia to precyzja w każdym pikselu.')">02</div>
-  <div class="btn" id="btn3" onclick="openMod(3,'bg3.jpg','SYSTEMS','Budujemy stabilne fundamenty Twojego biznesu.')">03</div>
-  <div class="btn" id="btn4" onclick="openMod(4,'bg4.jpg','MASTERY','Pełna kontrola nad kodem i infrastrukturą.')">04</div>
-</div>
+  <div id="panel">
+    <div id="p-title"></div>
+    <div id="p-text"></div>
+    <div class="close-btn" onclick="closeMod()">ZAMKNIJ_SYSTEM</div>
+  </div>
 
-<div id="panel" aria-hidden="true">
-  <div id="p-title"></div>
-  <div id="p-text"></div>
-  <div class="close-btn" onclick="closeMod()">ZAMKNIJ_</div>
-</div>
+  <div id="statusbar">MODE: RED_OS  STATUS: ACTIVE</div>
 
-<div id="statusbar">MODE: INTERACTIVE_OS | BUILD v10 | STATUS: IDLE</div>
+  <script>
+    let typingTimer = null;
 
-<script>
-/* ===== JEDEN JS ===== */
-const bg = document.getElementById('bg-layer');
-const panel = document.getElementById('panel');
-const titleEl = document.getElementById('p-title');
-const textEl = document.getElementById('p-text');
-const statusEl = document.getElementById('statusbar');
-const buttons = document.querySelectorAll('.btn');
+    function typeWriter(elementId, text, speed = 25) {
+      const element = document.getElementById(elementId);
+      element.innerHTML = "";
+      let i = 0;
+      if (typingTimer) clearInterval(typingTimer);
+      typingTimer = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(typingTimer);
+        }
+      }, speed);
+    }
 
-function preload(){
-  ['bg1.jpg','bg2.jpg','bg3.jpg','bg4.jpg'].forEach(src=>{
-    const i=new Image(); i.src='./'+src;
-  });
-}
-preload();
+    function openMod(id, img, title, text) {
+      const bg = document.getElementById('bg-layer');
+      const panel = document.getElementById('panel');
+      const btns = document.querySelectorAll('.nav-container .btn');
 
-function setStatus(t){ statusEl.textContent=t; }
+      // Wymuszenie odświeżenia przez parametr ?v=
+      bg.style.backgroundImage = `url('./${img}?v=${new Date().getTime()}')`;
+      document.body.classList.add('module-open');
 
-function openMod(id,img,title,text){
-  bg.style.backgroundImage=`url('./${img}')`;
+      btns.forEach(btn => btn.classList.toggle('active', btn.id === 'btn' + id));
 
-  document.body.classList.add('module-open');
-  buttons.forEach(b=>b.classList.remove('active'));
-  document.getElementById('btn'+id).classList.add('active');
+      document.getElementById('p-title').innerText = "> " + title;
+      panel.classList.add('active');
+      typeWriter('p-text', text);
+      
+      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
+    }
 
-  titleEl.textContent='// '+title;
-  textEl.textContent=text;
-
-  panel.classList.add('active');
-  panel.setAttribute('aria-hidden','false');
-
-  setStatus(`MODE: INTERACTIVE_OS | BUILD v10 | STATUS: LOADING_MODULE_${id}`);
-}
-
-function closeMod(){
-  document.body.classList.remove('module-open');
-  buttons.forEach(b=>b.classList.remove('active'));
-  panel.classList.remove('active');
-  panel.setAttribute('aria-hidden','true');
-  setStatus('MODE: INTERACTIVE_OS | BUILD v10 | STATUS: IDLE');
-}
-
-/* klik poza panelem zamyka */
-document.addEventListener('click',e=>{
-  if(!document.body.classList.contains('module-open')) return;
-  if(panel.contains(e.target) || e.target.classList.contains('btn')) return;
-  closeMod();
-},{passive:true});
-
-/* ESC */
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') closeMod();
-});
-</script>
-
+    function closeMod() {
+      if (typingTimer) clearInterval(typingTimer);
+      document.getElementById('panel').classList.remove('active');
+      document.body.classList.remove('module-open');
+      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: STANDBY`;
+    }
+  </script>
 </body>
 </html>
