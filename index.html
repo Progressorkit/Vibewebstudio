@@ -3,120 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Web Studio | OS</title>
+    <title>Vibe Web Studio | Multi-OS</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body, html { 
-            width: 100%; min-height: 100%; 
-            background-color: #000; /* Głęboka czerń */
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            color: #e0e0e0;
-            overflow-x: hidden;
-        }
+        body, html { width: 100%; min-height: 100%; background: #000; font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
 
-        /* TŁO "DEEP TECH" - ZERO ANIMACJI, SAM STYL */
-        .bg-layer {
+        /* DYNAMICZNE TŁO */
+        #dynamic-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            /* Gradient tworzący poświatę w centrum */
-            background: radial-gradient(circle at 50% 50%, #0a1a0a 0%, #000 80%);
+            z-index: -2; background-size: cover; background-position: center;
+            transition: background-image 0.8s ease-in-out; /* Płynne przejście */
+            background-image: url('bg1.jpg'); /* Startowy obraz */
         }
 
-        /* DELIKATNA SIATKA DLA KLIMATU PROGRAMISTY */
-        .grid-overlay {
+        .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background-image: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+            z-index: -1; background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.9));
         }
 
-        .wrapper {
-            display: flex; justify-content: center; padding: 40px 20px;
-        }
+        .wrapper { display: flex; justify-content: center; padding: 40px 20px; }
 
-        /* TWOJE SZKLANE OKNO - DOPRACOWANE */
-        .main-window {
-            width: 100%; max-width: 600px;
-            background: rgba(15, 15, 15, 0.85);
+        .glass-window {
+            width: 100%; max-width: 650px;
+            background: rgba(5, 10, 5, 0.85);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(0, 255, 65, 0.2);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border-radius: 12px; overflow: hidden;
         }
 
-        .header {
-            background: rgba(0, 255, 65, 0.08);
-            padding: 15px 20px;
-            display: flex; justify-content: space-between;
-            border-bottom: 1px solid rgba(0, 255, 65, 0.15);
-        }
-
-        .btn { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-
+        .header { background: rgba(0, 255, 65, 0.1); padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0, 255, 65, 0.1); }
+        
         .content { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
 
+        /* INTERAKTYWNE KARTY */
         .card {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border-left: 3px solid #00ff41; /* Akcent programistyczny */
-            border-radius: 4px;
-            transition: 0.3s;
+            padding: 20px; background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid #00ff41; border-radius: 4px;
+            cursor: pointer; transition: 0.3s;
         }
+        .card:hover { background: rgba(0, 255, 65, 0.05); transform: translateX(5px); }
 
-        .card h2 { 
-            color: #00ff41; font-family: monospace; 
-            font-size: 1.1rem; margin-bottom: 5px; 
-        }
+        .card h3 { color: #00ff41; font-family: monospace; font-size: 1rem; }
+        .card p { font-size: 0.85rem; opacity: 0.7; margin-top: 5px; }
 
-        .card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.5; }
-
-        .footer {
-            padding: 12px 20px; background: #000;
-            border-top: 1px solid rgba(0, 255, 65, 0.1);
+        .status-bar {
+            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
+            background: #000; border-top: 1px solid rgba(0, 255, 65, 0.2);
+            color: #00ff41; font-family: monospace; font-size: 10px;
             display: flex; justify-content: space-between;
-            font-family: monospace; font-size: 10px; color: #00ff41;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer"></div>
-    <div class="grid-overlay"></div>
+    <div id="dynamic-bg"></div>
+    <div class="overlay"></div>
 
     <div class="wrapper">
-        <div class="main-window">
+        <div class="glass-window">
             <div class="header">
-                <div>
-                    <div class="btn" style="background: #ff5f56;"></div>
-                    <div class="btn" style="background: #ffbd2e;"></div>
-                    <div class="btn" style="background: #27c93f;"></div>
-                </div>
-                <div style="font-family: monospace; font-size: 11px; color: #00ff41;">CORE_SYSTEM_v5.0</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 11px;">VIBE_OS_v6.0_MULTI_BG</div>
+                <div style="font-size: 10px; opacity: 0.5;">SELECT_MODULE</div>
             </div>
-
+            
             <div class="content">
-                <div class="card">
-                    <h2>// 01_STRATEGY</h2>
-                    <p>Analiza architektury informacji i planowanie unikalnych doświadczeń cyfrowych.</p>
+                <div class="card" onclick="changeBg('bg1.jpg')">
+                    <h3>// 01_CORE_SYSTEM</h3>
+                    <p>Główny węzeł operacyjny. Kliknij, by wrócić do bazy.</p>
                 </div>
-                <div class="card">
-                    <h2>// 02_DEVELOPMENT</h2>
-                    <p>Budowa wydajnych systemów opartych o najczystszy kod i nowoczesne technologie.</p>
+                <div class="card" onclick="changeBg('bg2.jpg')">
+                    <h3>// 02_STRATEGY_VIEW</h3>
+                    <p>Analityka wizualna i planowanie struktury.</p>
                 </div>
-                <div class="card">
-                    <h2>// 03_MAINTENANCE</h2>
-                    <p>Ciągły nadzór nad stabilnością i optymalizacja procesów w czasie rzeczywistym.</p>
+                <div class="card" onclick="changeBg('bg3.jpg')">
+                    <h3>// 03_BUSINESS_DATA</h3>
+                    <p>Skalowanie procesów i architektura serwerowa.</p>
                 </div>
-            </div>
-
-            <div class="footer">
-                <span>LN: 128 COL: 42</span>
-                <span>STATUS: READY</span>
+                <div class="card" onclick="changeBg('bg4.jpg')">
+                    <h3>// 04_MASTERY_STREAM</h3>
+                    <p>Finalny kod i wsparcie techniczne 24/7.</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="status-bar">
+        <span>ACTIVE_MODULE: <span id="mod-name">CORE</span></span>
+        <span>SECURITY: HIGH</span>
+    </div>
+
+    <script>
+        function changeBg(imgName) {
+            document.getElementById('dynamic-bg').style.backgroundImage = "url('" + imgName + "')";
+            document.getElementById('mod-name').innerText = imgName.replace('.jpg', '').toUpperCase();
+        }
+    </script>
 </body>
 </html>
