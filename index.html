@@ -10,31 +10,22 @@
         body, html { 
             width: 100%; min-height: 100%; background: #000; 
             font-family: 'Segoe UI', sans-serif; color: white;
-            overflow-x: hidden; overflow-y: auto; 
+            overflow-x: hidden;
         }
 
-        /* PANCERNY DESZCZ - ANIMACJA CSS */
+        /* PANCERNY DESZCZ - GENEROWANY PRZEZ CSS (BEZ OBRAZKÓW) */
         .matrix-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -10;
-            /* Używamy zewnętrznej tekstury kodu Matrix */
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
-                        url('https://www.transparenttextures.com/patterns/matrix-code.png');
-            background-repeat: repeat;
-            animation: matrix-fall 30s linear infinite;
-            filter: hue-rotate(0deg) brightness(1.5);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 20, 0, 0) 50%, rgba(0, 0, 0, 1) 100%),
+                        repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.03) 0px, rgba(0, 255, 65, 0.03) 1px, transparent 1px, transparent 20px),
+                        repeating-linear-gradient(90deg, rgba(0, 255, 65, 0.03) 0px, rgba(0, 255, 65, 0.03) 1px, transparent 1px, transparent 20px);
+            animation: move-bg 20s linear infinite;
         }
 
-        @keyframes matrix-fall {
+        @keyframes move-bg {
             from { background-position: 0 0; }
-            to { background-position: 0 1000px; }
-        }
-
-        .crt-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -5; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px;
+            to { background-position: 0 400px; }
         }
 
         .wrapper {
@@ -42,21 +33,20 @@
             padding: 40px 20px 100px 20px; min-height: 100vh;
         }
 
-        /* TWOJE IDEALNE OKNO ZE SCREENA */
+        /* POWRÓT DO WYGLĄDU ZE SCREENA 1000003158.JPG */
         .glass-window {
             width: 100%; max-width: 800px;
-            background: rgba(10, 20, 10, 0.5);
-            backdrop-filter: blur(20px) saturate(150%);
-            -webkit-backdrop-filter: blur(20px) saturate(150%);
-            border: 2px solid #00ff41;
+            background: rgba(20, 20, 20, 0.7); /* Ciemny, elegancki spód */
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(0, 255, 65, 0.2); /* Subtelna ramka, nie jaskrawa! */
             border-radius: 18px; overflow: hidden;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
         }
 
         .header { 
-            background: rgba(0, 255, 65, 0.15); padding: 14px 20px; 
+            background: rgba(0, 255, 65, 0.05); padding: 14px 20px; 
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid #00ff41;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
         }
 
         .dots { display: flex; gap: 8px; }
@@ -66,18 +56,18 @@
         
         .card { 
             padding: 25px; 
-            background: rgba(255, 255, 255, 0.06); 
+            background: rgba(255, 255, 255, 0.03); /* Czysta mgła */
             border-radius: 14px; 
-            border: 1px solid rgba(0, 255, 65, 0.3); 
+            border: 1px solid rgba(0, 255, 65, 0.15); 
         }
 
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.3rem; font-weight: bold; }
-        .card p { font-size: 0.95rem; opacity: 0.9; line-height: 1.6; color: #ccffcc; }
+        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.2rem; }
+        .card p { font-size: 0.95rem; opacity: 0.7; line-height: 1.6; color: #eee; }
 
         .status-bar {
             position: fixed; bottom: 0; width: 100%; padding: 12px 20px;
-            background: #000; border-top: 1px solid #00ff41;
-            color: #00ff41; font-family: monospace; font-size: 11px;
+            background: rgba(0, 0, 0, 0.9); border-top: 1px solid rgba(0, 255, 65, 0.2);
+            color: #00ff41; font-family: monospace; font-size: 10px;
             display: flex; justify-content: space-between; z-index: 100;
         }
     </style>
@@ -85,7 +75,6 @@
 <body>
 
     <div class="matrix-bg"></div>
-    <div class="crt-overlay"></div>
 
     <div class="wrapper">
         <div class="glass-window">
@@ -95,7 +84,7 @@
                     <div class="dot" style="background: #ffbd2e;"></div>
                     <div class="dot" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px; font-weight: bold;">VIBE_OS_v3.1_FINAL</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 10px; opacity: 0.8;">VIBE_OS_FINAL_v3.8</div>
             </div>
             <div class="content">
                 <div class="card">
@@ -116,7 +105,7 @@
 
     <div class="status-bar">
         <span>USER: PROGRESSORKIT</span>
-        <span>STATUS: MATRIX_READY</span>
+        <span>STATUS: SYSTEM_STABLE // NO_SCRIPTS_MODE</span>
     </div>
 
 </body>
