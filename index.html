@@ -1,126 +1,247 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vibe OS | Clean & Light</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: monospace; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Vibe OS | Clean Interface</title>
 
-        /* TŁO Z TWOIMI FILTRAMI */
-        #bg-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-image: url('https://raw.githubusercontent.com/Progressorkit/Vibewebstudio/main/bg1.jpg');
-            /* TWOJE USTAWIENIA */
-            filter: brightness(1.1) contrast(1.05) saturate(1.1);
-            transition: 0.8s ease-in-out;
-        }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* NAWIGACJA - KAFELKI */
-        .nav-container {
-            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
-            z-index: 100; display: flex; flex-direction: column; gap: 15px;
-        }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;   /* ważne: nie zabija tła na mobile */
+      font-family: monospace;
+    }
 
-        .btn {
-            width: 55px; height: 55px;
-            background: rgba(0, 255, 65, 0.1);
-            border: 2px solid #00ff41;
-            color: #00ff41; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 20px;
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    /* WARSTWA TŁA (bez czarnych pasów na mobile) */
+    #bg-layer {
+      position: fixed;
+      inset: 0;                 /* top/right/bottom/left: 0 */
+      z-index: 1;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url('./bg1.jpg'); /* lokalnie z repo */
+      filter: brightness(1.1) contrast(1.05) saturate(1.05);
+      transition: background-image 0.6s ease-in-out, filter 0.6s ease-in-out;
+    }
 
-        /* KLASA CHOWAJĄCA INNE KAFELKI */
-        .btn.hide-me {
-            opacity: 0;
-            transform: translateX(100px);
-            pointer-events: none;
-            height: 0;
-            margin: 0;
-        }
+    /* delikatna warstwa „dymu” / przyciemnienia dla czytelności UI */
+    #bg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(circle at 30% 40%, rgba(0,0,0,0.15), rgba(0,0,0,0.75));
+      pointer-events: none;
+    }
 
-        .btn.active-mod {
-            border-color: #fff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
+    /* NAWIGACJA - KAFELKI */
+    .nav-container {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      transition: 0.5s ease;
+    }
 
-        /* PANEL Z TEKSTEM */
-        #panel {
-            position: fixed; left: -110%; top: 50%; transform: translateY(-50%);
-            width: 85%; max-width: 320px;
-            background: rgba(0, 15, 0, 0.9);
-            border: 1px solid rgba(0, 255, 65, 0.5);
-            border-radius: 0 20px 20px 0;
-            padding: 30px; z-index: 50;
-            transition: 0.5s ease-out;
-        }
-        #panel.active { left: 0; }
+    .btn {
+      width: 55px;
+      height: 55px;
+      background: rgba(0, 255, 65, 0.10);
+      border: 2px solid #00ff41;
+      color: #00ff41;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+      backdrop-filter: blur(10px);
+      transition: 0.35s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        .title { color: #00ff41; font-size: 1.2rem; margin-bottom: 12px; }
-        .text { color: #fff; font-size: 0.9rem; line-height: 1.6; opacity: 0.9; }
+    .btn:active { transform: scale(0.97); }
 
-        .close-btn {
-            margin-top: 25px; padding: 12px; text-align: center;
-            border: 1px solid #00ff41; color: #00ff41; font-size: 11px;
-        }
-    </style>
+    /* TRYB: OTWARTY MODUŁ – chowamy wszystkie kafelki poza aktywnym */
+    body.module-open .nav-container .btn {
+      opacity: 0;
+      transform: translateX(100px);
+      pointer-events: none;
+    }
+
+    body.module-open .nav-container .btn.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    /* PANEL Z TEKSTEM */
+    #panel {
+      position: fixed;
+      left: -110%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(80%, 320px);
+      background: rgba(0, 15, 0, 0.92);
+      border: 1px solid #00ff41;
+      padding: 25px;
+      z-index: 120;
+      transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 0 30px rgba(0, 255, 65, 0.08);
+    }
+
+    #panel.active { left: 10px; }
+
+    #p-title {
+      color: #00ff41;
+      margin-bottom: 10px;
+      font-size: 22px;
+      letter-spacing: 1px;
+    }
+
+    #p-text {
+      color: #fff;
+      line-height: 1.5;
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    .close-btn {
+      margin-top: 18px;
+      border: 1px solid #00ff41;
+      color: #00ff41;
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .close-btn:active { transform: scale(0.99); }
+
+    /* Pasek statusu na dole (opcjonalny) */
+    #statusbar {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      z-index: 130;
+      padding: 10px 14px;
+      color: #00ff41;
+      font-size: 12px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0));
+      letter-spacing: 1px;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+  </style>
 </head>
+
 <body>
+  <div id="bg-layer"></div>
+  <div id="bg-overlay"></div>
 
-    <div id="bg-layer"></div>
+  <div class="nav-container" id="nav-box">
+    <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'STRATEGY', 'Nasza strategia to precyzja w każdym pikselu.')">01</div>
+    <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'DESIGN', 'Tworzymy wizje, które definiują przyszłość marek.')">02</div>
+    <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'SYSTEMS', 'Budujemy stabilne fundamenty Twojego biznesu.')">03</div>
+    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'MASTERY', 'Pełna kontrola nad kodem i infrastrukturą.')">04</div>
+  </div>
 
-    <div class="nav-container">
-        <div class="btn" id="btn1" onclick="launch(1, 'bg1.jpg', 'STRATEGY', 'Nasza strategia opiera się na analizie danych i nowoczesnym UX. Każdy piksel ma znaczenie.')">01</div>
-        <div class="btn" id="btn2" onclick="launch(2, 'bg2.jpg', 'VISUALS', 'Tworzymy unikalne światy wizualne, które wyróżniają Twoją markę na tle konkurencji.')">02</div>
-        <div class="btn" id="btn3" onclick="launch(3, 'bg3.jpg', 'SYSTEMS', 'Budujemy skalowalne systemy i bezpieczną architekturę dla Twojego biznesu.')">03</div>
-        <div class="btn" id="btn4" onclick="launch(4, 'bg4.jpg', 'MASTERY', 'Pełne wsparcie techniczne i bezpieczeństwo danych w standardzie military-grade.')">04</div>
-    </div>
+  <div id="panel" aria-hidden="true">
+    <div id="p-title"></div>
+    <div id="p-text"></div>
+    <div class="close-btn" onclick="closeMod()">POWRÓT_DO_MENU</div>
+  </div>
 
-    <div id="panel">
-        <div class="title" id="p-title">// INIT_SYSTEM</div>
-        <div class="text" id="p-text">Wybierz moduł operacyjny...</div>
-        <div class="close-btn" onclick="shutdown()">ZAMKNIJ _</div>
-    </div>
+  <div id="statusbar">MODE: INTERACTIVE_OS  STATUS: IDLE</div>
 
-    <script>
-        function launch(id, img, title, text) {
-            const bg = document.getElementById('bg-layer');
-            const panel = document.getElementById('panel');
-            const btns = document.querySelectorAll('.btn');
-            
-            // 1. Tło z Twoimi nowymi filtrami
-            bg.style.backgroundImage = `url('https://raw.githubusercontent.com/Progressorkit/Vibewebstudio/main/${img}')`;
-            
-            // 2. Chowanie wszystkich kafelków OPRÓCZ wybranego
-            btns.forEach(btn => {
-                if(btn.id !== 'btn' + id) {
-                    btn.classList.add('hide-me');
-                } else {
-                    btn.classList.add('active-mod');
-                }
-            });
+  <script>
+    let activeId = null;
 
-            // 3. Tekst
-            document.getElementById('p-title').innerText = "// " + title;
-            document.getElementById('p-text').innerText = text;
-            panel.classList.add('active');
-        }
+    function setStatus(text) {
+      const bar = document.getElementById('statusbar');
+      if (bar) bar.textContent = text;
+    }
 
-        function shutdown() {
-            document.getElementById('panel').classList.remove('active');
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.classList.remove('hide-me');
-                btn.classList.remove('active-mod');
-            });
-        }
-    </script>
+    function preloadImages(list) {
+      list.forEach(src => {
+        const img = new Image();
+        img.src = './' + src;
+      });
+    }
+
+    // preload – żeby nie było czarnych “mignięć” przy zmianie
+    preloadImages(['bg1.jpg', 'bg2.jpg', 'bg3.jpg', 'bg4.jpg']);
+
+    function openMod(id, img, title, text) {
+      activeId = id;
+
+      const bg = document.getElementById('bg-layer');
+      const panel = document.getElementById('panel');
+      const btns = document.querySelectorAll('.nav-container .btn');
+
+      // 1) tło lokalnie (GitHub Pages)
+      bg.style.backgroundImage = `url('./${img}')`;
+
+      // 2) tryb UI
+      document.body.classList.add('module-open');
+
+      // 3) aktywny kafelek
+      btns.forEach(btn => {
+        btn.classList.toggle('active', btn.id === 'btn' + id);
+      });
+
+      // 4) tekst
+      document.getElementById('p-title').innerText = "// " + title;
+      document.getElementById('p-text').innerText = text;
+
+      panel.classList.add('active');
+      panel.setAttribute('aria-hidden', 'false');
+
+      setStatus(`MODE: INTERACTIVE_OS  STATUS: LOADING_MODULE_${id}`);
+    }
+
+    function closeMod() {
+      activeId = null;
+
+      const panel = document.getElementById('panel');
+      panel.classList.remove('active');
+      panel.setAttribute('aria-hidden', 'true');
+
+      document.body.classList.remove('module-open');
+      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
+
+      setStatus('MODE: INTERACTIVE_OS  STATUS: IDLE');
+    }
+
+    // UX: zamknij ESC na desktop
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMod();
+    });
+
+    // UX: klik poza panelem zamyka (na mobile też)
+    document.addEventListener('click', (e) => {
+      if (!document.body.classList.contains('module-open')) return;
+
+      const panel = document.getElementById('panel');
+      const nav = document.getElementById('nav-box');
+
+      // klik w panel albo nav – ignoruj
+      if (panel.contains(e.target) || nav.contains(e.target)) return;
+
+      closeMod();
+    }, { passive: true });
+  </script>
 </body>
 </html>
