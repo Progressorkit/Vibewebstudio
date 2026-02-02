@@ -3,52 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Web Studio | Multi-OS</title>
+    <title>Vibe Web Studio | OS v6.1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; min-height: 100%; background: #000; font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
 
-        /* DYNAMICZNE TŁO */
-        #dynamic-bg {
+        /* POPRAWIONE TŁO - DODANE ROZJAŚNIENIE */
+        #main-viewport {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2; background-size: cover; background-position: center;
-            transition: background-image 0.8s ease-in-out; /* Płynne przejście */
-            background-image: url('bg1.jpg'); /* Startowy obraz */
+            transition: background-image 0.8s ease-in-out;
+            background-image: url('bg1.jpg');
+            /* Ten filtr sprawi, że ciemne grafiki staną się widoczne */
+            filter: brightness(1.4) contrast(1.2); 
         }
 
+        /* DELIKATNA SIATKA, ŻEBY COŚ SIĘ DZIAŁO W TLE */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.9));
+            z-index: -1;
+            background: 
+                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
         }
 
         .wrapper { display: flex; justify-content: center; padding: 40px 20px; }
 
-        .glass-window {
-            width: 100%; max-width: 650px;
-            background: rgba(5, 10, 5, 0.85);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 255, 65, 0.2);
-            border-radius: 12px; overflow: hidden;
+        /* OKNO Z POŚWIATĄ (NEON GLOW) */
+        .terminal-container {
+            width: 100%; max-width: 600px;
+            background: rgba(0, 5, 0, 0.8);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 65, 0.4);
+            border-radius: 12px;
+            /* Poświata wokół okna */
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.15);
+            overflow: hidden;
         }
 
-        .header { background: rgba(0, 255, 65, 0.1); padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0, 255, 65, 0.1); }
-        
-        .content { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
-
-        /* INTERAKTYWNE KARTY */
-        .card {
-            padding: 20px; background: rgba(255, 255, 255, 0.02);
-            border-left: 3px solid #00ff41; border-radius: 4px;
-            cursor: pointer; transition: 0.3s;
+        .t-header { 
+            background: rgba(0, 255, 65, 0.2); padding: 15px 20px; 
+            display: flex; justify-content: space-between;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
         }
-        .card:hover { background: rgba(0, 255, 65, 0.05); transform: translateX(5px); }
 
-        .card h3 { color: #00ff41; font-family: monospace; font-size: 1rem; }
-        .card p { font-size: 0.85rem; opacity: 0.7; margin-top: 5px; }
+        .content { padding: 25px; display: flex; flex-direction: column; gap: 15px; }
 
-        .status-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
-            background: #000; border-top: 1px solid rgba(0, 255, 65, 0.2);
+        .nav-btn {
+            padding: 20px; 
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #00ff41; /* Wyraźna zielona linia z Twojego screena */
+            border-radius: 4px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .nav-btn:active { transform: scale(0.98); background: rgba(0, 255, 65, 0.1); }
+
+        .nav-btn h3 { color: #00ff41; font-family: monospace; font-size: 1.1rem; margin-bottom: 5px; }
+        .nav-btn p { font-size: 0.85rem; opacity: 0.8; line-height: 1.4; color: #fff; }
+
+        .status-footer {
+            position: fixed; bottom: 0; width: 100%; padding: 12px 20px;
+            background: rgba(0,0,0,0.9); border-top: 1px solid rgba(0, 255, 65, 0.3);
             color: #00ff41; font-family: monospace; font-size: 10px;
             display: flex; justify-content: space-between;
         }
@@ -56,46 +73,56 @@
 </head>
 <body>
 
-    <div id="dynamic-bg"></div>
+    <div id="main-viewport"></div>
     <div class="overlay"></div>
 
     <div class="wrapper">
-        <div class="glass-window">
-            <div class="header">
-                <div style="color: #00ff41; font-family: monospace; font-size: 11px;">VIBE_OS_v6.0_MULTI_BG</div>
-                <div style="font-size: 10px; opacity: 0.5;">SELECT_MODULE</div>
+        <div class="terminal-container">
+            <div class="t-header">
+                <span style="color: #00ff41; font-weight: bold; font-family: monospace;">VIBE_SYSTEM_v6.1</span>
+                <span id="current-mod" style="font-size: 10px; opacity: 0.8; font-family: monospace;">[READY]</span>
             </div>
             
             <div class="content">
-                <div class="card" onclick="changeBg('bg1.jpg')">
-                    <h3>// 01_CORE_SYSTEM</h3>
-                    <p>Główny węzeł operacyjny. Kliknij, by wrócić do bazy.</p>
+                <div class="nav-btn" onclick="updateView('bg1.jpg', 'CORE_HUB')">
+                    <h3>// 01_CORE</h3>
+                    <p>Inicjalizacja głównego węzła. Kliknij, aby zmienić tło.</p>
                 </div>
-                <div class="card" onclick="changeBg('bg2.jpg')">
-                    <h3>// 02_STRATEGY_VIEW</h3>
-                    <p>Analityka wizualna i planowanie struktury.</p>
+
+                <div class="nav-btn" onclick="updateView('bg2.jpg', 'STRATEGY')">
+                    <h3>// 02_VIBE</h3>
+                    <p>Podgląd strumienia wizualnego marki.</p>
                 </div>
-                <div class="card" onclick="changeBg('bg3.jpg')">
-                    <h3>// 03_BUSINESS_DATA</h3>
-                    <p>Skalowanie procesów i architektura serwerowa.</p>
+
+                <div class="nav-btn" onclick="updateView('bg3.jpg', 'BUSINESS')">
+                    <h3>// 03_DATA</h3>
+                    <p>Architektura rozwiązań biznesowych.</p>
                 </div>
-                <div class="card" onclick="changeBg('bg4.jpg')">
-                    <h3>// 04_MASTERY_STREAM</h3>
-                    <p>Finalny kod i wsparcie techniczne 24/7.</p>
+
+                <div class="nav-btn" onclick="updateView('bg4.jpg', 'MASTERY')">
+                    <h3>// 04_CODE</h3>
+                    <p>Finalna optymalizacja i wsparcie.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="status-bar">
-        <span>ACTIVE_MODULE: <span id="mod-name">CORE</span></span>
-        <span>SECURITY: HIGH</span>
+    <div class="status-footer">
+        <span>DEVICE: MOBILE_ACTIVE</span>
+        <span>BRIGHTNESS_BOOST: ON</span>
     </div>
 
     <script>
-        function changeBg(imgName) {
-            document.getElementById('dynamic-bg').style.backgroundImage = "url('" + imgName + "')";
-            document.getElementById('mod-name').innerText = imgName.replace('.jpg', '').toUpperCase();
+        function updateView(img, name) {
+            const viewport = document.getElementById('main-viewport');
+            const modLabel = document.getElementById('current-mod');
+            
+            // Zmiana tła
+            viewport.style.backgroundImage = "url('" + img + "')";
+            modLabel.innerText = "[" + name + "]";
+            
+            // Log do konsoli dla testu
+            console.log("Switched to: " + img);
         }
     </script>
 </body>
