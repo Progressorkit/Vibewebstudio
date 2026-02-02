@@ -6,35 +6,29 @@
     <title>Vibe Web Studio | OS</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body, html { 
-            width: 100%; min-height: 100%; background: #000; 
+            width: 100%; min-height: 100%; 
+            background-color: #050a05; /* Bardzo głęboka zieleń/czerń */
             font-family: 'Segoe UI', sans-serif; color: white;
             overflow-x: hidden;
         }
 
-        /* NIEZNISZCZALNY DESZCZ KODU W CSS */
-        .matrix-fallback {
+        /* TŁO PROGRAMISTYCZNE - SUBTELNA SIATKA (GRID) */
+        .tech-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -10;
-            background: black;
-            overflow: hidden;
-        }
-        .matrix-fallback::after {
-            content: "101101001010101101010101010110101010101101010101101010";
-            position: absolute; top: -100px; left: 0;
-            width: 100%; font-family: monospace; font-size: 20px;
-            color: rgba(0, 255, 65, 0.15);
-            white-space: nowrap;
-            text-shadow: 
-                50px 100px rgba(0,255,65,0.1), 150px 300px rgba(0,255,65,0.1),
-                250px 150px rgba(0,255,65,0.1), 350px 450px rgba(0,255,65,0.1),
-                50px 600px rgba(0,255,65,0.1), 200px 750px rgba(0,255,65,0.1);
-            animation: matrix-fall 5s linear infinite;
+            background-image: 
+                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px; /* Rozmiar kratek */
         }
 
-        @keyframes matrix-fall {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); }
+        /* POŚWIATA W ROGACH DLA GŁĘBI */
+        .glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -9;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.8) 100%);
         }
 
         .wrapper {
@@ -42,38 +36,37 @@
             padding: 40px 20px 100px 20px; min-height: 100vh;
         }
 
-        /* POWRÓT DO WYGLĄDU ZE SCREENA 1000003158/3161 */
+        /* TWOJE IDEALNE OKNO - WERSJA PREMIUM */
         .glass-window {
             width: 100%; max-width: 800px;
-            background: rgba(18, 18, 18, 0.8);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 255, 65, 0.15); 
-            border-radius: 18px; overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+            background: rgba(10, 15, 10, 0.9);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 12px; overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
         }
 
         .header { 
-            background: rgba(0, 255, 65, 0.05); padding: 14px 20px; 
+            background: rgba(0, 255, 65, 0.05); padding: 12px 20px; 
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid rgba(0, 255, 65, 0.1);
         }
 
-        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; opacity: 0.6; }
         
         .content { display: flex; flex-direction: column; padding: 25px; gap: 20px; }
         
         .card { 
-            padding: 25px; 
-            background: rgba(255, 255, 255, 0.02); 
-            border-radius: 14px; 
+            padding: 20px; 
+            background: rgba(0, 255, 65, 0.02); 
+            border-radius: 8px; 
             border: 1px solid rgba(0, 255, 65, 0.1); 
         }
 
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.2rem; }
-        .card p { font-size: 0.95rem; opacity: 0.7; line-height: 1.6; color: #eee; }
+        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 8px; font-size: 1.1rem; }
+        .card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.5; color: #ccc; }
 
         .status-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 12px 20px;
+            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
             background: #000; border-top: 1px solid rgba(0, 255, 65, 0.2);
             color: #00ff41; font-family: monospace; font-size: 10px;
             display: flex; justify-content: space-between; z-index: 100;
@@ -82,7 +75,8 @@
 </head>
 <body>
 
-    <div class="matrix-fallback"></div>
+    <div class="tech-bg"></div>
+    <div class="glow"></div>
 
     <div class="wrapper">
         <div class="glass-window">
@@ -92,28 +86,28 @@
                     <div class="dot" style="background: #ffbd2e;"></div>
                     <div class="dot" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px; opacity: 0.8;">VIBE_OS_ULTIMATE</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 10px;">VIBE_SYSTEM_v4.0</div>
             </div>
             <div class="content">
                 <div class="card">
-                    <h3>01_VIBE</h3>
-                    <p>Design generatywny. Tworzymy systemy wizualne, które zapadają w pamięć i definiują markę.</p>
+                    <h3>> 01_PROJECT_VIBE</h3>
+                    <p>Wizualizacja procesów cyfrowych. Budujemy interfejsy jutra.</p>
                 </div>
                 <div class="card">
-                    <h3>02_BUSINESS</h3>
-                    <p>Implementacja nowoczesnych narzędzi i strategii, które skalują Twój biznes w świecie cyfrowym.</p>
+                    <h3>> 02_BUSINESS_CORE</h3>
+                    <p>Skalowanie architektury danych i optymalizacja systemów.</p>
                 </div>
                 <div class="card">
-                    <h3>03_MASTERY</h3>
-                    <p>Pełna kontrola nad kodem i architekturą. Bezpieczeństwo i wydajność na najwyższym poziomie.</p>
+                    <h3>> 03_MASTER_CONTROL</h3>
+                    <p>Zarządzanie infrastrukturą i bezpieczeństwem kodu.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="status-bar">
-        <span>USER: PROGRESSORKIT</span>
-        <span>STATUS: MATRIX_FORCED_ACTIVE</span>
+        <span>MODE: STATIC_TECH</span>
+        <span>STATUS: STABLE_V4</span>
     </div>
 
 </body>
