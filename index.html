@@ -6,129 +6,81 @@
     <title>Vibe Web Studio | OS</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { 
-            width: 100%; height: 100%; 
-            background-color: #000; 
-            font-family: 'Segoe UI', sans-serif; 
-            color: white;
-            overflow-x: hidden;
-        }
+        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
 
-        /* TŁO WIDEO */
-        .video-background {
+        /* TŁO WIDEO - Agresywne wymuszenie pozycji */
+        #video-viewport {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2; overflow: hidden; background: #000;
+            z-index: -100; background: #000;
         }
-        .video-background video {
-            width: 100%; height: 100%;
-            object-fit: cover;
+        video {
+            width: 100%; height: 100%; object-fit: cover;
             filter: brightness(0.4) contrast(1.2);
         }
 
         /* NAKŁADKA CRT */
-        .crt-overlay {
+        .crt {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            z-index: -50; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
             background-size: 100% 4px;
         }
 
-        #desktop {
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            padding: 20px; padding-bottom: 60px;
+        /* INTERFEJS */
+        .main-container {
+            height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
         }
-
-        /* SZKLANE OKNO */
-        .window {
-            width: 100%; max-width: 900px;
+        .glass-window {
+            width: 100%; max-width: 850px; 
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px; display: flex; flex-direction: column;
+            border-radius: 15px; overflow: hidden;
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            animation: fadeIn 1s ease-out;
+            color: white; display: flex; flex-direction: column;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .window-header {
-            padding: 12px 20px; background: rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .header { background: rgba(255,255,255,0.1); padding: 10px 20px; display: flex; justify-content: space-between; }
         .dots { display: flex; gap: 8px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        
+        .content { display: flex; flex-wrap: wrap; padding: 20px; gap: 15px; }
+        .card { 
+            flex: 1 1 200px; padding: 15px; background: rgba(255,255,255,0.03); 
+            border-radius: 10px; border: 1px solid rgba(0,255,65,0.1); 
+        }
+        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; }
+        .card p { font-size: 0.8rem; opacity: 0.8; line-height: 1.4; }
 
-        /* TREŚĆ - RESPONSYWNA */
-        .window-content {
-            display: flex; flex-wrap: wrap; padding: 25px; gap: 20px;
-        }
-        .section {
-            flex: 1 1 250px; padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
-        }
-        .section:hover { background: rgba(0, 255, 65, 0.05); transform: scale(1.02); }
-        .section h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; }
-        .section p { font-size: 0.9rem; line-height: 1.5; color: rgba(255, 255, 255, 0.8); }
-
-        /* DOLNY PASEK */
-        .system-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(0, 255, 65, 0.2);
-            color: #00ff41; font-family: monospace; font-size: 11px;
-            display: flex; justify-content: space-between; z-index: 100;
-        }
-
-        @media (max-width: 600px) {
-            #desktop { align-items: flex-start; padding-top: 40px; }
-            .window { max-height: none; }
-        }
+        @media (max-width: 600px) { .content { flex-direction: column; } }
     </style>
 </head>
 <body>
 
-    <div class="video-background">
-        <video autoplay muted loop playsinline preload="auto">
+    <div id="video-viewport">
+        <video autoplay muted loop playsinline poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
             <source src="Background.mp4" type="video/mp4">
         </video>
     </div>
 
-    <div class="crt-overlay"></div>
+    <div class="crt"></div>
 
-    <main id="desktop">
-        <div class="window">
-            <div class="window-header">
-                <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
-                <div style="color: #888; font-size: 10px; font-family: monospace;">VIBE_OS_v1.0</div>
-                <div style="width: 40px;"></div>
+    <div class="main-container">
+        <div class="glass-window">
+            <div class="header">
+                <div class="dots">
+                    <div class="dot" style="background: #ff5f56;"></div>
+                    <div class="dot" style="background: #ffbd2e;"></div>
+                    <div class="dot" style="background: #27c93f;"></div>
+                </div>
+                <div style="font-family: monospace; font-size: 10px; opacity: 0.5;">VIBE_TERMINAL_READY</div>
             </div>
-            <div class="window-content">
-                <div class="section">
-                    <h3>01_VIBE</h3>
-                    <p>Wizualizacja Twojej marki. Tworzymy unikalne ekosystemy cyfrowe oparte na mrocznej estetyce.</p>
-                </div>
-                <div class="section">
-                    <h3>02_BUSINESS</h3>
-                    <p>Skalowanie i narzędzia. Implementacja systemów, które konwertują ruch w lojalną społeczność.</p>
-                </div>
-                <div class="section">
-                    <h3>03_MASTERY</h3>
-                    <p>Architektura przyszłości. Pełne wsparcie techniczne i optymalizacja Twojego kodu.</p>
-                </div>
+            <div class="content">
+                <div class="card"><h3>01_VIBE</h3><p>Estetyka kodu i mroczny design.</p></div>
+                <div class="card"><h3>02_BIZ</h3><p>Narzędzia, które budują zasięgi.</p></div>
+                <div class="card"><h3>03_MASTER</h3><p>Pełna kontrola nad systemem.</p></div>
             </div>
         </div>
-    </main>
-
-    <div class="system-bar">
-        <span>SESSION: ACTIVE</span>
-        <span>STATUS: SYSTEM_STABLE_VIBE_OS</span>
     </div>
 
 </body>
