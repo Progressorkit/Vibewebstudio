@@ -2,59 +2,138 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Vibe Web Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Web Studio | OS</title>
     <style>
-        * { margin: 0; padding: 0; }
-        body { background: #000; overflow: hidden; }
-
-        /* Wideo na całe tło - najwyższy priorytet widoczności */
-        #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1; /* Musi być nad tłem body */
+        /* FULL SYSTEM RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { 
+            width: 100%; height: 100%; overflow: hidden; 
+            background-color: #000; 
+            font-family: 'Segoe UI', sans-serif; 
         }
 
-        /* Warstwa nakładki (szklane okno i teksty) */
-        .overlay {
-            position: relative;
-            z-index: 10; /* Wyżej niż wideo */
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none; /* Żeby nie blokowało klikania w przyszłości */
+        /* BACKGROUND VIDEO LAYER */
+        .video-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; overflow: hidden;
+        }
+        .video-background video {
+            min-width: 100%; min-height: 100%; width: auto; height: auto;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            object-fit: cover; filter: brightness(0.35) contrast(1.15);
         }
 
+        /* CRT SCANLINE OVERLAY */
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 3px, 3px 100%;
+        }
+
+        /* MAIN WORKSPACE */
+        #desktop {
+            width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px;
+        }
+
+        /* GLASSMORPHISM WINDOW */
         .window {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            width: 90%; max-width: 950px; height: 550px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            color: #00ff41;
-            font-family: monospace;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            display: flex; flex-direction: column;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            animation: bootUp 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes bootUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* WINDOW UI ELEMENTS */
+        .window-header {
+            padding: 15px 25px; background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; opacity: 0.8; }
+        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+        .window-title { color: #888; font-family: monospace; font-size: 11px; letter-spacing: 2px; }
+
+        .window-content {
+            flex: 1; display: flex; padding: 30px; gap: 20px;
+        }
+
+        .section {
+            flex: 1; padding: 20px; background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 8px;
+            transition: all 0.4s ease; cursor: crosshair;
+        }
+        .section:hover { 
+            background: rgba(0, 255, 65, 0.05); 
+            border-color: rgba(0, 255, 65, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .section h3 { color: #00ff41; font-family: monospace; font-size: 18px; margin-bottom: 15px; }
+        .section p { color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.6; }
+
+        /* FOOTER STATUS BAR */
+        .system-bar {
+            position: fixed; bottom: 0; width: 100%; padding: 8px 25px;
+            background: rgba(0,0,0,0.5); border-top: 1px solid rgba(0, 255, 65, 0.2);
+            color: #00ff41; font-family: monospace; font-size: 11px;
+            display: flex; justify-content: space-between;
         }
     </style>
 </head>
 <body>
 
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="1d6834e2-c9ca-4b6b-a5a6-9b1843156695.mp4" type="video/mp4">
-    </video>
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="1d6834e2-c9ca-4b6b-a5a6-9b1843156695.mp4" type="video/mp4">
+        </video>
+    </div>
 
-    <div class="overlay">
+    <div class="crt-overlay"></div>
+
+    <main id="desktop">
         <div class="window">
-            <h1>VIBE_WEB_STUDIO</h1>
-            <p style="margin-top: 10px; opacity: 0.7;">> SYSTEM_ACTIVE</p>
-            <p style="margin-top: 5px; opacity: 0.7;">> NEURAL_LINK_ESTABLISHED</p>
+            <div class="window-header">
+                <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <div class="window-title">VIBE_TERMINAL_V1.EXE</div>
+                <div style="width: 50px;"></div>
+            </div>
+            
+            <div class="window-content">
+                <div class="section">
+                    <h3>01_VIBE</h3>
+                    <p>Wizualizacja Twojej marki. Tworzymy unikalne ekosystemy cyfrowe oparte na mrocznej estetyce i precyzji.</p>
+                </div>
+                <div class="section">
+                    <h3>02_BUSINESS</h3>
+                    <p>Skalowanie i narzędzia. Implementacja systemów, które konwertują ruch w lojalną społeczność.</p>
+                </div>
+                <div class="section">
+                    <h3>03_MASTERY</h3>
+                    <p>Architektura przyszłości. Pełne wsparcie techniczne, optymalizacja kodu i bezpieczeństwo danych.</p>
+                </div>
+            </div>
         </div>
+    </main>
+
+    <div class="system-bar">
+        <span>USER: PROGRESSORKIT // SESSION_ID: 1000003140</span>
+        <span>STATUS: SYSTEM_STABLE_VIBE_OS</span>
     </div>
 
 </body>
