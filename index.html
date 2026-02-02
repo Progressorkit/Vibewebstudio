@@ -5,59 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Web Studio | OS</title>
     <style>
-        /* RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
 
-        /* WIDEO W TLE - Z-INDEX USTAWIONY POD SPÓD */
-        .video-bg {
+        /* TŁO Z ANIMACJĄ KODU */
+        #canvas-code {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -10; background: #000; overflow: hidden;
-        }
-        .video-bg video {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.4) contrast(1.2);
+            z-index: -10;
         }
 
-        /* NAKŁADKA CRT */
-        .crt {
+        .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -5; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
             background-size: 100% 4px;
         }
 
-        /* INTERFEJS GŁÓWNY */
         .wrapper {
             height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
         }
+
         .glass-window {
             width: 100%; max-width: 850px; 
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 20, 0, 0.1);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(0, 255, 65, 0.2);
             border-radius: 15px; overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.1);
         }
 
-        .header { background: rgba(255,255,255,0.1); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header { background: rgba(0, 255, 65, 0.1); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
         .dots { display: flex; gap: 8px; }
         .dot { width: 10px; height: 10px; border-radius: 50%; }
         
         .content { display: flex; flex-wrap: wrap; padding: 25px; gap: 20px; }
         .card { 
-            flex: 1 1 200px; padding: 20px; background: rgba(255,255,255,0.02); 
-            border-radius: 10px; border: 1px solid rgba(0,255,65,0.1); 
-            transition: 0.3s;
+            flex: 1 1 200px; padding: 20px; background: rgba(0, 255, 65, 0.02); 
+            border-radius: 10px; border: 1px solid rgba(0, 255, 65, 0.1); 
+            transition: 0.3s; color: white;
         }
-        .card:hover { background: rgba(0,255,65,0.05); transform: translateY(-5px); }
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.2rem; }
-        .card p { font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
+        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; }
+        .card p { font-size: 0.9rem; opacity: 0.8; }
 
-        /* STATUS BAR */
         .status-bar {
             position: fixed; bottom: 0; width: 100%; padding: 8px 20px;
-            background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(0, 255, 65, 0.2);
+            background: rgba(0, 0, 0, 0.9); border-top: 1px solid rgba(0, 255, 65, 0.3);
             color: #00ff41; font-family: monospace; font-size: 10px;
             display: flex; justify-content: space-between;
         }
@@ -67,13 +59,8 @@
 </head>
 <body>
 
-    <div class="video-bg">
-        <video autoplay muted loop playsinline>
-            <source src="Background.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <div class="crt"></div>
+    <canvas id="canvas-code"></canvas>
+    <div class="crt-overlay"></div>
 
     <div class="wrapper">
         <div class="glass-window">
@@ -83,29 +70,64 @@
                     <div class="dot" style="background: #ffbd2e;"></div>
                     <div class="dot" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #666; font-family: monospace; font-size: 10px;">VIBE_OS_TERMINAL</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 10px; opacity: 0.7;">VIBE_OS_v2.0_ANIMATED</div>
             </div>
             <div class="content">
-                <div class="card">
-                    <h3>01_VIBE</h3>
-                    <p>Mroczna estetyka spotyka czysty kod. Budujemy wizje, które zostają w pamięci.</p>
-                </div>
-                <div class="card">
-                    <h3>02_BIZNES</h3>
-                    <p>Strategiczne podejście do designu. Twoja marka w wersji premium.</p>
-                </div>
-                <div class="card">
-                    <h3>03_MASTER</h3>
-                    <p>Pełna optymalizacja i wsparcie techniczne na każdym etapie.</p>
-                </div>
+                <div class="card"><h3>01_VIBE</h3><p>Design generatywny. Kod, który żyje własnym życiem.</p></div>
+                <div class="card"><h3>02_BIZ</h3><p>Skalowalne rozwiązania oparte o nowoczesne technologie.</p></div>
+                <div class="card"><h3>03_MASTER</h3><p>Pełna kontrola nad każdym bitem informacji.</p></div>
             </div>
         </div>
     </div>
 
     <div class="status-bar">
-        <span>USER: PROGRESSORKIT</span>
-        <span>STATUS: SYSTEM_STABLE_VIBE</span>
+        <span>CORE_ANIMATION: ACTIVE</span>
+        <span>STATUS: SYSTEM_STABLE</span>
     </div>
+
+    <script>
+        const canvas = document.getElementById('canvas-code');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/[]{}_+=-*^%$#@!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+
+        for( let x = 0; x < columns; x++ ) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            // Lekkie nakładanie czerni tworzy efekt "smużenia"
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if(rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 
 </body>
 </html>
