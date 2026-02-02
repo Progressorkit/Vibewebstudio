@@ -9,105 +9,113 @@
         
         body, html { 
             width: 100%; min-height: 100%; 
-            background-color: #050a05; /* Bardzo głęboka zieleń/czerń */
-            font-family: 'Segoe UI', sans-serif; color: white;
+            background-color: #000; /* Głęboka czerń */
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            color: #e0e0e0;
             overflow-x: hidden;
         }
 
-        /* TŁO PROGRAMISTYCZNE - SUBTELNA SIATKA (GRID) */
-        .tech-bg {
+        /* TŁO "DEEP TECH" - ZERO ANIMACJI, SAM STYL */
+        .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -10;
-            background-image: 
-                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px; /* Rozmiar kratek */
+            z-index: -1;
+            /* Gradient tworzący poświatę w centrum */
+            background: radial-gradient(circle at 50% 50%, #0a1a0a 0%, #000 80%);
         }
 
-        /* POŚWIATA W ROGACH DLA GŁĘBI */
-        .glow {
+        /* DELIKATNA SIATKA DLA KLIMATU PROGRAMISTY */
+        .grid-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -9;
-            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.8) 100%);
+            z-index: -1;
+            background-image: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
         .wrapper {
-            display: flex; justify-content: center; align-items: flex-start;
-            padding: 40px 20px 100px 20px; min-height: 100vh;
+            display: flex; justify-content: center; padding: 40px 20px;
         }
 
-        /* TWOJE IDEALNE OKNO - WERSJA PREMIUM */
-        .glass-window {
-            width: 100%; max-width: 800px;
-            background: rgba(10, 15, 10, 0.9);
+        /* TWOJE SZKLANE OKNO - DOPRACOWANE */
+        .main-window {
+            width: 100%; max-width: 600px;
+            background: rgba(15, 15, 15, 0.85);
             border: 1px solid rgba(0, 255, 65, 0.2);
-            border-radius: 12px; overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
         }
 
-        .header { 
-            background: rgba(0, 255, 65, 0.05); padding: 12px 20px; 
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+        .header {
+            background: rgba(0, 255, 65, 0.08);
+            padding: 15px 20px;
+            display: flex; justify-content: space-between;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.15);
         }
 
-        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; opacity: 0.6; }
-        
-        .content { display: flex; flex-direction: column; padding: 25px; gap: 20px; }
-        
-        .card { 
-            padding: 20px; 
-            background: rgba(0, 255, 65, 0.02); 
-            border-radius: 8px; 
-            border: 1px solid rgba(0, 255, 65, 0.1); 
+        .btn { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+
+        .content { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+
+        .card {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid #00ff41; /* Akcent programistyczny */
+            border-radius: 4px;
+            transition: 0.3s;
         }
 
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 8px; font-size: 1.1rem; }
-        .card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.5; color: #ccc; }
+        .card h2 { 
+            color: #00ff41; font-family: monospace; 
+            font-size: 1.1rem; margin-bottom: 5px; 
+        }
 
-        .status-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
-            background: #000; border-top: 1px solid rgba(0, 255, 65, 0.2);
-            color: #00ff41; font-family: monospace; font-size: 10px;
-            display: flex; justify-content: space-between; z-index: 100;
+        .card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.5; }
+
+        .footer {
+            padding: 12px 20px; background: #000;
+            border-top: 1px solid rgba(0, 255, 65, 0.1);
+            display: flex; justify-content: space-between;
+            font-family: monospace; font-size: 10px; color: #00ff41;
         }
     </style>
 </head>
 <body>
 
-    <div class="tech-bg"></div>
-    <div class="glow"></div>
+    <div class="bg-layer"></div>
+    <div class="grid-overlay"></div>
 
     <div class="wrapper">
-        <div class="glass-window">
+        <div class="main-window">
             <div class="header">
                 <div>
-                    <div class="dot" style="background: #ff5f56;"></div>
-                    <div class="dot" style="background: #ffbd2e;"></div>
-                    <div class="dot" style="background: #27c93f;"></div>
+                    <div class="btn" style="background: #ff5f56;"></div>
+                    <div class="btn" style="background: #ffbd2e;"></div>
+                    <div class="btn" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px;">VIBE_SYSTEM_v4.0</div>
+                <div style="font-family: monospace; font-size: 11px; color: #00ff41;">CORE_SYSTEM_v5.0</div>
             </div>
+
             <div class="content">
                 <div class="card">
-                    <h3>> 01_PROJECT_VIBE</h3>
-                    <p>Wizualizacja procesów cyfrowych. Budujemy interfejsy jutra.</p>
+                    <h2>// 01_STRATEGY</h2>
+                    <p>Analiza architektury informacji i planowanie unikalnych doświadczeń cyfrowych.</p>
                 </div>
                 <div class="card">
-                    <h3>> 02_BUSINESS_CORE</h3>
-                    <p>Skalowanie architektury danych i optymalizacja systemów.</p>
+                    <h2>// 02_DEVELOPMENT</h2>
+                    <p>Budowa wydajnych systemów opartych o najczystszy kod i nowoczesne technologie.</p>
                 </div>
                 <div class="card">
-                    <h3>> 03_MASTER_CONTROL</h3>
-                    <p>Zarządzanie infrastrukturą i bezpieczeństwem kodu.</p>
+                    <h2>// 03_MAINTENANCE</h2>
+                    <p>Ciągły nadzór nad stabilnością i optymalizacja procesów w czasie rzeczywistym.</p>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="status-bar">
-        <span>MODE: STATIC_TECH</span>
-        <span>STATUS: STABLE_V4</span>
+            <div class="footer">
+                <span>LN: 128 COL: 42</span>
+                <span>STATUS: READY</span>
+            </div>
+        </div>
     </div>
 
 </body>
