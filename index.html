@@ -2,122 +2,101 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Web Studio | OS</title>
     <style>
-        /* RESET I PODSTAWA */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
             width: 100%; height: 100%; 
             background-color: #000; 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             color: white;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* TŁO WIDEO - PEŁNY EKRAN */
+        /* TŁO WIDEO */
         .video-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2; overflow: hidden; background: #000;
         }
         .video-background video {
             width: 100%; height: 100%;
-            object-fit: cover; /* Wypełnia cały ekran bez deformacji */
-            filter: brightness(0.4) contrast(1.1);
+            object-fit: cover;
+            filter: brightness(0.4) contrast(1.2);
         }
 
-        /* FILTR CRT (PASKI) */
+        /* NAKŁADKA CRT */
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
             background-size: 100% 4px;
         }
 
-        /* GŁÓWNY PULPIT */
         #desktop {
-            width: 100%; height: 100vh;
+            min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            padding: 15px;
+            padding: 20px; padding-bottom: 60px;
         }
 
-        /* RESPONSYWNE SZKLANE OKNO */
+        /* SZKLANE OKNO */
         .window {
-            width: 100%;
-            max-width: 900px;
-            max-height: 85vh;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            width: 100%; max-width: 900px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            display: flex; flex-direction: column;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            overflow: hidden;
-            animation: bootAnim 1s ease-out;
+            border-radius: 15px; display: flex; flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 1s ease-out;
         }
 
-        @keyframes bootAnim {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .window-header {
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.08);
+            padding: 12px 20px; background: rgba(255, 255, 255, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; justify-content: space-between; align-items: center;
         }
-
         .dots { display: flex; gap: 8px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
 
-        /* TREŚĆ - DOPASOWUJE SIĘ DO EKRANU */
+        /* TREŚĆ - RESPONSYWNA */
         .window-content {
-            flex: 1;
-            display: flex;
-            flex-direction: row; /* Domyślnie obok siebie (PC) */
-            padding: 20px;
-            gap: 15px;
-            overflow-y: auto; /* Przewijanie jeśli tekst się nie mieści */
+            display: flex; flex-wrap: wrap; padding: 25px; gap: 20px;
         }
-
         .section {
-            flex: 1;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+            flex: 1 1 250px; padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05);
             transition: 0.3s;
         }
+        .section:hover { background: rgba(0, 255, 65, 0.05); transform: scale(1.02); }
+        .section h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; }
+        .section p { font-size: 0.9rem; line-height: 1.5; color: rgba(255, 255, 255, 0.8); }
 
-        .section h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.1rem; }
-        .section p { font-size: 0.85rem; line-height: 1.5; color: rgba(255, 255, 255, 0.7); }
-
-        /* PASEK SYSTEMOWY NA DOLE */
+        /* DOLNY PASEK */
         .system-bar {
-            position: fixed; bottom: 0; width: 100%;
-            padding: 6px 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-top: 1px solid rgba(0, 255, 65, 0.2);
-            color: #00ff41; font-family: monospace; font-size: 10px;
-            display: flex; justify-content: space-between;
+            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(0, 255, 65, 0.2);
+            color: #00ff41; font-family: monospace; font-size: 11px;
+            display: flex; justify-content: space-between; z-index: 100;
         }
 
-        /* POPRAWKA DLA TELEFONÓW */
-        @media (max-width: 768px) {
-            .window-content { flex-direction: column; } /* Sekcje pod sobą */
-            .window { height: auto; max-height: 80vh; }
-            #desktop { align-items: flex-start; padding-top: 50px; }
+        @media (max-width: 600px) {
+            #desktop { align-items: flex-start; padding-top: 40px; }
+            .window { max-height: none; }
         }
     </style>
 </head>
 <body>
 
     <div class="video-background">
-        <video autoplay muted loop playsinline poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-            <source src="1d6834e2-c9ca-4b6b-a5a6-9b1843156695.mp4" type="video/mp4">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="Background.mp4" type="video/mp4">
         </video>
     </div>
 
@@ -127,14 +106,13 @@
         <div class="window">
             <div class="window-header">
                 <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
-                <div style="color: #666; font-size: 10px; font-family: monospace;">VIBE_TERMINAL_v1.0</div>
+                <div style="color: #888; font-size: 10px; font-family: monospace;">VIBE_OS_v1.0</div>
                 <div style="width: 40px;"></div>
             </div>
-            
             <div class="window-content">
                 <div class="section">
                     <h3>01_VIBE</h3>
-                    <p>Wizualizacja Twojej marki. Tworzymy unikalne ekosystemy cyfrowe oparte na mrocznej estetyce i precyzji.</p>
+                    <p>Wizualizacja Twojej marki. Tworzymy unikalne ekosystemy cyfrowe oparte na mrocznej estetyce.</p>
                 </div>
                 <div class="section">
                     <h3>02_BUSINESS</h3>
@@ -142,14 +120,14 @@
                 </div>
                 <div class="section">
                     <h3>03_MASTERY</h3>
-                    <p>Architektura przyszłości. Pełne wsparcie techniczne, optymalizacja kodu i bezpieczeństwo danych.</p>
+                    <p>Architektura przyszłości. Pełne wsparcie techniczne i optymalizacja Twojego kodu.</p>
                 </div>
             </div>
         </div>
     </main>
 
     <div class="system-bar">
-        <span>USER: PROGRESSORKIT</span>
+        <span>SESSION: ACTIVE</span>
         <span>STATUS: SYSTEM_STABLE_VIBE_OS</span>
     </div>
 
