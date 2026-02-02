@@ -6,128 +6,106 @@
     <title>Vibe Web Studio | OS</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
-
-        /* TŁO Z ANIMACJĄ KODU */
-        #canvas-code {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -10;
-        }
-
-        .crt-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -5; pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-        }
-
-        .wrapper {
-            height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
-        }
-
-        .glass-window {
-            width: 100%; max-width: 850px; 
-            background: rgba(0, 20, 0, 0.1);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 255, 65, 0.2);
-            border-radius: 15px; overflow: hidden;
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.1);
-        }
-
-        .header { background: rgba(0, 255, 65, 0.1); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .dots { display: flex; gap: 8px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
         
-        .content { display: flex; flex-wrap: wrap; padding: 25px; gap: 20px; }
-        .card { 
-            flex: 1 1 200px; padding: 20px; background: rgba(0, 255, 65, 0.02); 
-            border-radius: 10px; border: 1px solid rgba(0, 255, 65, 0.1); 
-            transition: 0.3s; color: white;
+        body, html { 
+            width: 100%; 
+            height: 100%;
+            background: #000; 
+            font-family: monospace; 
+            color: #00ff41;
+            overflow-y: auto; /* Naprawia przewijanie */
         }
-        .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; }
-        .card p { font-size: 0.9rem; opacity: 0.8; }
 
-        .status-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 8px 20px;
-            background: rgba(0, 0, 0, 0.9); border-top: 1px solid rgba(0, 255, 65, 0.3);
-            color: #00ff41; font-family: monospace; font-size: 10px;
+        /* ANIMACJA TŁA W CZYSTYM CSS */
+        .matrix-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+            animation: move 10s linear infinite;
+        }
+
+        @keyframes move {
+            from { background-position: 0 0; }
+            to { background-position: 0 1000px; }
+        }
+
+        /* CRT EFFECT */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+            background-size: 100% 4px;
+            z-index: 10; pointer-events: none;
+        }
+
+        .container {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 40px 20px; min-height: 100vh;
+        }
+
+        .window {
+            width: 100%; max-width: 600px;
+            background: rgba(0, 40, 0, 0.8);
+            border: 2px solid #00ff41;
+            border-radius: 5px;
+            box-shadow: 0 0 20px #00ff41;
+            margin-bottom: 80px;
+        }
+
+        .header {
+            background: #00ff41; color: black;
+            padding: 5px 15px; font-weight: bold;
             display: flex; justify-content: space-between;
         }
 
-        @media (max-width: 600px) { .content { flex-direction: column; } .wrapper { align-items: flex-start; padding-top: 60px; } }
+        .content { padding: 20px; }
+        
+        .card { 
+            border: 1px solid #00ff41; padding: 15px; margin-bottom: 15px;
+            background: rgba(0, 255, 65, 0.05);
+        }
+
+        .footer {
+            position: fixed; bottom: 0; width: 100%;
+            background: #000; border-top: 2px solid #00ff41;
+            padding: 10px; text-align: center; font-size: 12px;
+            z-index: 20;
+        }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-code"></canvas>
-    <div class="crt-overlay"></div>
+    <div class="matrix-bg"></div>
+    <div class="scanlines"></div>
 
-    <div class="wrapper">
-        <div class="glass-window">
+    <div class="container">
+        <div class="window">
             <div class="header">
-                <div class="dots">
-                    <div class="dot" style="background: #ff5f56;"></div>
-                    <div class="dot" style="background: #ffbd2e;"></div>
-                    <div class="dot" style="background: #27c93f;"></div>
-                </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px; opacity: 0.7;">VIBE_OS_v2.0_ANIMATED</div>
+                <span>VIBE_TERMINAL_V3</span>
+                <span>[X]</span>
             </div>
             <div class="content">
-                <div class="card"><h3>01_VIBE</h3><p>Design generatywny. Kod, który żyje własnym życiem.</p></div>
-                <div class="card"><h3>02_BIZ</h3><p>Skalowalne rozwiązania oparte o nowoczesne technologie.</p></div>
-                <div class="card"><h3>03_MASTER</h3><p>Pełna kontrola nad każdym bitem informacji.</p></div>
+                <div class="card">
+                    <h3>> 01_VIBE</h3>
+                    <p>SYSTEM AKTYWNY. DESIGN W TOKU...</p>
+                </div>
+                <div class="card">
+                    <h3>> 02_BIZNES</h3>
+                    <p>OPTYMALIZACJA STRATEGII...</p>
+                </div>
+                <div class="card">
+                    <h3>> 03_MASTER</h3>
+                    <p>KONTROLA ROZPOCZETA.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="status-bar">
-        <span>CORE_ANIMATION: ACTIVE</span>
-        <span>STATUS: SYSTEM_STABLE</span>
+    <div class="footer">
+        STATUS: SYSTEM_READY // USER: PROGRESSORKIT
     </div>
-
-    <script>
-        const canvas = document.getElementById('canvas-code');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/[]{}_+=-*^%$#@!";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-
-        const rainDrops = [];
-
-        for( let x = 0; x < columns; x++ ) {
-            rainDrops[x] = 1;
-        }
-
-        const draw = () => {
-            // Lekkie nakładanie czerni tworzy efekt "smużenia"
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#00ff41';
-            ctx.font = fontSize + 'px monospace';
-
-            for(let i = 0; i < rainDrops.length; i++) {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-                if(rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    rainDrops[i] = 0;
-                }
-                rainDrops[i]++;
-            }
-        };
-
-        setInterval(draw, 30);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-    </script>
 
 </body>
 </html>
