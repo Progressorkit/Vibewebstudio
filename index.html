@@ -5,22 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Web Studio | OS</title>
     <style>
+        /* RESET I PODSTAWA */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body, html { 
-            width: 100%; min-height: 100%;
-            background: #000; font-family: 'Segoe UI', sans-serif; 
-            color: white; overflow-x: hidden; overflow-y: auto; 
+            width: 100%; min-height: 100%; background: #000; 
+            font-family: 'Segoe UI', sans-serif; color: white;
+            overflow-x: hidden; overflow-y: auto; 
         }
 
-        /* Tło - Silnik Deszczu */
+        /* TŁO - DESZCZ KODU */
         #canvas-code {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: -10;
-            background: #000; display: block;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -10; background: #000; display: block;
         }
 
-        /* Linie CRT */
+        /* LINIE CRT */
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -5; pointer-events: none;
@@ -28,19 +27,20 @@
             background-size: 100% 4px;
         }
 
+        /* KONTENER GŁÓWNY */
         .wrapper {
             display: flex; justify-content: center; align-items: flex-start;
             padding: 60px 20px 120px 20px; min-height: 100vh;
         }
 
-        /* Nowoczesne Szklane Okno */
+        /* TWOJE SZKLANE OKNO */
         .glass-window {
             width: 100%; max-width: 800px;
-            background: rgba(0, 20, 0, 0.8);
+            background: rgba(0, 20, 0, 0.85);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 255, 65, 0.3);
             border-radius: 15px; overflow: hidden;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
         }
 
         .header { 
@@ -55,13 +55,14 @@
         .content { display: flex; flex-direction: column; padding: 25px; gap: 20px; }
         
         .card { 
-            padding: 20px; background: rgba(0, 255, 65, 0.03); 
+            padding: 20px; background: rgba(0, 255, 65, 0.05); 
             border-radius: 10px; border: 1px solid rgba(0, 255, 65, 0.1); 
         }
 
         .card h3 { color: #00ff41; font-family: monospace; margin-bottom: 10px; font-size: 1.3rem; }
         .card p { font-size: 0.95rem; opacity: 0.8; line-height: 1.6; }
 
+        /* PASEK NA DOLE */
         .status-bar {
             position: fixed; bottom: 0; width: 100%; padding: 12px 20px;
             background: rgba(0, 0, 0, 0.9); border-top: 1px solid rgba(0, 255, 65, 0.3);
@@ -83,20 +84,20 @@
                     <div class="dot" style="background: #ffbd2e;"></div>
                     <div class="dot" style="background: #27c93f;"></div>
                 </div>
-                <div style="color: #00ff41; font-family: monospace; font-size: 10px; opacity: 0.8;">VIBE_OS_v2.5_LIVE</div>
+                <div style="color: #00ff41; font-family: monospace; font-size: 10px;">VIBE_OS_v2.5_LIVE</div>
             </div>
             <div class="content">
                 <div class="card">
                     <h3>01_VIBE</h3>
-                    <p>Design generatywny. Tworzymy unikalne systemy wizualne oparte na mrocznej estetyce.</p>
+                    <p>Wizualizacja Twojej marki. Tworzymy unikalne ekosystemy cyfrowe.</p>
                 </div>
                 <div class="card">
                     <h3>02_BUSINESS</h3>
-                    <p>Skalowanie i narzędzia. Implementacja systemów, które budują realną wartość.</p>
+                    <p>Skalowanie i narzędzia. Implementacja systemów, które budują wartość.</p>
                 </div>
                 <div class="card">
                     <h3>03_MASTERY</h3>
-                    <p>Pełna kontrola nad kodem. Bezpieczeństwo i architektura przyszłości.</p>
+                    <p>Architektura przyszłości. Pełna kontrola nad Twoim kodem.</p>
                 </div>
             </div>
         </div>
