@@ -77,35 +77,47 @@
 </head>
 <body>
 
-    <div class="matrix-bg"></div>
-    <div class="scanlines"></div>
+    #canvas-code {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;
+    display: block;
+    background: #000;
+}
+<script>
+    const canvas = document.getElementById('canvas-code');
+    const ctx = canvas.getContext('2d');
 
-    <div class="container">
-        <div class="window">
-            <div class="header">
-                <span>VIBE_TERMINAL_V3</span>
-                <span>[X]</span>
-            </div>
-            <div class="content">
-                <div class="card">
-                    <h3>> 01_VIBE</h3>
-                    <p>SYSTEM AKTYWNY. DESIGN W TOKU...</p>
-                </div>
-                <div class="card">
-                    <h3>> 02_BIZNES</h3>
-                    <p>OPTYMALIZACJA STRATEGII...</p>
-                </div>
-                <div class="card">
-                    <h3>> 03_MASTER</h3>
-                    <p>KONTROLA ROZPOCZETA.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
-    <div class="footer">
-        STATUS: SYSTEM_READY // USER: PROGRESSORKIT
-    </div>
+    const letters = "0123456789ABCDEFHIJKLMNOPRSTUVWXYZ@#$%^&*()_+-=[]{}|;:,.<>?";
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
 
-</body>
-</html>
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#00ff41";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+</script>
