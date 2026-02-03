@@ -16,6 +16,7 @@
       font-family: monospace;
     }
 
+    /* WARSTWA TŁA */
     #bg-layer {
       position: fixed;
       inset: 0;
@@ -44,7 +45,7 @@
       z-index: 100;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 14px;
     }
 
     .btn {
@@ -58,25 +59,27 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 18px;
+      letter-spacing: 0.5px;
       backdrop-filter: blur(10px);
       transition: 0.35s ease;
+      -webkit-tap-highlight-color: transparent;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
       user-select: none;
-      -webkit-tap-highlight-color: transparent;
     }
+
+    /* dla 03A/03B trochę mniejsza czcionka żeby wyglądało jak system */
+    .btn.split { font-size: 14px; }
 
     body.module-open .nav-container .btn {
       opacity: 0;
       transform: translateX(100px);
-      pointer-events: none;
     }
 
     body.module-open .nav-container .btn.active {
       opacity: 1;
       transform: translateX(0);
       box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-      pointer-events: auto;
     }
 
     #panel {
@@ -84,7 +87,9 @@
       left: -110%;
       top: 50%;
       transform: translateY(-50%);
-      width: min(88%, 380px);
+      width: min(85%, 340px);
+      max-height: 82vh;
+      overflow-y: auto;
       background: rgba(15, 0, 0, 0.95);
       border: 1px solid #ff0000;
       padding: 22px;
@@ -95,19 +100,8 @@
 
     #panel.active { left: 10px; }
 
-    #p-title {
-      color: #ff0000;
-      margin-bottom: 10px;
-      font-size: 20px;
-      letter-spacing: 0.5px;
-    }
-
-    #p-text {
-      color: #fff;
-      line-height: 1.55;
-      font-size: 14px;
-      white-space: pre-wrap;
-    }
+    #p-title { color: #ff0000; margin-bottom: 10px; font-size: 20px; }
+    #p-text { color: #fff; line-height: 1.5; font-size: 14px; white-space: pre-line; }
 
     .close-btn {
       margin-top: 18px;
@@ -116,7 +110,9 @@
       padding: 10px;
       text-align: center;
       font-size: 11px;
-      user-select: none;
+      position: sticky;
+      bottom: 0;
+      background: rgba(15, 0, 0, 0.95);
       cursor: pointer;
     }
 
@@ -130,83 +126,6 @@
       color: #ff0000;
       font-size: 10px;
       background: rgba(0,0,0,0.5);
-      letter-spacing: 0.4px;
-    }
-
-    a.mail {
-      color: #ff5555;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,0,0,0.4);
-    }
-
-    /* ===== MINI PODGLĄDY ===== */
-    .previews {
-      margin-top: 10px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .preview-card {
-      border: 1px solid rgba(255,0,0,0.35);
-      background: rgba(0,0,0,0.28);
-      border-radius: 10px;
-      padding: 10px;
-    }
-
-    .preview-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-      margin-bottom: 8px;
-      color: #ff6666;
-      font-size: 12px;
-      letter-spacing: 0.3px;
-    }
-
-    .preview-head strong {
-      color: #ff0000;
-      font-size: 13px;
-      letter-spacing: 0.6px;
-    }
-
-    .preview-frame {
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 10px;
-      overflow: hidden;
-      background: rgba(0,0,0,0.25);
-      height: 140px;
-      position: relative;
-    }
-
-    .preview-frame iframe {
-      width: 1000px;
-      height: 700px;
-      border: 0;
-      transform: scale(0.28);
-      transform-origin: 0 0;
-      position: absolute;
-      left: 0;
-      top: 0;
-      background: #fff;
-    }
-
-    .preview-actions {
-      margin-top: 8px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .mini-btn {
-      display: inline-block;
-      padding: 7px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,0,0,0.35);
-      color: #ff7777;
-      background: rgba(255,0,0,0.06);
-      text-decoration: none;
-      font-size: 12px;
     }
   </style>
 </head>
@@ -215,11 +134,22 @@
   <div id="bg-layer"></div>
   <div id="bg-overlay"></div>
 
-  <div class="nav-container">
-    <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'KIM_JESTEM', txt1, false)">01</div>
-    <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'CO_ROBIĘ', txt2, false)">02</div>
-    <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'PROJEKTY', txt3, true)">03</div>
-    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'KONTAKT', txt4, false)">04</div>
+  <div class="nav-container" id="nav-box">
+    <div class="btn" id="btn1"
+      onclick="openMod('01','bg1.jpg','CRITICAL_STRATEGY','System analizuje dane wejściowe.\nPriorytet: Czerwony.')">01</div>
+
+    <div class="btn" id="btn2"
+      onclick="openMod('02','bg2.jpg','VISUAL_CORE','Interfejs wizualny przełączony w tryb High-Contrast.')">02</div>
+
+    <!-- SPLIT 03 -->
+    <div class="btn split" id="btn3a"
+      onclick="openMod('03A','bg3.jpg','PROOFS_MAREK','MAREK ZAWORSKI\nnarracja / noir / system publikacji\n\n[otwiera się osobny podgląd / link]')">03A</div>
+
+    <div class="btn split" id="btn3b"
+      onclick="openMod('03B','bg3.jpg','PROOFS_PAULINA','PAULINA\npisarka, autorka powieści\n\n[otwiera się osobny podgląd / link]')">03B</div>
+
+    <div class="btn" id="btn4"
+      onclick="openMod('04','bg4.jpg','MASTER_ACCESS','Dostęp autoryzowany.\nSystem stabilny.')">04</div>
   </div>
 
   <div id="panel">
@@ -233,76 +163,14 @@
   <script>
     let typingTimer = null;
 
-    const txt1 =
-`[PROFILE] Kim jestem
-Projektuję i buduję strony oraz systemy treści, które działają stabilnie – nie tylko wyglądają.
-
-Łączę estetykę z logiką:
-• czytelność i struktura
-• spójny klimat
-• modułowa budowa
-• gotowe wdrożenie
-
-Ten interfejs to demonstracja sposobu myślenia.`;
-
-    const txt2 =
-`[OFFER] Co mogę zrobić
-• strony portfolio i autorskie
-• strony usługowe pod sprzedaż
-• systemy tekstów i publikacji
-• wdrożenia GitHub / Netlify
-
-Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
-
-    // UWAGA: To jest HTML (dla tego modułu WYŁĄCZAMY typewriter)
-    const txt3 =
-`<div>[PROOFS] Projekty (realne wdrożenia)</div>
-
-<div class="previews">
-  <div class="preview-card">
-    <div class="preview-head">
-      <strong>MAREK ZAWORSKI</strong>
-      <span>narracja / noir / system publikacji</span>
-    </div>
-    <div class="preview-frame">
-      <iframe src="https://progressorkit.github.io/marekzaworski.github.io/" loading="lazy"></iframe>
-    </div>
-    <div class="preview-actions">
-      <a class="mini-btn" href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" rel="noopener">Otwórz pełną</a>
-    </div>
-  </div>
-
-  <div class="preview-card">
-    <div class="preview-head">
-      <strong>PAULINA</strong>
-      <span>pisarka, autorka powieści</span>
-    </div>
-    <div class="preview-frame">
-      <iframe src="https://pbarczewska.github.io/" loading="lazy"></iframe>
-    </div>
-    <div class="preview-actions">
-      <a class="mini-btn" href="https://pbarczewska.github.io/" target="_blank" rel="noopener">Otwórz pełną</a>
-    </div>
-  </div>
-</div>`;
-
-    const txt4 =
-`[CONTACT] Kontakt
-Najprościej: email.
-
-<a class="mail" href="mailto:progresskit7@gmail.com">progresskit7@gmail.com</a>
-
-Ustalamy cel → robię wdrożenie.`;
-
     function typeWriter(elementId, text, speed = 18) {
       const element = document.getElementById(elementId);
       element.innerHTML = "";
       let i = 0;
       if (typingTimer) clearInterval(typingTimer);
-
       typingTimer = setInterval(() => {
         if (i < text.length) {
-          element.textContent += text.charAt(i); // textContent = bez interpretacji HTML
+          element.innerHTML += text.charAt(i);
           i++;
         } else {
           clearInterval(typingTimer);
@@ -310,31 +178,21 @@ Ustalamy cel → robię wdrożenie.`;
       }, speed);
     }
 
-    function openMod(id, img, title, content, isHtml) {
+    function openMod(code, img, title, text) {
       const bg = document.getElementById('bg-layer');
       const panel = document.getElementById('panel');
       const btns = document.querySelectorAll('.nav-container .btn');
-      const pText = document.getElementById('p-text');
 
-      bg.style.backgroundImage = `url('./${img}?v=${Date.now()}')`;
+      bg.style.backgroundImage = `url('./${img}?v=${new Date().getTime()}')`;
       document.body.classList.add('module-open');
-      btns.forEach(btn => btn.classList.toggle('active', btn.id === 'btn' + id));
+
+      btns.forEach(btn => btn.classList.toggle('active', btn.id === ('btn' + code.toLowerCase())));
 
       document.getElementById('p-title').innerText = "> " + title;
       panel.classList.add('active');
+      typeWriter('p-text', text);
 
-      if (typingTimer) clearInterval(typingTimer);
-
-      if (isHtml) {
-        // HTML wchodzi od razu (żeby nie wypluwało tagów)
-        pText.innerHTML = content;
-      } else {
-        // zwykły tekst – typewriter
-        pText.textContent = "";
-        typeWriter('p-text', content);
-      }
-
-      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
+      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${code}_LOADED`;
     }
 
     function closeMod() {
