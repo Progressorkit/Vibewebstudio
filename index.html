@@ -12,11 +12,10 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #1a1a1a; 
+      background: #1a1a1a;
       font-family: monospace;
     }
 
-    /* WARSTWA TŁA */
     #bg-layer {
       position: fixed;
       inset: 0;
@@ -62,9 +61,9 @@
       font-size: 20px;
       backdrop-filter: blur(10px);
       transition: 0.35s ease;
-      -webkit-tap-highlight-color: transparent;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body.module-open .nav-container .btn {
@@ -85,10 +84,10 @@
       left: -110%;
       top: 50%;
       transform: translateY(-50%);
-      width: min(85%, 340px);
+      width: min(85%, 360px);
       background: rgba(15, 0, 0, 0.95);
       border: 1px solid #ff0000;
-      padding: 25px;
+      padding: 22px;
       z-index: 120;
       transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -117,6 +116,7 @@
       text-align: center;
       font-size: 11px;
       user-select: none;
+      cursor: pointer;
     }
 
     #statusbar {
@@ -131,13 +131,90 @@
       background: rgba(0,0,0,0.5);
       letter-spacing: 0.4px;
     }
+
+    a.mail {
+      color: #ff5555;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,0,0,0.4);
+    }
+
+    /* ====== MINI PODGLĄDY (tylko dla 03) ====== */
+    .previews {
+      margin-top: 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .preview-card {
+      border: 1px solid rgba(255,0,0,0.35);
+      background: rgba(0,0,0,0.28);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .preview-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: #ff6666;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .preview-head strong {
+      color: #ff0000;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+    }
+
+    .preview-frame {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.25);
+      height: 130px; /* wysokość okna podglądu */
+      position: relative;
+    }
+
+    /* trik: “pomniejszamy” stronę w iframe */
+    .preview-frame iframe {
+      width: 1000px;
+      height: 700px;
+      border: 0;
+      transform: scale(0.28);
+      transform-origin: 0 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: #fff;
+    }
+
+    .preview-actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      display: inline-block;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,0,0,0.35);
+      color: #ff7777;
+      background: rgba(255,0,0,0.06);
+      text-decoration: none;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
   <div id="bg-layer"></div>
   <div id="bg-overlay"></div>
 
-  <div class="nav-container" id="nav-box">
+  <div class="nav-container">
     <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'KIM_JESTEM', txt1)">01</div>
     <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'CO_ROBIĘ', txt2)">02</div>
     <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'PROJEKTY', txt3)">03</div>
@@ -155,64 +232,76 @@
   <script>
     let typingTimer = null;
 
-    // ====== TREŚCI MODUŁÓW (TU W PRZYSZŁOŚCI ZMIENIASZ TYLKO TE BLOKI) ======
-
     const txt1 =
 `[PROFILE] Kim jestem
-Zajmuję się projektowaniem i budowaniem stron oraz systemów treści, które działają stabilnie – nie tylko wyglądają.
+Projektuję i buduję strony oraz systemy treści, które działają stabilnie – nie tylko wyglądają.
 
 Łączę estetykę z logiką:
 • czytelność i struktura
-• spójny klimat (branding)
-• moduły, które da się rozbudowywać
-• wdrożenie bez chaosu
+• spójny klimat
+• modułowa budowa
+• gotowe wdrożenie
 
-Ta strona to demonstracja: SYSTEM (efekt i kontrola) + TREŚĆ (czytelność).`;
+Ten interfejs to demonstracja sposobu myślenia.`;
 
     const txt2 =
-`[OFFER] Co mogę dla Ciebie zrobić
-Jeśli potrzebujesz strony, która ma robić wrażenie i jednocześnie prowadzić użytkownika – dowiozę to.
+`[OFFER] Co mogę zrobić
+• strony portfolio i autorskie
+• strony usługowe pod sprzedaż
+• systemy tekstów i publikacji
+• wdrożenia GitHub / Netlify
 
-Mogę zrobić:
-• stronę portfolio / autorską
-• stronę usługową pod sprzedaż i reklamy
-• system tekstów: tytuł + fragment + “czytaj dalej”
-• dopięcie wdrożenia (GitHub Pages / Netlify)
+Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
 
-Najważniejsze: projekt ma być stabilny na telefonie, szybki i gotowy do publikacji.`;
-
+    // 03: tu jest HTML z mini-podglądami (iframe)
     const txt3 =
-`[PROOFS] Projekty (dowody, nie makiety)
-Tu są realne wdrożenia, które możesz otworzyć i sprawdzić:
+`[PROOFS] Projekty (realne wdrożenia)
 
-1) Marek Zaworski
-— narracja noir + system publikacji / struktura treści
-(oddzielny projekt, działa)
+<div class="previews">
+  <div class="preview-card">
+    <div class="preview-head">
+      <strong>MAREK ZAWORSKI</strong>
+      <span>narracja / noir / system publikacji</span>
+    </div>
+    <div class="preview-frame">
+      <iframe src="https://progressorkit.github.io/marekzaworski.github.io/" loading="lazy"></iframe>
+    </div>
+    <div class="preview-actions">
+      <a class="mini-btn" href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" rel="noopener">Otwórz pełną</a>
+    </div>
+  </div>
 
-2) Paulina
-— strona autorska + czytelna prezentacja tekstów
-(oddzielny projekt, działa)
-
-Jeśli chcesz, dodam tu też kolejne okna / podglądy projektów w “retro” stylu.`;
+  <div class="preview-card">
+    <div class="preview-head">
+      <strong>PAULINA</strong>
+      <span>autorka Pisarka powieści/ strona autorska</span>
+    </div>
+    <div class="preview-frame">
+      <iframe src="https://pbarczewska.github.io/" loading="lazy"></iframe>
+    </div>
+    <div class="preview-actions">
+      <a class="mini-btn" href="https://pbarczewska.github.io/" target="_blank" rel="noopener">Otwórz pełną</a>
+    </div>
+  </div>
+</div>`;
 
     const txt4 =
-`[CONTACT] Kontakt / współpraca
-Najprościej: mail. Ustalamy cel (sprzedaż / wizerunek / treść), a ja buduję modułami tak, żeby nic się nie rozjechało.
+`[CONTACT] Kontakt
+Najprościej: email.
 
-EMAIL: wstaw_tu_mail@domena.pl
-GitHub: github.com/Progressorkit
+<a class="mail" href="mailto:progresskit7@gmail.com">progresskit7@gmail.com</a>
 
-Jeśli chcesz, dodam tu też przycisk “Otwórz brief” (proste pytania, 60 sekund).`;
+Ustalamy cel → robię wdrożenie.
+Bez chaosu. Bez przypadków.`;
 
-    // ====== TYPEWRITER ======
-    function typeWriter(elementId, text, speed = 18) {
-      const element = document.getElementById(elementId);
-      element.innerHTML = "";
+    function typeWriter(id, text, speed = 18) {
+      const el = document.getElementById(id);
+      el.innerHTML = "";
       let i = 0;
       if (typingTimer) clearInterval(typingTimer);
       typingTimer = setInterval(() => {
         if (i < text.length) {
-          element.innerHTML += text.charAt(i);
+          el.innerHTML += text.charAt(i);
           i++;
         } else {
           clearInterval(typingTimer);
@@ -221,28 +310,29 @@ Jeśli chcesz, dodam tu też przycisk “Otwórz brief” (proste pytania, 60 se
     }
 
     function openMod(id, img, title, text) {
-      const bg = document.getElementById('bg-layer');
-      const panel = document.getElementById('panel');
-      const btns = document.querySelectorAll('.nav-container .btn');
+      document.getElementById('bg-layer').style.backgroundImage =
+        `url('./${img}?v=${Date.now()}')`;
 
-      bg.style.backgroundImage = `url('./${img}?v=${new Date().getTime()}')`;
       document.body.classList.add('module-open');
-
-      btns.forEach(btn => btn.classList.toggle('active', btn.id === 'btn' + id));
+      document.querySelectorAll('.btn').forEach(b =>
+        b.classList.toggle('active', b.id === 'btn' + id)
+      );
 
       document.getElementById('p-title').innerText = "> " + title;
-      panel.classList.add('active');
+      document.getElementById('panel').classList.add('active');
       typeWriter('p-text', text);
 
-      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
+      document.getElementById('statusbar').innerText =
+        `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
     }
 
     function closeMod() {
       if (typingTimer) clearInterval(typingTimer);
       document.getElementById('panel').classList.remove('active');
       document.body.classList.remove('module-open');
-      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: STANDBY`;
+      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('statusbar').innerText =
+        `MODE: RED_OS  STATUS: STANDBY`;
     }
   </script>
 </body>
