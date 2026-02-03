@@ -66,9 +66,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* mniejsze oznaczenia dla split 03A/03B */
-    .btn.split { font-size: 14px; letter-spacing: 0.5px; }
-
     body.module-open .nav-container .btn {
       opacity: 0;
       transform: translateX(100px);
@@ -94,10 +91,6 @@
       z-index: 120;
       transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       border-radius: 6px;
-
-      /* żeby nic się nie ucinało */
-      max-height: 78vh;
-      overflow-y: auto;
     }
 
     #panel.active { left: 10px; }
@@ -125,11 +118,6 @@
       font-size: 11px;
       user-select: none;
       cursor: pointer;
-
-      /* zawsze widoczny na dole panelu podczas scrolla */
-      position: sticky;
-      bottom: 0;
-      background: rgba(15, 0, 0, 0.95);
     }
 
     #statusbar {
@@ -220,6 +208,51 @@
       text-decoration: none;
       font-size: 12px;
     }
+
+    /* ===== NOWE: CENTRALNE LOGO + HTML-TYPING ===== */
+    #center-logo {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5; /* nad tłem, pod panelem */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      pointer-events: none;
+      opacity: 0.95;
+      filter: drop-shadow(0 0 18px rgba(255,0,0,0.18));
+    }
+
+    #center-logo img {
+      width: min(68vw, 340px);
+      height: auto;
+      border-radius: 8px;
+      opacity: 0.92;
+    }
+
+    #core-text {
+      font-size: 11px;
+      letter-spacing: 0.6px;
+      color: rgba(255,80,80,0.75);
+      text-align: center;
+      opacity: 0.65;
+      white-space: nowrap;
+      filter: drop-shadow(0 0 6px rgba(255,0,0,0.25));
+      transition: 0.3s ease;
+    }
+
+    body.module-open #core-text {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    /* opcjonalnie: lekko wygaszamy logo przy otwartym module */
+    body.module-open #center-logo {
+      opacity: 0.45;
+      transition: 0.35s ease;
+    }
   </style>
 </head>
 
@@ -227,15 +260,17 @@
   <div id="bg-layer"></div>
   <div id="bg-overlay"></div>
 
+  <!-- NOWE: Logo na środku + piszący się kod -->
+  <div id="center-logo" aria-hidden="true">
+    <img src="./IMG_20260203_123501.jpg" alt="">
+    <div id="core-text"></div>
+  </div>
+
   <div class="nav-container">
     <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'KIM_JESTEM', txt1, false)">01</div>
     <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'CO_ROBIĘ', txt2, false)">02</div>
-
-    <!-- SPLIT: zamiast jednego 03 -->
-    <div class="btn split" id="btn3A" onclick="openMod('3A', 'bg3.jpg', 'PROJEKTY_MAREK', txt3A, true)">03A</div>
-    <div class="btn split" id="btn3B" onclick="openMod('3B', 'bg3.jpg', 'PROJEKTY_PAULINA', txt3B, true)">03B</div>
-
-    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'KONTAKT', txt4, true)">04</div>
+    <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'PROJEKTY', txt3, true)">03</div>
+    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'KONTAKT', txt4, false)">04</div>
   </div>
 
   <div id="panel">
@@ -270,9 +305,9 @@ Ten interfejs to demonstracja sposobu myślenia.`;
 
 Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
 
-    // 03A: Marek (jeden podgląd = zero ucinania)
-    const txt3A =
-`<div>[PROOFS] Marek Zaworski</div>
+    // UWAGA: To jest HTML (dla tego modułu WYŁĄCZAMY typewriter)
+    const txt3 =
+`<div>[PROOFS] Projekty (realne wdrożenia)</div>
 
 <div class="previews">
   <div class="preview-card">
@@ -287,13 +322,7 @@ Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
       <a class="mini-btn" href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" rel="noopener">Otwórz pełną</a>
     </div>
   </div>
-</div>`;
 
-    // 03B: Paulina (jeden podgląd)
-    const txt3B =
-`<div>[PROOFS] Paulina</div>
-
-<div class="previews">
   <div class="preview-card">
     <div class="preview-head">
       <strong>PAULINA</strong>
@@ -308,24 +337,23 @@ Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
   </div>
 </div>`;
 
-    // 04: Kontakt jako HTML (bez typewriter) + poprawny mail
     const txt4 =
-`<div>[CONTACT] Kontakt</div>
-<div style="margin-top:10px; line-height:1.6; font-size:14px; color:#fff;">
-  Najprościej: email.<br><br>
-  <a class="mail" href="mailto:progreskit7@gmail.com">progreskit7@gmail.com</a><br><br>
-  Ustalamy cel → robię wdrożenie.
-</div>`;
+`[CONTACT] Kontakt
+Najprościej: email.
+
+<a class="mail" href="mailto:progresskit7@gmail.com">progresskit7@gmail.com</a>
+
+Ustalamy cel → robię wdrożenie.`;
 
     function typeWriter(elementId, text, speed = 18) {
       const element = document.getElementById(elementId);
-      element.textContent = "";
+      element.innerHTML = "";
       let i = 0;
       if (typingTimer) clearInterval(typingTimer);
 
       typingTimer = setInterval(() => {
         if (i < text.length) {
-          element.textContent += text.charAt(i);
+          element.textContent += text.charAt(i); // textContent = bez interpretacji HTML
           i++;
         } else {
           clearInterval(typingTimer);
@@ -341,9 +369,7 @@ Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
 
       bg.style.backgroundImage = `url('./${img}?v=${Date.now()}')`;
       document.body.classList.add('module-open');
-
-      // aktywny przycisk: id w HTML to dokładnie btn + id (np. btn3A)
-      btns.forEach(btn => btn.classList.toggle('active', btn.id === ('btn' + id)));
+      btns.forEach(btn => btn.classList.toggle('active', btn.id === 'btn' + id));
 
       document.getElementById('p-title').innerText = "> " + title;
       panel.classList.add('active');
@@ -351,8 +377,10 @@ Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
       if (typingTimer) clearInterval(typingTimer);
 
       if (isHtml) {
+        // HTML wchodzi od razu (żeby nie wypluwało tagów)
         pText.innerHTML = content;
       } else {
+        // zwykły tekst – typewriter
         pText.textContent = "";
         typeWriter('p-text', content);
       }
@@ -367,6 +395,25 @@ Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
       document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: STANDBY`;
     }
+
+    /* ===== NOWE: TYPEWRITER POD LOGO (HTML/SYSTEM) ===== */
+    const coreLine = `<system init="vibe_os" status="standby" />`;
+    let coreIndex = 0;
+
+    function typeCoreLine(){
+      const el = document.getElementById('core-text');
+      if (!el) return;
+
+      if (coreIndex <= coreLine.length){
+        el.textContent = coreLine.slice(0, coreIndex);
+        coreIndex++;
+        setTimeout(typeCoreLine, 55);
+      }
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(typeCoreLine, 600);
+    });
   </script>
 </body>
 </html>
