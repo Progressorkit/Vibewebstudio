@@ -84,12 +84,13 @@
       left: -110%;
       top: 50%;
       transform: translateY(-50%);
-      width: min(85%, 360px);
+      width: min(88%, 380px);
       background: rgba(15, 0, 0, 0.95);
       border: 1px solid #ff0000;
       padding: 22px;
       z-index: 120;
       transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border-radius: 6px;
     }
 
     #panel.active { left: 10px; }
@@ -138,7 +139,7 @@
       border-bottom: 1px solid rgba(255,0,0,0.4);
     }
 
-    /* ====== MINI PODGLĄDY (tylko dla 03) ====== */
+    /* ===== MINI PODGLĄDY ===== */
     .previews {
       margin-top: 10px;
       display: grid;
@@ -174,11 +175,10 @@
       border-radius: 10px;
       overflow: hidden;
       background: rgba(0,0,0,0.25);
-      height: 130px; /* wysokość okna podglądu */
+      height: 140px;
       position: relative;
     }
 
-    /* trik: “pomniejszamy” stronę w iframe */
     .preview-frame iframe {
       width: 1000px;
       height: 700px;
@@ -210,15 +210,16 @@
     }
   </style>
 </head>
+
 <body>
   <div id="bg-layer"></div>
   <div id="bg-overlay"></div>
 
   <div class="nav-container">
-    <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'KIM_JESTEM', txt1)">01</div>
-    <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'CO_ROBIĘ', txt2)">02</div>
-    <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'PROJEKTY', txt3)">03</div>
-    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'KONTAKT', txt4)">04</div>
+    <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'KIM_JESTEM', txt1, false)">01</div>
+    <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'CO_ROBIĘ', txt2, false)">02</div>
+    <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'PROJEKTY', txt3, true)">03</div>
+    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'KONTAKT', txt4, false)">04</div>
   </div>
 
   <div id="panel">
@@ -253,9 +254,9 @@ Ten interfejs to demonstracja sposobu myślenia.`;
 
 Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
 
-    // 03: tu jest HTML z mini-podglądami (iframe)
+    // UWAGA: To jest HTML (dla tego modułu WYŁĄCZAMY typewriter)
     const txt3 =
-`[PROOFS] Projekty (realne wdrożenia)
+`<div>[PROOFS] Projekty (realne wdrożenia)</div>
 
 <div class="previews">
   <div class="preview-card">
@@ -274,7 +275,7 @@ Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
   <div class="preview-card">
     <div class="preview-head">
       <strong>PAULINA</strong>
-      <span>autorka Pisarka powieści/ strona autorska</span>
+      <span>pisarka, autorka powieści</span>
     </div>
     <div class="preview-frame">
       <iframe src="https://pbarczewska.github.io/" loading="lazy"></iframe>
@@ -291,17 +292,17 @@ Najprościej: email.
 
 <a class="mail" href="mailto:progresskit7@gmail.com">progresskit7@gmail.com</a>
 
-Ustalamy cel → robię wdrożenie.
-Bez chaosu. Bez przypadków.`;
+Ustalamy cel → robię wdrożenie.`;
 
-    function typeWriter(id, text, speed = 18) {
-      const el = document.getElementById(id);
-      el.innerHTML = "";
+    function typeWriter(elementId, text, speed = 18) {
+      const element = document.getElementById(elementId);
+      element.innerHTML = "";
       let i = 0;
       if (typingTimer) clearInterval(typingTimer);
+
       typingTimer = setInterval(() => {
         if (i < text.length) {
-          el.innerHTML += text.charAt(i);
+          element.textContent += text.charAt(i); // textContent = bez interpretacji HTML
           i++;
         } else {
           clearInterval(typingTimer);
@@ -309,30 +310,39 @@ Bez chaosu. Bez przypadków.`;
       }, speed);
     }
 
-    function openMod(id, img, title, text) {
-      document.getElementById('bg-layer').style.backgroundImage =
-        `url('./${img}?v=${Date.now()}')`;
+    function openMod(id, img, title, content, isHtml) {
+      const bg = document.getElementById('bg-layer');
+      const panel = document.getElementById('panel');
+      const btns = document.querySelectorAll('.nav-container .btn');
+      const pText = document.getElementById('p-text');
 
+      bg.style.backgroundImage = `url('./${img}?v=${Date.now()}')`;
       document.body.classList.add('module-open');
-      document.querySelectorAll('.btn').forEach(b =>
-        b.classList.toggle('active', b.id === 'btn' + id)
-      );
+      btns.forEach(btn => btn.classList.toggle('active', btn.id === 'btn' + id));
 
       document.getElementById('p-title').innerText = "> " + title;
-      document.getElementById('panel').classList.add('active');
-      typeWriter('p-text', text);
+      panel.classList.add('active');
 
-      document.getElementById('statusbar').innerText =
-        `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
+      if (typingTimer) clearInterval(typingTimer);
+
+      if (isHtml) {
+        // HTML wchodzi od razu (żeby nie wypluwało tagów)
+        pText.innerHTML = content;
+      } else {
+        // zwykły tekst – typewriter
+        pText.textContent = "";
+        typeWriter('p-text', content);
+      }
+
+      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
     }
 
     function closeMod() {
       if (typingTimer) clearInterval(typingTimer);
       document.getElementById('panel').classList.remove('active');
       document.body.classList.remove('module-open');
-      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('statusbar').innerText =
-        `MODE: RED_OS  STATUS: STANDBY`;
+      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: STANDBY`;
     }
   </script>
 </body>
