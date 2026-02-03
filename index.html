@@ -45,7 +45,7 @@
       z-index: 100;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 15px;
     }
 
     .btn {
@@ -59,17 +59,13 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      font-size: 18px;
-      letter-spacing: 0.5px;
+      font-size: 20px;
       backdrop-filter: blur(10px);
       transition: 0.35s ease;
       -webkit-tap-highlight-color: transparent;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
       user-select: none;
     }
-
-    /* dla 03A/03B trochę mniejsza czcionka żeby wyglądało jak system */
-    .btn.split { font-size: 14px; }
 
     body.module-open .nav-container .btn {
       opacity: 0;
@@ -87,21 +83,25 @@
       left: -110%;
       top: 50%;
       transform: translateY(-50%);
-      width: min(85%, 340px);
-      max-height: 82vh;
-      overflow-y: auto;
+      width: min(85%, 360px);
       background: rgba(15, 0, 0, 0.95);
       border: 1px solid #ff0000;
       padding: 22px;
       z-index: 120;
       transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border-radius: 6px;
+      border-radius: 14px;
+
+      /* żeby nie ucinało */
+      max-height: 78vh;
+      overflow: auto;
     }
 
     #panel.active { left: 10px; }
 
     #p-title { color: #ff0000; margin-bottom: 10px; font-size: 20px; }
-    #p-text { color: #fff; line-height: 1.5; font-size: 14px; white-space: pre-line; }
+    #p-text  { color: #fff; line-height: 1.5; font-size: 14px; white-space: pre-wrap; }
+
+    #p-extra { margin-top: 14px; }
 
     .close-btn {
       margin-top: 18px;
@@ -110,10 +110,9 @@
       padding: 10px;
       text-align: center;
       font-size: 11px;
-      position: sticky;
-      bottom: 0;
-      background: rgba(15, 0, 0, 0.95);
-      cursor: pointer;
+      border-radius: 12px;
+      background: rgba(255,0,0,0.04);
+      user-select: none;
     }
 
     #statusbar {
@@ -127,6 +126,75 @@
       font-size: 10px;
       background: rgba(0,0,0,0.5);
     }
+
+    /* PROOFS UI */
+    .proofs {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .preview-card {
+      border: 1px solid rgba(255,0,0,0.35);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(0,0,0,0.25);
+    }
+
+    .preview-head {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .preview-head strong {
+      color: #ff0000;
+      letter-spacing: 0.5px;
+      font-size: 14px;
+    }
+
+    .preview-head span {
+      color: rgba(255,255,255,0.85);
+      font-size: 12px;
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 200px;
+      border: 1px solid rgba(255,0,0,0.25);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.35);
+    }
+
+    /* podgląd jako "miniatura" */
+    .preview-frame iframe {
+      width: 1200px;
+      height: 800px;
+      border: 0;
+      transform: scale(0.25);
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+
+    .preview-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      display: inline-block;
+      padding: 10px 12px;
+      border: 1px solid #ff0000;
+      color: #ff0000;
+      text-decoration: none;
+      font-size: 11px;
+      border-radius: 12px;
+      background: rgba(255,0,0,0.06);
+    }
   </style>
 </head>
 
@@ -136,41 +204,43 @@
 
   <div class="nav-container" id="nav-box">
     <div class="btn" id="btn1"
-      onclick="openMod('01','bg1.jpg','CRITICAL_STRATEGY','System analizuje dane wejściowe.\nPriorytet: Czerwony.')">01</div>
+      onclick="openMod(1, 'bg1.jpg', 'O_MNIE', 'Tu wpiszesz konkretnie: kim jesteś, co robisz i jaki efekt dowozisz.')">01</div>
 
     <div class="btn" id="btn2"
-      onclick="openMod('02','bg2.jpg','VISUAL_CORE','Interfejs wizualny przełączony w tryb High-Contrast.')">02</div>
+      onclick="openMod(2, 'bg2.jpg', 'OFERTA', 'Tu wpiszesz: jakie strony robisz, dla kogo, czas realizacji, co klient dostaje.')">02</div>
 
-    <!-- SPLIT 03 -->
-    <div class="btn split" id="btn3a"
-      onclick="openMod('03A','bg3.jpg','PROOFS_MAREK','MAREK ZAWORSKI\nnarracja / noir / system publikacji\n\n[otwiera się osobny podgląd / link]')">03A</div>
-
-    <div class="btn split" id="btn3b"
-      onclick="openMod('03B','bg3.jpg','PROOFS_PAULINA','PAULINA\npisarka, autorka powieści\n\n[otwiera się osobny podgląd / link]')">03B</div>
+    <div class="btn" id="btn3"
+      onclick="openMod(3, 'bg3.jpg', '[PROOFS] Projekty (realne wdrożenia)', '')">03</div>
 
     <div class="btn" id="btn4"
-      onclick="openMod('04','bg4.jpg','MASTER_ACCESS','Dostęp autoryzowany.\nSystem stabilny.')">04</div>
+      onclick="openMod(4, 'bg4.jpg', 'KONTAKT', 'Kliknij przycisk poniżej i otwórz maila. Odpowiadam konkretnie.')">04</div>
   </div>
 
   <div id="panel">
     <div id="p-title"></div>
     <div id="p-text"></div>
+    <div id="p-extra"></div>
     <div class="close-btn" onclick="closeMod()">ZAMKNIJ_SYSTEM</div>
   </div>
 
   <div id="statusbar">MODE: RED_OS  STATUS: ACTIVE</div>
 
   <script>
+    // === UZUPEŁNIJ TYLKO TO JEDNO ===
+    const MAREK_URL   = "https://progressorkit.github.io/marekzaworski.github.io/";
+    const PAULINA_URL = "TU_WKLEJ_LINK_PAULINY"; // <--- tu wklej realny link Pauliny
+
     let typingTimer = null;
 
-    function typeWriter(elementId, text, speed = 18) {
+    function typeWriter(elementId, text, speed = 25) {
       const element = document.getElementById(elementId);
-      element.innerHTML = "";
+      element.textContent = "";
       let i = 0;
       if (typingTimer) clearInterval(typingTimer);
+
       typingTimer = setInterval(() => {
         if (i < text.length) {
-          element.innerHTML += text.charAt(i);
+          element.textContent += text.charAt(i);
           i++;
         } else {
           clearInterval(typingTimer);
@@ -178,21 +248,76 @@
       }, speed);
     }
 
-    function openMod(code, img, title, text) {
+    function renderProofs() {
+      const extra = document.getElementById('p-extra');
+
+      extra.innerHTML = `
+        <div class="proofs">
+
+          <div class="preview-card">
+            <div class="preview-head">
+              <strong>MAREK ZAWORSKI</strong>
+              <span>narracja / noir / system publikacji</span>
+            </div>
+            <div class="preview-frame">
+              <iframe src="${MAREK_URL}" loading="lazy"></iframe>
+            </div>
+            <div class="preview-actions">
+              <a class="mini-btn" href="${MAREK_URL}" target="_blank" rel="noopener">OTWÓRZ_PEŁNĄ</a>
+            </div>
+          </div>
+
+          <div class="preview-card">
+            <div class="preview-head">
+              <strong>PAULINA</strong>
+              <span>pisarka, autorka powieści</span>
+            </div>
+            <div class="preview-frame">
+              <iframe src="${PAULINA_URL}" loading="lazy"></iframe>
+            </div>
+            <div class="preview-actions">
+              <a class="mini-btn" href="${PAULINA_URL}" target="_blank" rel="noopener">OTWÓRZ_PEŁNĄ</a>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function renderContact() {
+      const extra = document.getElementById('p-extra');
+      extra.innerHTML = `
+        <div class="preview-actions">
+          <a class="mini-btn" href="mailto:progreskit7@gmail.com?subject=VibeWeb%20Studio%20-%20zapytanie">NAPISZ_MAILA</a>
+        </div>
+      `;
+    }
+
+    function openMod(id, img, title, text) {
       const bg = document.getElementById('bg-layer');
       const panel = document.getElementById('panel');
       const btns = document.querySelectorAll('.nav-container .btn');
 
-      bg.style.backgroundImage = `url('./${img}?v=${new Date().getTime()}')`;
+      bg.style.backgroundImage = `url('./${img}?v=${Date.now()}')`;
       document.body.classList.add('module-open');
 
-      btns.forEach(btn => btn.classList.toggle('active', btn.id === ('btn' + code.toLowerCase())));
+      btns.forEach(btn => btn.classList.toggle('active', btn.id === ('btn' + id)));
 
       document.getElementById('p-title').innerText = "> " + title;
       panel.classList.add('active');
-      typeWriter('p-text', text);
 
-      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${code}_LOADED`;
+      // reset
+      document.getElementById('p-text').textContent = "";
+      document.getElementById('p-extra').innerHTML = "";
+
+      // Treść
+      if (text && text.length) typeWriter('p-text', text);
+
+      // Specjalne moduły
+      if (id === 3) renderProofs();
+      if (id === 4) renderContact();
+
+      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
     }
 
     function closeMod() {
