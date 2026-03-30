@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vibe OS | Pro Edition</title>
+  <title>Vibe OS | Pro</title>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,7 +12,6 @@
       --main-ui: #003366; 
       --glow-ui: #0077ff; 
       --header-red: #ff0000;
-      --text-main: #ffffff;
     }
 
     html, body {
@@ -22,30 +21,29 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* TWOJE ZDJĘCIE Z NOWĄ NAZWĄ PLIKU */
+    /* TŁO - TERAZ WIDOCZNE */
     #bg-image {
       position: fixed; inset: 0;
       background: url('./File_000000007f9c720ab829b9d20e358f6d.png') no-repeat center center;
       background-size: cover;
       z-index: 1;
-      filter: saturate(0.3) brightness(0.35);
+      filter: saturate(0.6) brightness(0.5); /* Większa jasność niż poprzednio */
     }
 
-    /* EFEKT MATOWEGO SZKŁA */
+    /* SZKŁO - MNIEJSZE ROZMYCIE */
     #glass-overlay {
       position: fixed; inset: 0;
       z-index: 2;
-      background: rgba(0, 5, 15, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(0, 5, 15, 0.4); /* Bardziej przezroczyste */
+      backdrop-filter: blur(5px); /* Lżejszy blur, żeby było widać co jest w tle */
+      -webkit-backdrop-filter: blur(5px);
     }
 
-    /* SIATKA KONSOLI */
     #grid-layer {
       position: fixed; inset: 0;
-      background-image: linear-gradient(rgba(0, 119, 255, 0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 119, 255, 0.05) 1px, transparent 1px);
-      background-size: 35px 35px;
+      background-image: linear-gradient(rgba(0, 119, 255, 0.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 119, 255, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
       z-index: 3; pointer-events: none;
     }
 
@@ -53,7 +51,7 @@
 
     #header-console {
       top: 0; left: 0; width: 100%;
-      background: rgba(0,2,10,0.9);
+      background: rgba(0,0,0,0.8);
       border-bottom: 2px solid var(--main-ui);
       padding: 15px 10px;
     }
@@ -61,72 +59,59 @@
     #header-console h1 {
       color: var(--header-red);
       font-size: 19px; text-align: center; letter-spacing: 5px;
-      text-shadow: 0 0 10px rgba(255,0,0,0.5);
-    }
-
-    .nav-instruction {
-      font-size: 8px; text-align: center; color: #fff;
-      letter-spacing: 2px; margin-top: 8px; opacity: 0.8;
-      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255,0,0,0.7);
     }
 
     .nav-horizontal { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
 
+    /* ANIMACJA PULSOWANIA */
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 2px var(--glow-ui); border-color: var(--main-ui); }
+      50% { box-shadow: 0 0 15px var(--glow-ui); border-color: var(--glow-ui); }
+      100% { box-shadow: 0 0 2px var(--glow-ui); border-color: var(--main-ui); }
+    }
+
     .nav-item {
-      padding: 12px 15px; font-size: 11px; font-weight: bold;
+      padding: 12px 18px; font-size: 11px; font-weight: bold;
       cursor: pointer; border: 1px solid var(--main-ui);
-      background: rgba(0, 51, 102, 0.3); color: var(--glow-ui);
-      transition: 0.3s;
+      background: rgba(0, 30, 60, 0.6); color: #fff;
+      animation: glowPulse 2.5s infinite ease-in-out; /* Pulsowanie na start */
     }
 
     .nav-item.active { 
-      background: var(--glow-ui); color: #fff;
-      box-shadow: 0 0 25px var(--glow-ui);
-      border-color: #fff;
+      background: var(--glow-ui); 
+      box-shadow: 0 0 30px var(--glow-ui);
+      animation: none; /* Po kliknięciu świeci stałym, mocnym światłem */
     }
 
     #center-container {
       left: 50%; top: 55%; transform: translate(-50%, -50%);
-      text-align: center; transition: 0.8s ease-in-out;
-    }
-
-    /* LOGO Z LEKKIM BLASKIEM */
-    #center-container img { 
-      width: 220px; margin-bottom: 20px; opacity: 0.9;
-      filter: drop-shadow(0 0 10px var(--main-ui));
+      text-align: center;
     }
 
     .quick-contact {
-      display: inline-block; padding: 12px 25px;
-      border: 1px solid var(--main-ui); color: #fff;
-      text-decoration: none; font-size: 11px; letter-spacing: 2px;
-      background: rgba(0, 51, 102, 0.4); transition: 0.3s;
+      display: inline-block; margin-top: 25px; padding: 15px 25px;
+      border: 1px solid var(--glow-ui); color: #fff;
+      text-decoration: none; font-size: 12px; letter-spacing: 2px;
+      background: rgba(0, 119, 255, 0.2);
+      box-shadow: 0 0 10px var(--main-ui);
     }
-    .quick-contact:hover { background: var(--glow-ui); box-shadow: 0 0 15px var(--glow-ui); }
 
     #panel {
       top: -100%; left: 50%; transform: translateX(-50%);
-      width: 95%; max-width: 600px; height: 60vh;
+      width: 90%; max-width: 500px; height: 55vh;
       background: rgba(0, 5, 15, 0.95);
-      border: 1px solid var(--glow-ui);
-      padding: 30px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      backdrop-filter: blur(20px);
+      border: 2px solid var(--glow-ui);
+      padding: 25px; transition: 0.5s;
     }
 
     #panel.active { top: 180px; }
 
-    #p-text { color: #fff; line-height: 1.8; font-size: 15px; overflow-y: auto; }
-
-    .price-tag {
-      margin-top: 20px; padding: 10px; border-left: 2px solid var(--glow-ui);
-      background: rgba(0, 119, 255, 0.05); font-size: 12px; color: #aaa;
-    }
-
     #statusbar { 
       bottom: 0; width: 100%; background: #000; 
+      padding: 10px; font-size: 10px; display: flex; 
+      justify-content: space-between; color: var(--glow-ui);
       border-top: 1px solid var(--main-ui);
-      padding: 10px 15px; font-size: 10px; display: flex; justify-content: space-between;
-      color: var(--main-ui);
     }
   </style>
 </head>
@@ -138,7 +123,6 @@
 
   <header id="header-console">
     <h1>VIBE WEB STUDIO</h1>
-    <div class="nav-instruction">[ WYBIERZ MODUŁ PONIŻEJ, ABY ZAINICJOWAĆ SKANOWANIE DANYCH ]</div>
     <nav class="nav-horizontal">
       <div class="nav-item" id="btn1" onclick="openMod(1, txt1, false)">BIO</div>
       <div class="nav-item" id="btn2" onclick="openMod(2, txt2, false)">TASK</div>
@@ -147,55 +131,32 @@
   </header>
 
   <div id="center-container">
-    <img src="./IMG_20260203_123501.png" alt="Logo">
+    <img src="./IMG_20260203_123501.png" alt="Logo" style="width:220px;">
     <br>
     <a href="mailto:progresskit7@gmail.com" class="quick-contact">[ ZAINICJUJ KONTAKT ]</a>
   </div>
 
   <div id="panel">
-    <div id="p-text"></div>
-    <div onclick="closeMod()" style="margin-top:30px; color:var(--glow-ui); cursor:pointer; text-align:center; font-size:11px;">[ POWRÓT DO KONSOLI ]</div>
+    <div id="p-text" style="color:#fff; line-height:1.6;"></div>
+    <div onclick="closeMod()" style="margin-top:30px; color:var(--glow-ui); cursor:pointer; text-align:center;">[ ZAMKNIJ ]</div>
   </div>
 
   <div id="statusbar">
-    <div id="sys-log">SECURE_LINK_STABLE</div>
+    <div>SYSTEM_ONLINE</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
   <script>
-    let timer = null;
-    const txt1 = `Nie uznaję półśrodków ani masowych szablonów. Każda strona to projekt od zera, wykuty z Twojego pomysłu i mojej wizji. Stosuję niekonwencjonalne rozwiązania UI, które wybijają się z nudnego standardu sieci. To cyfrowa manufaktura skupiona na profesjonalizmie.`;
-    
-    const txt2 = `• Autorskie wizytówki www Premium\n• Systemy portfolio dla twórców\n• Dedykowane interfejsy UI/UX\n\n<div class="price-tag">[ INFO ] Każdy projekt wyceniany jest indywidualnie w zależności od trudności interfejsu oraz unikalności funkcji.</div>`;
-    
-    const txt3 = `
-      <div style="border-left: 2px solid #0077ff; padding-left: 15px; margin-bottom: 20px;">
-        <strong>M. ZAWORSKI</strong><br>
-        <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#0077ff; text-decoration:none;">>> OTWÓRZ_PROJEKT</a>
-      </div>
-      <div style="border-left: 2px solid #0077ff; padding-left: 15px;">
-        <strong>P. BARCZEWSKA</strong><br>
-        <a href="https://pbarczewska.github.io/" target="_blank" style="color:#0077ff; text-decoration:none;">>> OTWÓRZ_PROJEKT</a>
-      </div>`;
+    const txt1 = "Buduję ekosystemy cyfrowe od zera. Bez gotowców, bez szablonów. Tylko surowy kod i unikalny design.";
+    const txt2 = "• Strony Portfolio\n• Systemy Publikacji\n• Dedykowane UI/UX";
+    const txt3 = "<strong>PROJEKTY:</strong><br><br>M. ZAWORSKI<br>P. BARCZEWSKA";
 
     function openMod(id, content, isHtml) {
-      document.getElementById('center-container').style.opacity = "0.05";
+      document.getElementById('center-container').style.opacity = "0.1";
       const pText = document.getElementById('p-text');
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.getElementById('btn'+id).classList.add('active');
-      
-      if (timer) clearInterval(timer);
-      pText.innerHTML = "";
-
-      if(isHtml || content.includes('<div')) { 
-        pText.innerHTML = content; 
-      } else {
-        let i = 0;
-        timer = setInterval(() => {
-          if (i < content.length) pText.innerHTML += content[i++];
-          else clearInterval(timer);
-        }, 15);
-      }
+      pText.innerHTML = isHtml ? content : content;
       document.getElementById('panel').classList.add('active');
     }
 
