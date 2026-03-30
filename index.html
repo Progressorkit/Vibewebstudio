@@ -80,18 +80,22 @@
       pointer-events: auto;
     }
 
+    /* POPRAWIONY PANEL: Dodano max-height i scroll */
     #panel {
       position: fixed;
       left: -110%;
       top: 50%;
       transform: translateY(-50%);
       width: min(88%, 380px);
+      max-height: 85vh; /* Panel zajmie max 85% wysokości ekranu */
       background: rgba(15, 0, 0, 0.95);
       border: 1px solid #ff0000;
       padding: 22px;
       z-index: 120;
       transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       border-radius: 6px;
+      display: flex;
+      flex-direction: column;
     }
 
     #panel.active { left: 10px; }
@@ -99,16 +103,24 @@
     #p-title {
       color: #ff0000;
       margin-bottom: 10px;
-      font-size: 20px;
+      font-size: 18px;
       letter-spacing: 0.5px;
+      flex-shrink: 0;
     }
 
+    /* KONTENER NA TREŚĆ: To on będzie się przewijał */
     #p-text {
       color: #fff;
       line-height: 1.55;
       font-size: 14px;
       white-space: pre-wrap;
+      overflow-y: auto; /* Włącza scrollowanie pionowe */
+      padding-right: 5px;
     }
+
+    /* Styl paska przewijania (bardziej pasuje do klimatu) */
+    #p-text::-webkit-scrollbar { width: 4px; }
+    #p-text::-webkit-scrollbar-thumb { background: #ff0000; }
 
     .close-btn {
       margin-top: 18px;
@@ -119,6 +131,7 @@
       font-size: 11px;
       user-select: none;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     #statusbar {
@@ -130,7 +143,7 @@
       padding: 10px;
       color: #ff0000;
       font-size: 10px;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.8);
       letter-spacing: 0.4px;
     }
 
@@ -143,7 +156,7 @@
     .previews {
       margin-top: 10px;
       display: grid;
-      gap: 10px;
+      gap: 15px;
     }
 
     .preview-card {
@@ -155,19 +168,16 @@
 
     .preview-head {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
+      flex-direction: column; /* Lepiej na telefonach */
+      gap: 4px;
       margin-bottom: 8px;
       color: #ff6666;
-      font-size: 12px;
-      letter-spacing: 0.3px;
+      font-size: 11px;
     }
 
     .preview-head strong {
       color: #ff0000;
       font-size: 13px;
-      letter-spacing: 0.6px;
     }
 
     .preview-frame {
@@ -175,7 +185,7 @@
       border-radius: 10px;
       overflow: hidden;
       background: rgba(0,0,0,0.25);
-      height: 140px;
+      height: 120px;
       position: relative;
     }
 
@@ -183,28 +193,26 @@
       width: 1000px;
       height: 700px;
       border: 0;
-      transform: scale(0.28);
+      transform: scale(0.25);
       transform-origin: 0 0;
       position: absolute;
       left: 0;
       top: 0;
       background: #fff;
+      pointer-events: none; /* Żeby iframe nie kradł scrollowania */
     }
 
     .preview-actions {
       margin-top: 8px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
     }
 
     .mini-btn {
       display: inline-block;
-      padding: 7px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,0,0,0.35);
-      color: #ff7777;
-      background: rgba(255,0,0,0.06);
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid #ff0000;
+      color: #ff0000;
+      background: transparent;
       text-decoration: none;
       font-size: 12px;
     }
@@ -221,36 +229,19 @@
       gap: 14px;
       pointer-events: none;
       opacity: 0.95;
-      filter: drop-shadow(0 0 18px rgba(255,0,0,0.18));
     }
 
     #center-logo img {
-      width: min(68vw, 340px);
+      width: min(65vw, 300px);
       height: auto;
-      border-radius: 8px;
-      opacity: 0.92;
     }
 
     #core-text {
-      font-size: 11px;
-      letter-spacing: 0.6px;
+      font-size: 10px;
       color: rgba(255,80,80,0.75);
-      text-align: center;
-      opacity: 0.65;
-      white-space: nowrap;
-      filter: drop-shadow(0 0 6px rgba(255,0,0,0.25));
-      transition: 0.3s ease;
     }
 
-    body.module-open #core-text {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-
-    body.module-open #center-logo {
-      opacity: 0.45;
-      transition: 0.35s ease;
-    }
+    body.module-open #center-logo { opacity: 0.2; }
   </style>
 </head>
 
@@ -258,7 +249,7 @@
   <div id="bg-layer"></div>
   <div id="bg-overlay"></div>
 
-  <div id="center-logo" aria-hidden="true">
+  <div id="center-logo">
     <img src="IMG_20260203_123501.png" alt="Logo">
     <div id="core-text"></div>
   </div>
@@ -288,50 +279,46 @@ Projektuję i buduję strony oraz systemy treści, które działają stabilnie �
 • czytelność i struktura
 • spójny klimat
 • modułowa budowa
-• gotowe wdrożenie
-
-Ten interfejs to demonstracja sposobu myślenia.`;
+• gotowe wdrożenie`;
 
     const txt2 = `[OFFER] Co mogę zrobić
 • strony portfolio i autorskie
 • strony usługowe pod sprzedaż
 • systemy tekstów i publikacji
-• wdrożenia GitHub / Netlify
+• wdrożenia GitHub / Netlify`;
 
-Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
-
-    const txt3 = `<div>[PROOFS] Projekty (realne wdrożenia)</div>
+    const txt3 = `<div>[PROOFS] Realne wdrożenia:</div>
 <div class="previews">
   <div class="preview-card">
     <div class="preview-head">
       <strong>MAREK ZAWORSKI</strong>
-      <span>narracja / noir / system publikacji</span>
+      <span>noir / system publikacji</span>
     </div>
     <div class="preview-frame">
-      <iframe src="https://progressorkit.github.io/marekzaworski.github.io/" loading="lazy"></iframe>
+      <iframe src="https://progressorkit.github.io/marekzaworski.github.io/"></iframe>
     </div>
     <div class="preview-actions">
-      <a class="mini-btn" href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" rel="noopener">Otwórz pełną</a>
+      <a class="mini-btn" href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank">Otwórz pełną</a>
     </div>
   </div>
 
   <div class="preview-card">
     <div class="preview-head">
-      <strong>PAULINA</strong>
+      <strong>PAULINA BARCZEWSKA</strong>
       <span>pisarka, autorka powieści</span>
     </div>
     <div class="preview-frame">
-      <iframe src="https://pbarczewska.github.io/" loading="lazy"></iframe>
+      <iframe src="https://pbarczewska.github.io/"></iframe>
     </div>
     <div class="preview-actions">
-      <a class="mini-btn" href="https://pbarczewska.github.io/" target="_blank" rel="noopener">Otwórz pełną</a>
+      <a class="mini-btn" href="https://pbarczewska.github.io/" target="_blank">Otwórz pełną</a>
     </div>
   </div>
 </div>`;
 
     const txt4 = `[CONTACT] Kontakt
-Najprościej: email.
 
+Email:
 <a class="mail" href="mailto:progresskit7@gmail.com">progresskit7@gmail.com</a>
 
 Ustalamy cel → robię wdrożenie.`;
@@ -341,7 +328,6 @@ Ustalamy cel → robię wdrożenie.`;
       element.innerHTML = "";
       let i = 0;
       if (typingTimer) clearInterval(typingTimer);
-
       typingTimer = setInterval(() => {
         if (i < text.length) {
           element.textContent += text.charAt(i);
@@ -369,11 +355,12 @@ Ustalamy cel → robię wdrożenie.`;
 
       if (isHtml) {
         pText.innerHTML = content;
+        pText.style.whiteSpace = "normal"; // Pozwól HTML-owi się układać
       } else {
         pText.textContent = "";
+        pText.style.whiteSpace = "pre-wrap";
         typeWriter('p-text', content);
       }
-
       document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
     }
 
@@ -387,21 +374,15 @@ Ustalamy cel → robię wdrożenie.`;
 
     const coreLine = `<system init="vibe_os" status="standby" />`;
     let coreIndex = 0;
-
     function typeCoreLine(){
       const el = document.getElementById('core-text');
-      if (!el) return;
-
       if (coreIndex <= coreLine.length){
         el.textContent = coreLine.slice(0, coreIndex);
         coreIndex++;
         setTimeout(typeCoreLine, 55);
       }
     }
-
-    window.addEventListener('load', () => {
-      setTimeout(typeCoreLine, 600);
-    });
+    window.addEventListener('load', () => setTimeout(typeCoreLine, 600));
   </script>
 </body>
 </html>
