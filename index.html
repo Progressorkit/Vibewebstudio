@@ -21,42 +21,40 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* TŁO - TWOJE ZDJĘCIE */
+    /* TŁO JAKO WARSTWA POD SPODEM */
     #bg-image {
       position: fixed; inset: 0;
       background: url('zdjtlo.png') no-repeat center center;
       background-size: cover;
       z-index: 1;
-      filter: brightness(0.6); /* Delikatne przyciemnienie, żeby napisy nie znikły */
     }
 
-    /* EFEKT SZKŁA */
+    /* EFEKT PRZESZKLENIA (FROSTED GLASS) */
     #glass-overlay {
       position: fixed; inset: 0;
       z-index: 2;
-      background: rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      background: rgba(0, 5, 15, 0.6); /* Przyciemnienie dla czytelności */
+      backdrop-filter: blur(12px); /* Tu dzieje się magia szkła */
+      -webkit-backdrop-filter: blur(12px);
     }
 
     header, #center-container, #panel, #statusbar { z-index: 100; position: fixed; }
 
     #header-console {
       top: 0; left: 0; width: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       border-bottom: 2px solid var(--main-ui);
       padding: 15px 10px;
     }
 
     #header-console h1 {
       color: var(--header-red);
-      font-size: 20px; text-align: center; letter-spacing: 5px;
+      font-size: 19px; text-align: center; letter-spacing: 5px;
       text-shadow: 0 0 10px rgba(255,0,0,0.7);
     }
 
     .nav-horizontal { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
 
-    /* MOCNE PULSOWANIE PRZYCISKÓW */
     @keyframes glowPulse {
       0% { box-shadow: 0 0 5px var(--glow-ui); border-color: var(--main-ui); }
       50% { box-shadow: 0 0 20px var(--glow-ui); border-color: var(--glow-ui); }
@@ -64,44 +62,46 @@
     }
 
     .nav-item {
-      padding: 12px 20px; font-size: 12px; font-weight: bold;
+      padding: 12px 18px; font-size: 11px; font-weight: bold;
       cursor: pointer; border: 1px solid var(--main-ui);
-      background: rgba(0, 30, 60, 0.8); color: #fff;
-      animation: glowPulse 2s infinite ease-in-out;
+      background: rgba(0, 30, 60, 0.4); color: var(--glow-ui);
+      animation: glowPulse 2.5s infinite ease-in-out;
     }
 
     .nav-item.active { 
-      background: var(--glow-ui); 
+      background: var(--glow-ui); color: #fff;
       box-shadow: 0 0 30px var(--glow-ui);
-      animation: none; 
-      border-color: #fff;
+      animation: none; border-color: #fff;
     }
 
     #center-container {
       left: 50%; top: 55%; transform: translate(-50%, -50%);
-      text-align: center;
+      text-align: center; transition: 0.5s;
     }
 
     .quick-contact {
       display: inline-block; margin-top: 25px; padding: 15px 25px;
       border: 1px solid var(--glow-ui); color: #fff;
-      text-decoration: none; font-size: 12px;
+      text-decoration: none; font-size: 12px; letter-spacing: 1px;
       background: rgba(0, 119, 255, 0.2);
     }
 
     #panel {
       top: -100%; left: 50%; transform: translateX(-50%);
-      width: 90%; max-width: 500px; height: 50vh;
-      background: rgba(0, 5, 15, 0.95);
+      width: 90%; max-width: 550px; height: 55vh;
+      background: rgba(0, 10, 30, 0.9);
       border: 2px solid var(--glow-ui);
-      padding: 25px; transition: 0.5s ease-in-out;
+      padding: 30px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      backdrop-filter: blur(15px);
     }
 
     #panel.active { top: 180px; }
 
+    #p-text { color: #fff; line-height: 1.8; font-size: 14px; }
+
     #statusbar { 
       bottom: 0; width: 100%; background: #000; 
-      padding: 10px; font-size: 10px; display: flex; 
+      padding: 10px 15px; font-size: 10px; display: flex; 
       justify-content: space-between; color: var(--glow-ui);
       border-top: 1px solid var(--main-ui);
     }
@@ -115,39 +115,52 @@
   <header id="header-console">
     <h1>VIBE WEB STUDIO</h1>
     <nav class="nav-horizontal">
-      <div class="nav-item" id="btn1" onclick="openMod(1, txt1)">BIO</div>
-      <div class="nav-item" id="btn2" onclick="openMod(2, txt2)">TASK</div>
-      <div class="nav-item" id="btn3" onclick="openMod(3, txt3)">WORK</div>
+      <div class="nav-item" id="btn1" onclick="openMod(1, txt1, false)">BIO</div>
+      <div class="nav-item" id="btn2" onclick="openMod(2, txt2, false)">TASK</div>
+      <div class="nav-item" id="btn3" onclick="openMod(3, txt3, true)">WORK</div>
     </nav>
   </header>
 
   <div id="center-container">
-    <img src="IMG_20260203_123501.png" alt="Logo" style="width:200px;">
+    <img src="IMG_20260203_123501.png" alt="Logo" style="width:210px; opacity:0.9;">
     <br>
-    <a href="mailto:progresskit7@gmail.com" class="quick-contact">[ ZAINICJUJ KONTAKT ]</a>
+    <a href="mailto:progresskit7@gmail.com" class="quick-contact">[ ZAINICJUJ_KONTAKT ]</a>
   </div>
 
   <div id="panel">
-    <div id="p-text" style="color:#fff; line-height:1.6; font-size:15px;"></div>
-    <div onclick="closeMod()" style="margin-top:30px; color:var(--glow-ui); cursor:pointer; text-align:center;">[ ZAMKNIJ ]</div>
+    <div id="p-text"></div>
+    <div onclick="closeMod()" style="margin-top:30px; color:var(--glow-ui); cursor:pointer; text-align:center; font-size:12px;">[ ZAMKNIJ_MODUŁ ]</div>
   </div>
 
   <div id="statusbar">
-    <div>SYSTEM_READY</div>
+    <div>ENCRYPTED_CONNECTION_ACTIVE</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
   <script>
-    const txt1 = "PROFESJONALIZM BEZ KOMPROMISÓW. Tworzę unikalne strony od zera. Żadnych gotowców.";
-    const txt2 = "• Strony Portfolio\n• Systemy Publikacji\n• Custom UI/UX";
-    const txt3 = "PROJEKTY:\n- M. Zaworski\n- P. Barczewska";
+    let timer = null;
+    const txt1 = "PROFESJONALIZM BEZ KOMPROMISÓW. Buduję Twoją obecność w sieci od całkowitego zera. Nie korzystam z gotowych szablonów ani masowych rozwiązań. Stosuję niekonwencjonalne podejście do UI, tworząc unikalne ekosystemy cyfrowe.";
+    const txt2 = "• Dedykowane strony Wizytówki / Portfolio\n• Systemy prezentacji treści\n• Wdrażanie pod klucz (GitHub/Netlify)\n\n[ INFO ] Każdy projekt to indywidualny proces twórczy i techniczny.";
+    const txt3 = "<strong>M. ZAWORSKI</strong><br><a href='https://progressorkit.github.io/marekzaworski.github.io/' target='_blank' style='color:#0077ff; text-decoration:none;'>>> OTWÓRZ_PROJEKT</a><br><br><strong>P. BARCZEWSKA</strong><br><a href='https://pbarczewska.github.io/' target='_blank' style='color:#0077ff; text-decoration:none;'>>> OTWÓRZ_PROJEKT</a>";
 
-    function openMod(id, content) {
-      document.getElementById('center-container').style.opacity = "0.1";
+    function openMod(id, content, isHtml) {
+      document.getElementById('center-container').style.opacity = "0.05";
       const pText = document.getElementById('p-text');
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.getElementById('btn'+id).classList.add('active');
-      pText.innerText = content;
+      
+      if (timer) clearInterval(timer);
+      pText.innerHTML = "";
+
+      if(isHtml) { 
+        pText.innerHTML = content; 
+      } else {
+        let i = 0;
+        timer = setInterval(() => {
+          if (i < content.length) pText.innerHTML += content[i++];
+          else clearInterval(timer);
+        }, 15);
+      }
       document.getElementById('panel').classList.add('active');
     }
 
