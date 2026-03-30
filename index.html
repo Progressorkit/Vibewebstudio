@@ -3,386 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vibe OS | Red Alert</title>
+  <title>Vibe OS | Red Alert Pro</title>
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --main-red: #ff0000;
+      --dim-red: rgba(255, 0, 0, 0.15);
+      --bg-dark: #0a0000;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+
+    /* EFEKT SCANLINES - Nakładka retro */
+    body::before {
+      content: " ";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 3px 100%;
+      z-index: 200;
+      pointer-events: none;
+      opacity: 0.4;
+    }
 
     html, body {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       overflow: hidden;
-      background: #1a1a1a;
-      font-family: monospace;
+      background: var(--bg-dark);
+      font-family: 'Courier New', Courier, monospace;
+      color: var(--main-red);
     }
 
     #bg-layer {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-image: url('bg1.jpg');
-      filter: brightness(1.1) contrast(1.05) saturate(1.1);
-      transition: background-image 0.6s ease-in-out;
+      position: fixed; inset: 0; z-index: 1;
+      background-size: cover; background-position: center;
+      filter: grayscale(1) brightness(0.4) contrast(1.2);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    #bg-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      background: radial-gradient(circle at 30% 40%, rgba(255,0,0,0.05), rgba(0,0,0,0.8));
-      pointer-events: none;
+    /* Aktywne tło dostaje lekki kolor */
+    body.module-open #bg-layer {
+      filter: grayscale(0.5) brightness(0.5) sepia(0.5) hue-rotate(-50deg);
+      scale: 1.05;
     }
 
-    .nav-container {
-      position: fixed;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .btn {
-      width: 55px;
-      height: 55px;
-      background: rgba(255, 0, 0, 0.1);
-      border: 2px solid #ff0000;
-      color: #ff0000;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 20px;
-      backdrop-filter: blur(10px);
-      transition: 0.35s ease;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-      user-select: none;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body.module-open .nav-container .btn {
-      opacity: 0;
-      transform: translateX(100px);
-      pointer-events: none;
-    }
-
-    body.module-open .nav-container .btn.active {
-      opacity: 1;
-      transform: translateX(0);
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-      pointer-events: auto;
-    }
-
-    /* POPRAWIONY PANEL: Dodano max-height i scroll */
-    #panel {
-      position: fixed;
-      left: -110%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: min(88%, 380px);
-      max-height: 85vh; /* Panel zajmie max 85% wysokości ekranu */
-      background: rgba(15, 0, 0, 0.95);
-      border: 1px solid #ff0000;
-      padding: 22px;
-      z-index: 120;
-      transition: 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border-radius: 6px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #panel.active { left: 10px; }
-
-    #p-title {
-      color: #ff0000;
-      margin-bottom: 10px;
-      font-size: 18px;
-      letter-spacing: 0.5px;
-      flex-shrink: 0;
-    }
-
-    /* KONTENER NA TREŚĆ: To on będzie się przewijał */
-    #p-text {
-      color: #fff;
-      line-height: 1.55;
-      font-size: 14px;
-      white-space: pre-wrap;
-      overflow-y: auto; /* Włącza scrollowanie pionowe */
-      padding-right: 5px;
-    }
-
-    /* Styl paska przewijania (bardziej pasuje do klimatu) */
-    #p-text::-webkit-scrollbar { width: 4px; }
-    #p-text::-webkit-scrollbar-thumb { background: #ff0000; }
-
-    .close-btn {
-      margin-top: 18px;
-      border: 1px solid #ff0000;
-      color: #ff0000;
-      padding: 10px;
-      text-align: center;
-      font-size: 11px;
-      user-select: none;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    #statusbar {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      z-index: 130;
-      padding: 10px;
-      color: #ff0000;
-      font-size: 10px;
-      background: rgba(0,0,0,0.8);
-      letter-spacing: 0.4px;
-    }
-
-    a.mail {
-      color: #ff5555;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,0,0,0.4);
-    }
-
-    .previews {
-      margin-top: 10px;
-      display: grid;
-      gap: 15px;
-    }
-
-    .preview-card {
-      border: 1px solid rgba(255,0,0,0.35);
-      background: rgba(0,0,0,0.28);
-      border-radius: 10px;
-      padding: 10px;
-    }
-
-    .preview-head {
-      display: flex;
-      flex-direction: column; /* Lepiej na telefonach */
-      gap: 4px;
-      margin-bottom: 8px;
-      color: #ff6666;
-      font-size: 11px;
-    }
-
-    .preview-head strong {
-      color: #ff0000;
-      font-size: 13px;
-    }
-
-    .preview-frame {
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 10px;
-      overflow: hidden;
-      background: rgba(0,0,0,0.25);
-      height: 120px;
-      position: relative;
-    }
-
-    .preview-frame iframe {
-      width: 1000px;
-      height: 700px;
-      border: 0;
-      transform: scale(0.25);
-      transform-origin: 0 0;
-      position: absolute;
-      left: 0;
-      top: 0;
-      background: #fff;
-      pointer-events: none; /* Żeby iframe nie kradł scrollowania */
-    }
-
-    .preview-actions {
-      margin-top: 8px;
-    }
-
-    .mini-btn {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 4px;
-      border: 1px solid #ff0000;
-      color: #ff0000;
-      background: transparent;
-      text-decoration: none;
-      font-size: 12px;
-    }
-
+    /* GŁÓWNE LOGO Z EFEKTEM PULSOWANIA */
     #center-logo {
-      position: fixed;
-      left: 50%;
-      top: 50%;
+      position: fixed; left: 50%; top: 50%;
       transform: translate(-50%, -50%);
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      pointer-events: none;
-      opacity: 0.95;
+      z-index: 5; text-align: center;
+      transition: 0.5s ease;
     }
 
     #center-logo img {
-      width: min(65vw, 300px);
-      height: auto;
+      width: min(60vw, 280px);
+      filter: drop-shadow(0 0 15px var(--main-red));
+      animation: logo-flicker 4s infinite;
     }
 
-    #core-text {
-      font-size: 10px;
-      color: rgba(255,80,80,0.75);
+    @keyframes logo-flicker {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 0.7; filter: drop-shadow(0 0 5px var(--main-red)); }
+      52% { opacity: 1; }
+      54% { opacity: 0.8; }
     }
 
-    body.module-open #center-logo { opacity: 0.2; }
+    /* NAWIGACJA */
+    .nav-container {
+      position: fixed; right: 25px; top: 50%;
+      transform: translateY(-50%); z-index: 100;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+
+    .btn {
+      width: 60px; height: 60px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--main-red);
+      color: var(--main-red);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 18px;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+      box-shadow: inset 0 0 10px var(--dim-red);
+    }
+
+    .btn:hover {
+      background: var(--main-red);
+      color: black;
+      box-shadow: 0 0 20px var(--main-red);
+    }
+
+    /* PANEL BOCZNY - PRO DESIGN */
+    #panel {
+      position: fixed; left: -110%; top: 0;
+      width: min(95%, 400px); height: 100vh;
+      background: rgba(10, 0, 0, 0.98);
+      border-right: 2px solid var(--main-red);
+      padding: 40px 25px; z-index: 150;
+      transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+      display: flex; flex-direction: column;
+    }
+
+    #panel.active { left: 0; }
+
+    #p-title {
+      font-size: 24px; text-transform: uppercase;
+      margin-bottom: 20px; border-bottom: 1px solid var(--main-red);
+      padding-bottom: 10px;
+    }
+
+    #p-text {
+      flex-grow: 1; overflow-y: auto;
+      font-size: 14px; line-height: 1.6;
+      scrollbar-width: thin; scrollbar-color: var(--main-red) black;
+    }
+
+    .close-btn {
+      margin-top: 20px; padding: 15px;
+      border: 1px solid var(--main-red);
+      text-align: center; font-size: 12px;
+      transition: 0.3s;
+    }
+
+    .close-btn:hover { background: var(--main-red); color: #000; }
+
+    /* STATUS BAR - ANIMOWANE LOGI */
+    #statusbar {
+      position: fixed; bottom: 0; width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 8px 15px; font-size: 10px;
+      display: flex; justify-content: space-between;
+      z-index: 160; border-top: 1px solid var(--dim-red);
+    }
+
+    .preview-card {
+      border: 1px solid var(--dim-red);
+      padding: 15px; margin-bottom: 15px;
+      background: rgba(255, 0, 0, 0.02);
+    }
+
+    iframe { filter: grayscale(1) invert(1) contrast(1.2); pointer-events: none; }
+
   </style>
 </head>
-
 <body>
+
   <div id="bg-layer"></div>
-  <div id="bg-overlay"></div>
 
   <div id="center-logo">
-    <img src="IMG_20260203_123501.png" alt="Logo">
-    <div id="core-text"></div>
+    <img src="IMG_20260203_123501.png" alt="Vibe Core">
+    <div id="core-status" style="font-size: 9px; margin-top: 10px; letter-spacing: 2px;">SYSTEM_READY</div>
   </div>
 
   <div class="nav-container">
-    <div class="btn" id="btn1" onclick="openMod(1, 'bg1.jpg', 'KIM_JESTEM', txt1, false)">01</div>
-    <div class="btn" id="btn2" onclick="openMod(2, 'bg2.jpg', 'CO_ROBIĘ', txt2, false)">02</div>
-    <div class="btn" id="btn3" onclick="openMod(3, 'bg3.jpg', 'PROJEKTY', txt3, true)">03</div>
-    <div class="btn" id="btn4" onclick="openMod(4, 'bg4.jpg', 'KONTAKT', txt4, false)">04</div>
+    <div class="btn" onclick="openMod(1, 'bg1.jpg', 'Identity', txt1, false)">01</div>
+    <div class="btn" onclick="openMod(2, 'bg2.jpg', 'Services', txt2, false)">02</div>
+    <div class="btn" onclick="openMod(3, 'bg3.jpg', 'Archives', txt3, true)">03</div>
+    <div class="btn" onclick="openMod(4, 'bg4.jpg', 'Terminal', txt4, false)">04</div>
   </div>
 
   <div id="panel">
     <div id="p-title"></div>
     <div id="p-text"></div>
-    <div class="close-btn" onclick="closeMod()">ZAMKNIJ_SYSTEM</div>
+    <div class="close-btn" onclick="closeMod()">[ ESC ] TERMINATE_SESSION</div>
   </div>
 
-  <div id="statusbar">MODE: RED_OS  STATUS: ACTIVE</div>
+  <div id="statusbar">
+    <div id="log-line">INITIALIZING VIBE_OS...</div>
+    <div>LOC: 54.46°N 17.03°E | TEMP: 18°C</div>
+  </div>
 
   <script>
-    let typingTimer = null;
+    const txt1 = `>> ANALIZA PROFILU...\nObiekt: Fullstack Developer\nSpecjalizacja: Interfejsy wysokiej wydajności.\n\nŁączę brutalizm cyfrowy z nowoczesną architekturą kodu. Każdy projekt to unikalna instancja systemu.`;
+    const txt2 = `>> DOSTĘPNE PROTOKOŁY:\n\n01. PROJEKTOWANIE UI/UX\n02. WDROŻENIA REACT / VUE\n03. ARCHITEKTURA TREŚCI\n04. OPTYMALIZACJA SEO/CORE VESTALS`;
+    const txt3 = `<div class="preview-card"><strong>PROJECT: M_ZAWORSKI</strong><div style="height:100px; overflow:hidden; margin:10px 0;"><iframe src="https://progressorkit.github.io/marekzaworski.github.io/" width="1000" height="400" style="transform:scale(0.35); transform-origin:0 0;"></iframe></div><a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" class="btn" style="width:100%; height:30px; font-size:10px;">VIEW_LIVE</a></div>`;
+    const txt4 = `>> KANAŁ BEZPOŚREDNI\n\nLink: progresskit7@gmail.com\n\nCzekam na parametry zlecenia.`;
 
-    const txt1 = `[PROFILE] Kim jestem
-Projektuję i buduję strony oraz systemy treści, które działają stabilnie – nie tylko wyglądają.
-
-Łączę estetykę z logiką:
-• czytelność i struktura
-• spójny klimat
-• modułowa budowa
-• gotowe wdrożenie`;
-
-    const txt2 = `[OFFER] Co mogę zrobić
-• strony portfolio i autorskie
-• strony usługowe pod sprzedaż
-• systemy tekstów i publikacji
-• wdrożenia GitHub / Netlify`;
-
-    const txt3 = `<div>[PROOFS] Realne wdrożenia:</div>
-<div class="previews">
-  <div class="preview-card">
-    <div class="preview-head">
-      <strong>MAREK ZAWORSKI</strong>
-      <span>noir / system publikacji</span>
-    </div>
-    <div class="preview-frame">
-      <iframe src="https://progressorkit.github.io/marekzaworski.github.io/"></iframe>
-    </div>
-    <div class="preview-actions">
-      <a class="mini-btn" href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank">Otwórz pełną</a>
-    </div>
-  </div>
-
-  <div class="preview-card">
-    <div class="preview-head">
-      <strong>PAULINA BARCZEWSKA</strong>
-      <span>pisarka, autorka powieści</span>
-    </div>
-    <div class="preview-frame">
-      <iframe src="https://pbarczewska.github.io/"></iframe>
-    </div>
-    <div class="preview-actions">
-      <a class="mini-btn" href="https://pbarczewska.github.io/" target="_blank">Otwórz pełną</a>
-    </div>
-  </div>
-</div>`;
-
-    const txt4 = `[CONTACT] Kontakt
-
-Email:
-<a class="mail" href="mailto:progresskit7@gmail.com">progresskit7@gmail.com</a>
-
-Ustalamy cel → robię wdrożenie.`;
-
-    function typeWriter(elementId, text, speed = 18) {
-      const element = document.getElementById(elementId);
-      element.innerHTML = "";
-      let i = 0;
-      if (typingTimer) clearInterval(typingTimer);
-      typingTimer = setInterval(() => {
-        if (i < text.length) {
-          element.textContent += text.charAt(i);
-          i++;
-        } else {
-          clearInterval(typingTimer);
-        }
-      }, speed);
-    }
+    let timer;
 
     function openMod(id, img, title, content, isHtml) {
-      const bg = document.getElementById('bg-layer');
-      const panel = document.getElementById('panel');
-      const btns = document.querySelectorAll('.nav-container .btn');
-      const pText = document.getElementById('p-text');
-
-      bg.style.backgroundImage = `url('${img}')`;
+      document.getElementById('bg-layer').style.backgroundImage = `url('${img}')`;
       document.body.classList.add('module-open');
-      btns.forEach(btn => btn.classList.toggle('active', btn.id === 'btn' + id));
-
       document.getElementById('p-title').innerText = "> " + title;
-      panel.classList.add('active');
-
-      if (typingTimer) clearInterval(typingTimer);
-
-      if (isHtml) {
-        pText.innerHTML = content;
-        pText.style.whiteSpace = "normal"; // Pozwól HTML-owi się układać
-      } else {
-        pText.textContent = "";
-        pText.style.whiteSpace = "pre-wrap";
-        typeWriter('p-text', content);
+      const pText = document.getElementById('p-text');
+      
+      clearInterval(timer);
+      if(isHtml) { pText.innerHTML = content; } 
+      else { 
+        pText.textContent = ""; 
+        let i = 0;
+        timer = setInterval(() => {
+          if(i < content.length) { pText.textContent += content[i++]; }
+          else clearInterval(timer);
+        }, 20);
       }
-      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: MOD_${id}_LOADED`;
+      document.getElementById('panel').classList.add('active');
+      document.getElementById('log-line').innerText = `EXECUTING_MODULE_0${id}... SUCCESS`;
     }
 
     function closeMod() {
-      if (typingTimer) clearInterval(typingTimer);
       document.getElementById('panel').classList.remove('active');
       document.body.classList.remove('module-open');
-      document.querySelectorAll('.nav-container .btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: STANDBY`;
+      document.getElementById('log-line').innerText = "SYSTEM_STANDBY";
     }
 
-    const coreLine = `<system init="vibe_os" status="standby" />`;
-    let coreIndex = 0;
-    function typeCoreLine(){
-      const el = document.getElementById('core-text');
-      if (coreIndex <= coreLine.length){
-        el.textContent = coreLine.slice(0, coreIndex);
-        coreIndex++;
-        setTimeout(typeCoreLine, 55);
+    // Losowe logi w statusbarze dla klimatu
+    setInterval(() => {
+      const logs = ["SCRUBBING_DATA...", "UPDATING_CORE...", "ENCRYPTING...", "SIGNAL_STABLE"];
+      if(!document.body.classList.contains('module-open')) {
+        document.getElementById('log-line').innerText = logs[Math.floor(Math.random()*logs.length)];
       }
-    }
-    window.addEventListener('load', () => setTimeout(typeCoreLine, 600));
+    }, 4000);
   </script>
 </body>
 </html>
