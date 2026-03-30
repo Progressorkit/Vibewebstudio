@@ -3,218 +3,178 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vibe OS | Red Alert Pro</title>
+  <title>Vibe OS | Red Alert</title>
 
   <style>
-    :root {
-      --main-red: #ff0000;
-      --dim-red: rgba(255, 0, 0, 0.15);
-      --bg-dark: #0a0000;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-
-    /* EFEKT SCANLINES - Nakładka retro */
-    body::before {
-      content: " ";
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      background-size: 100% 3px, 3px 100%;
-      z-index: 200;
-      pointer-events: none;
-      opacity: 0.4;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
-      background: var(--bg-dark);
-      font-family: 'Courier New', Courier, monospace;
-      color: var(--main-red);
+      background: #0a0000;
+      font-family: monospace;
+      color: #ff0000;
     }
 
+    /* Tło z poprawną ścieżką */
     #bg-layer {
       position: fixed; inset: 0; z-index: 1;
       background-size: cover; background-position: center;
-      filter: grayscale(1) brightness(0.4) contrast(1.2);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      background-image: url('./bg1.jpg');
+      filter: brightness(0.6) contrast(1.2);
+      transition: background-image 0.5s ease-in-out;
     }
 
-    /* Aktywne tło dostaje lekki kolor */
-    body.module-open #bg-layer {
-      filter: grayscale(0.5) brightness(0.5) sepia(0.5) hue-rotate(-50deg);
-      scale: 1.05;
+    #bg-overlay {
+      position: fixed; inset: 0; z-index: 2;
+      background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+      pointer-events: none;
     }
 
-    /* GŁÓWNE LOGO Z EFEKTEM PULSOWANIA */
-    #center-logo {
-      position: fixed; left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 5; text-align: center;
-      transition: 0.5s ease;
-    }
-
-    #center-logo img {
-      width: min(60vw, 280px);
-      filter: drop-shadow(0 0 15px var(--main-red));
-      animation: logo-flicker 4s infinite;
-    }
-
-    @keyframes logo-flicker {
-      0%, 100% { opacity: 0.9; }
-      50% { opacity: 0.7; filter: drop-shadow(0 0 5px var(--main-red)); }
-      52% { opacity: 1; }
-      54% { opacity: 0.8; }
-    }
-
-    /* NAWIGACJA */
+    /* Nawigacja zawsze na wierzchu */
     .nav-container {
-      position: fixed; right: 25px; top: 50%;
-      transform: translateY(-50%); z-index: 100;
-      display: flex; flex-direction: column; gap: 20px;
+      position: fixed; right: 20px; top: 50%;
+      transform: translateY(-50%);
+      z-index: 2000; 
+      display: flex; flex-direction: column; gap: 15px;
     }
 
     .btn {
-      width: 60px; height: 60px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid var(--main-red);
-      color: var(--main-red);
+      width: 55px; height: 55px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #ff0000;
+      color: #ff0000;
+      border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: bold; font-size: 18px;
-      backdrop-filter: blur(5px);
+      font-weight: bold; font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
       transition: 0.3s;
-      box-shadow: inset 0 0 10px var(--dim-red);
     }
 
-    .btn:hover {
-      background: var(--main-red);
-      color: black;
-      box-shadow: 0 0 20px var(--main-red);
-    }
+    .btn.active { background: #ff0000; color: #000; box-shadow: 0 0 20px #ff0000; }
 
-    /* PANEL BOCZNY - PRO DESIGN */
+    /* Panel boczny z marginesami pod mobile */
     #panel {
-      position: fixed; left: -110%; top: 0;
-      width: min(95%, 400px); height: 100vh;
-      background: rgba(10, 0, 0, 0.98);
-      border-right: 2px solid var(--main-red);
-      padding: 40px 25px; z-index: 150;
-      transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+      position: fixed; left: -110%; top: 5%;
+      width: min(90%, 380px); height: 90vh;
+      background: rgba(10, 0, 0, 0.95);
+      border: 1px solid #ff0000;
+      padding: 20px; z-index: 1500;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex; flex-direction: column;
     }
 
-    #panel.active { left: 0; }
-
-    #p-title {
-      font-size: 24px; text-transform: uppercase;
-      margin-bottom: 20px; border-bottom: 1px solid var(--main-red);
-      padding-bottom: 10px;
-    }
+    #panel.active { left: 10px; }
 
     #p-text {
       flex-grow: 1; overflow-y: auto;
       font-size: 14px; line-height: 1.6;
-      scrollbar-width: thin; scrollbar-color: var(--main-red) black;
+      color: #fff; margin: 15px 0;
+      word-break: break-all;
     }
 
     .close-btn {
-      margin-top: 20px; padding: 15px;
-      border: 1px solid var(--main-red);
-      text-align: center; font-size: 12px;
-      transition: 0.3s;
+      padding: 12px; border: 1px solid #ff0000;
+      color: #ff0000; text-align: center;
+      cursor: pointer; font-size: 11px;
     }
 
-    .close-btn:hover { background: var(--main-red); color: #000; }
-
-    /* STATUS BAR - ANIMOWANE LOGI */
-    #statusbar {
-      position: fixed; bottom: 0; width: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 8px 15px; font-size: 10px;
-      display: flex; justify-content: space-between;
-      z-index: 160; border-top: 1px solid var(--dim-red);
+    #center-logo {
+      position: fixed; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5; text-align: center; pointer-events: none;
     }
+    #center-logo img { width: min(65vw, 280px); opacity: 0.8; }
 
-    .preview-card {
-      border: 1px solid var(--dim-red);
-      padding: 15px; margin-bottom: 15px;
-      background: rgba(255, 0, 0, 0.02);
-    }
-
-    iframe { filter: grayscale(1) invert(1) contrast(1.2); pointer-events: none; }
-
+    /* Stylowanie projektów */
+    .preview-card { border: 1px solid #ff000055; padding: 10px; margin-bottom: 15px; background: rgba(255,0,0,0.05); }
+    .preview-frame { height: 120px; overflow: hidden; position: relative; margin: 10px 0; border: 1px solid #333; }
+    .preview-frame iframe { width: 1000px; height: 700px; transform: scale(0.28); transform-origin: 0 0; border: none; pointer-events: none; }
+    
+    #statusbar { position: fixed; bottom: 0; width: 100%; background: #000; color: #ff0000; padding: 8px; font-size: 10px; z-index: 2100; border-top: 1px solid #330000; }
   </style>
 </head>
 <body>
 
   <div id="bg-layer"></div>
+  <div id="bg-overlay"></div>
 
   <div id="center-logo">
-    <img src="IMG_20260203_123501.png" alt="Vibe Core">
-    <div id="core-status" style="font-size: 9px; margin-top: 10px; letter-spacing: 2px;">SYSTEM_READY</div>
+    <img src="./IMG_20260203_123501.png" alt="Logo">
+    <div id="core-text" style="font-size: 10px; margin-top: 10px;">&lt;system init="vibe_os" status="standby" /&gt;</div>
   </div>
 
   <div class="nav-container">
-    <div class="btn" onclick="openMod(1, 'bg1.jpg', 'Identity', txt1, false)">01</div>
-    <div class="btn" onclick="openMod(2, 'bg2.jpg', 'Services', txt2, false)">02</div>
-    <div class="btn" onclick="openMod(3, 'bg3.jpg', 'Archives', txt3, true)">03</div>
-    <div class="btn" onclick="openMod(4, 'bg4.jpg', 'Terminal', txt4, false)">04</div>
+    <div class="btn" id="btn1" onclick="openMod(1, './bg1.jpg', 'KIM_JESTEM', txt1, false)">01</div>
+    <div class="btn" id="btn2" onclick="openMod(2, './bg2.jpg', 'CO_ROBIĘ', txt2, false)">02</div>
+    <div class="btn" id="btn3" onclick="openMod(3, './bg3.jpg', 'PROJEKTY', txt3, true)">03</div>
+    <div class="btn" id="btn4" onclick="openMod(4, './bg4.jpg', 'KONTAKT', txt4, false)">04</div>
   </div>
 
   <div id="panel">
-    <div id="p-title"></div>
+    <div id="p-title" style="font-size: 20px; border-bottom: 1px solid #ff0000; padding-bottom: 5px;"></div>
     <div id="p-text"></div>
-    <div class="close-btn" onclick="closeMod()">[ ESC ] TERMINATE_SESSION</div>
+    <div class="close-btn" onclick="closeMod()">ZAMKNIJ_SYSTEM</div>
   </div>
 
-  <div id="statusbar">
-    <div id="log-line">INITIALIZING VIBE_OS...</div>
-    <div>LOC: 54.46°N 17.03°E | TEMP: 18°C</div>
-  </div>
+  <div id="statusbar">MODE: RED_OS | STATUS: STANDBY</div>
 
   <script>
-    const txt1 = `>> ANALIZA PROFILU...\nObiekt: Fullstack Developer\nSpecjalizacja: Interfejsy wysokiej wydajności.\n\nŁączę brutalizm cyfrowy z nowoczesną architekturą kodu. Każdy projekt to unikalna instancja systemu.`;
-    const txt2 = `>> DOSTĘPNE PROTOKOŁY:\n\n01. PROJEKTOWANIE UI/UX\n02. WDROŻENIA REACT / VUE\n03. ARCHITEKTURA TREŚCI\n04. OPTYMALIZACJA SEO/CORE VESTALS`;
-    const txt3 = `<div class="preview-card"><strong>PROJECT: M_ZAWORSKI</strong><div style="height:100px; overflow:hidden; margin:10px 0;"><iframe src="https://progressorkit.github.io/marekzaworski.github.io/" width="1000" height="400" style="transform:scale(0.35); transform-origin:0 0;"></iframe></div><a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" class="btn" style="width:100%; height:30px; font-size:10px;">VIEW_LIVE</a></div>`;
-    const txt4 = `>> KANAŁ BEZPOŚREDNI\n\nLink: progresskit7@gmail.com\n\nCzekam na parametry zlecenia.`;
+    let timer = null;
 
-    let timer;
+    // TWOJE ORYGINALNE TEKSTY
+    const txt1 = `[PROFILE] Kim jestem\nProjektuję i buduję strony oraz systemy treści, które działają stabilnie – nie tylko wyglądają.\n\nŁączę estetykę z logiką:\n• czytelność i struktura\n• spójny klimat\n• modułowa budowa\n• gotowe wdrożenie\n\nTen interfejs to demonstracja sposobu myślenia.`;
+    
+    const txt2 = `[OFFER] Co mogę zrobić\n• strony portfolio i autorskie\n• strony usługowe pod sprzedaż\n• systemy tekstów i publikacji\n• wdrożenia GitHub / Netlify\n\nProjekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
+
+    const txt3 = `<div>[PROOFS] Projekty</div>
+      <div class="previews">
+        <div class="preview-card">
+          <strong>MAREK ZAWORSKI</strong><br><small>narracja / noir / system publikacji</small>
+          <div class="preview-frame"><iframe src="https://progressorkit.github.io/marekzaworski.github.io/"></iframe></div>
+          <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px; border:1px solid #ff0000; padding:4px 8px; display:inline-block;">Otwórz pełną</a>
+        </div>
+        <div class="preview-card">
+          <strong>PAULINA</strong><br><small>pisarka, autorka powieści</small>
+          <div class="preview-frame"><iframe src="https://pbarczewska.github.io/"></iframe></div>
+          <a href="https://pbarczewska.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px; border:1px solid #ff0000; padding:4px 8px; display:inline-block;">Otwórz pełną</a>
+        </div>
+      </div>`;
+
+    const txt4 = `[CONTACT] Kontakt\n\nNajprościej: email.\n\nprogresskit7@gmail.com\n\nUstalamy cel → robię wdrożenie.`;
 
     function openMod(id, img, title, content, isHtml) {
       document.getElementById('bg-layer').style.backgroundImage = `url('${img}')`;
-      document.body.classList.add('module-open');
       document.getElementById('p-title').innerText = "> " + title;
       const pText = document.getElementById('p-text');
       
-      clearInterval(timer);
-      if(isHtml) { pText.innerHTML = content; } 
-      else { 
-        pText.textContent = ""; 
+      // Podświetlenie przycisku
+      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn'+id).classList.add('active');
+
+      if (timer) clearInterval(timer);
+      if (isHtml) {
+        pText.innerHTML = content;
+      } else {
+        pText.textContent = "";
         let i = 0;
         timer = setInterval(() => {
-          if(i < content.length) { pText.textContent += content[i++]; }
-          else clearInterval(timer);
-        }, 20);
+          if (i < content.length) { pText.textContent += content[i++]; }
+          else { clearInterval(timer); }
+        }, 15);
       }
       document.getElementById('panel').classList.add('active');
-      document.getElementById('log-line').innerText = `EXECUTING_MODULE_0${id}... SUCCESS`;
+      document.getElementById('statusbar').innerText = `MODE: RED_OS | STATUS: MOD_${id}_LOADED`;
     }
 
     function closeMod() {
+      if (timer) clearInterval(timer);
       document.getElementById('panel').classList.remove('active');
-      document.body.classList.remove('module-open');
-      document.getElementById('log-line').innerText = "SYSTEM_STANDBY";
+      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('statusbar').innerText = `MODE: RED_OS | STATUS: STANDBY`;
+      setTimeout(() => { document.getElementById('p-text').innerHTML = ""; }, 400);
     }
-
-    // Losowe logi w statusbarze dla klimatu
-    setInterval(() => {
-      const logs = ["SCRUBBING_DATA...", "UPDATING_CORE...", "ENCRYPTING...", "SIGNAL_STABLE"];
-      if(!document.body.classList.contains('module-open')) {
-        document.getElementById('log-line').innerText = logs[Math.floor(Math.random()*logs.length)];
-      }
-    }, 4000);
   </script>
 </body>
 </html>
