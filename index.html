@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vibe OS | Advanced Interface</title>
+  <title>Vibe OS | Professional UI</title>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,75 +15,58 @@
       --text-main: #ffffff;
     }
 
-    /* EFEKT CRT I MIGOTANIA */
-    @keyframes flicker {
-      0% { opacity: 0.97; }
-      5% { opacity: 0.95; }
-      10% { opacity: 0.99; }
-      15% { opacity: 0.96; }
-      100% { opacity: 1; }
-    }
-
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
       background: #00050a;
       font-family: 'Courier New', monospace;
-      animation: flicker 0.15s infinite;
+      /* USUNIĘTO MIGOTANIE (FLICKER) */
     }
 
-    /* RUCHOMA SIATKA TŁA */
+    /* RUCHOMA SIATKA - ZNACZNIE SPOWOLNIONA DLA KOMFORTU */
     @keyframes gridMove {
       0% { background-position: 0 0; }
-      100% { background-position: 35px 35px; }
+      100% { background-position: 70px 70px; }
     }
 
     body::before {
       content: ""; position: fixed; inset: 0;
-      background-image: linear-gradient(rgba(0, 51, 102, 0.15) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 51, 102, 0.15) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(0, 51, 102, 0.1) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 51, 102, 0.1) 1px, transparent 1px);
       background-size: 35px 35px;
       z-index: 2; pointer-events: none;
-      animation: gridMove 4s linear infinite;
+      animation: gridMove 20s linear infinite; /* Bardzo powolny ruch */
     }
 
-    /* NAKŁADKA SCANLINES */
+    /* STATYCZNE LINIE SCANLINES - BEZ SKAKANIA */
     body::after {
       content: " ";
       position: fixed; inset: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      background-size: 100% 3px, 3px 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
+      background-size: 100% 4px;
       z-index: 3000; pointer-events: none;
-      opacity: 0.4;
+      opacity: 0.3;
     }
 
     #header-console {
       position: fixed; top: 0; left: 0; width: 100%;
-      z-index: 2000; background: rgba(0,2,10,0.9);
+      z-index: 2000; background: rgba(0,2,10,0.95);
       border-bottom: 2px solid var(--main-ui);
       padding: 15px 10px;
     }
 
-    /* GLITCH EFFECT DLA TYTUŁU */
-    @keyframes glitch {
-      0% { text-shadow: 2px 0 var(--glow-ui), -2px 0 var(--header-red); transform: translate(0); }
-      1% { text-shadow: -2px 0 var(--glow-ui), 2px 0 var(--header-red); transform: translate(-1px); }
-      2% { text-shadow: 2px 0 var(--glow-ui), -2px 0 var(--header-red); transform: translate(0); }
-      100% { text-shadow: 0 0 10px rgba(255,0,0,0.4); transform: translate(0); }
-    }
-
+    /* SUBTELNY BLASK ZAMIAST GLITCHA */
     #header-console h1 {
       color: var(--header-red);
       font-size: 19px; text-align: center; letter-spacing: 5px;
       margin-bottom: 8px; 
-      animation: glitch 3s infinite;
+      text-shadow: 0 0 10px rgba(255,0,0,0.5);
     }
 
     .nav-instruction {
       font-size: 8px; text-align: center; color: #ffffff;
       letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase;
-      opacity: 0.7;
+      opacity: 0.8;
     }
 
     .nav-horizontal { display: flex; justify-content: center; gap: 10px; }
@@ -92,33 +75,37 @@
       padding: 12px 15px; font-size: 11px; font-weight: bold;
       cursor: pointer; border: 1px solid var(--main-ui);
       background: rgba(0, 51, 102, 0.1); color: var(--glow-ui);
-      transition: all 0.3s;
+      transition: all 0.4s ease;
       text-shadow: 0 0 5px var(--glow-ui);
     }
 
+    .nav-item:hover {
+        background: rgba(0, 119, 255, 0.1);
+        border-color: var(--glow-ui);
+    }
+
     .nav-item.active { 
-      background: var(--glow-ui); 
+      background: var(--main-ui); 
       color: #fff;
-      box-shadow: 0 0 30px var(--glow-ui);
-      border-color: #fff;
+      box-shadow: 0 0 20px var(--glow-ui);
+      border-color: var(--glow-ui);
     }
 
     #center-container {
       position: fixed; left: 50%; top: 55%;
       transform: translate(-50%, -50%);
-      z-index: 5; text-align: center; transition: 0.5s;
+      z-index: 5; text-align: center; transition: 0.8s ease-in-out;
     }
 
-    /* PULSUJĄCE LOGO */
+    /* SPOKOJNA ANIMACJA LOGO */
     #center-container img { 
-      width: 240px; margin-bottom: 20px; opacity: 0.7; 
-      filter: drop-shadow(0 0 10px var(--main-ui));
-      animation: logoFloat 6s infinite ease-in-out;
+      width: 240px; margin-bottom: 20px; opacity: 0.8; 
+      animation: logoFloat 8s infinite ease-in-out;
     }
 
     @keyframes logoFloat {
-      0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 5px var(--main-ui)); }
-      50% { transform: translateY(-10px); filter: drop-shadow(0 0 20px var(--glow-ui)); }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
 
     .quick-contact {
@@ -127,22 +114,23 @@
       text-decoration: none; font-size: 11px; letter-spacing: 2px;
       background: rgba(0, 51, 102, 0.2); transition: 0.3s;
     }
-    .quick-contact:hover { background: var(--glow-ui); box-shadow: 0 0 20px var(--glow-ui); }
+    .quick-contact:hover { background: var(--main-ui); box-shadow: 0 0 15px var(--glow-ui); }
 
+    /* PANEL TREŚCI - PŁYNNE WYSUWANIE */
     #panel {
       position: fixed; top: -100%; left: 50%;
       transform: translateX(-50%);
       width: 95%; max-width: 650px; height: 65vh;
-      background: rgba(0, 5, 15, 0.95);
-      border: 1px solid var(--glow-ui);
+      background: rgba(0, 5, 15, 0.98);
+      border: 1px solid var(--main-ui);
       padding: 25px; z-index: 1500;
-      transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex; flex-direction: column;
-      box-shadow: 0 0 50px #000;
-      backdrop-filter: blur(10px);
+      box-shadow: 0 0 40px #000;
+      backdrop-filter: blur(15px);
     }
 
-    #panel.active { top: 160px; }
+    #panel.active { top: 160px; border-color: var(--glow-ui); }
 
     #p-title {
       font-size: 16px; color: var(--glow-ui);
@@ -152,15 +140,15 @@
 
     #p-text {
       flex-grow: 1; overflow-y: auto;
-      font-size: 14px; line-height: 1.8;
+      font-size: 15px; line-height: 1.8;
       color: var(--text-main); margin-top: 20px;
     }
 
     .price-notice {
-      margin-top: 20px; padding: 10px;
-      border-left: 3px solid var(--header-red);
-      font-size: 11px; color: #ccc;
-      background: rgba(255, 0, 0, 0.05);
+      margin-top: 20px; padding: 12px;
+      border-left: 3px solid var(--glow-ui);
+      font-size: 12px; color: #bbb;
+      background: rgba(0, 119, 255, 0.05);
     }
 
     .close-area {
@@ -168,14 +156,15 @@
       border: 1px solid var(--main-ui);
       text-align: center; font-size: 10px;
       cursor: pointer; color: var(--glow-ui);
+      text-transform: uppercase;
     }
 
     #statusbar { 
       position: fixed; bottom: 0; width: 100%; 
       background: #000; border-top: 1px solid var(--main-ui);
-      padding: 8px 15px; font-size: 10px; z-index: 2100;
+      padding: 10px 15px; font-size: 10px; z-index: 2100;
       display: flex; justify-content: space-between;
-      color: var(--main-ui);
+      color: var(--main-ui); opacity: 0.8;
     }
   </style>
 </head>
@@ -183,7 +172,7 @@
 
   <header id="header-console">
     <h1>VIBE WEB STUDIO</h1>
-    <div class="nav-instruction">[ SYSTEM_OVERRIDE: KLIKNIJ MODUŁ, ABY POBRAĆ DANE ]</div>
+    <div class="nav-instruction">[ WYBIERZ MODUŁ PONIŻEJ, ABY ZAINICJOWAĆ SKANOWANIE DANYCH ]</div>
     <nav class="nav-horizontal">
       <div class="nav-item" id="btn1" onclick="openMod(1, 'PROFESJONALIZM_DEKLARACJA', txt1, false)">BIO</div>
       <div class="nav-item" id="btn2" onclick="openMod(2, 'ZAKRES_OPERACYJNY', txt2, false)">TASK</div>
@@ -204,7 +193,7 @@
   </div>
 
   <div id="statusbar">
-    <div id="sys-log">SECURE_LINK: STABLE</div>
+    <div id="sys-log">CONNECTION_STABLE</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
@@ -213,21 +202,21 @@
 
     const txt1 = `Nie uznaję półśrodków ani masowych szablonów. Każda strona to projekt od zera, wykuty z Twojego pomysłu i mojej wizji. Stosuję niekonwencjonalne rozwiązania UI, które wybijają się z nudnego standardu sieci. To nie jest "składanie z gotowców" – to cyfrowa manufaktura skupiona na profesjonalizmie i całkowitej unikalności kodu.`;
     
-    const txt2 = `• Autorskie wizytówki www klasy Premium\n• Systemy prezentacji treści dla twórców\n• Interfejsy dedykowane (Custom UI/UX)\n• Optymalizacja pod szybkie wdrożenia GitHub/Netlify\n\n<div class="price-notice">REZYGNACJA Z SZABLONÓW: Każdy projekt wyceniany jest indywidualnie w oparciu o stopień skomplikowania interfejsu i unikalne funkcje logiczne.</div>`;
+    const txt2 = `• Autorskie wizytówki www klasy Premium\n• Systemy prezentacji treści dla twórców\n• Interfejsy dedykowane (Custom UI/UX)\n• Optymalizacja pod szybkie wdrożenia GitHub/Netlify\n\n<div class="price-notice">[ WYCENA ] Każdy projekt wyceniany jest indywidualnie w oparciu o stopień skomplikowania interfejsu i unikalne funkcje logiczne.</div>`;
     
     const txt3 = `
       <div style="border-left: 2px solid #0077ff; padding-left: 15px; margin-bottom: 25px;">
         <strong>MAREK ZAWORSKI</strong><br><small style="color: #666;">Pisarz / System publikacji</small><br>
-        <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px;">>> OTWÓRZ_PROJEKT</a>
+        <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#0077ff; text-decoration:none; font-size:12px; font-weight:bold;">>> OTWÓRZ_PROJEKT</a>
       </div>
       <div style="border-left: 2px solid #0077ff; padding-left: 15px;">
         <strong>PAULINA BARCZEWSKA</strong><br><small style="color: #666;">Artystka / Portfolio</small><br>
-        <a href="https://pbarczewska.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px;">>> OTWÓRZ_PROJEKT</a>
+        <a href="https://pbarczewska.github.io/" target="_blank" style="color:#0077ff; text-decoration:none; font-size:12px; font-weight:bold;">>> OTWÓRZ_PROJEKT</a>
       </div>`;
 
     function openMod(id, title, content, isHtml) {
       document.getElementById('center-container').style.opacity = "0.05";
-      document.getElementById('center-container').style.filter = "blur(10px)";
+      document.getElementById('center-container').style.filter = "blur(5px)";
       document.getElementById('p-title').innerText = "> " + title;
       const pText = document.getElementById('p-text');
       
@@ -252,7 +241,7 @@
     function closeMod() {
       if (timer) clearInterval(timer);
       document.getElementById('panel').classList.remove('active');
-      document.getElementById('center-container').style.opacity = "0.7";
+      document.getElementById('center-container').style.opacity = "0.8";
       document.getElementById('center-container').style.filter = "none";
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     }
