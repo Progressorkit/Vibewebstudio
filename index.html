@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vibe OS | Red Alert Pro</title>
+  <title>Vibe OS | Command Center</title>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,165 +11,160 @@
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
-      background: #050000;
+      background: #020000;
       font-family: 'Courier New', monospace;
       color: #ff0000;
     }
 
-    /* TŁO */
     #bg-layer {
       position: fixed; inset: 0; z-index: 1;
       background-size: cover; background-position: center;
       background-image: url('./bg1.jpg');
-      filter: brightness(0.4) contrast(1.3);
-      transition: background-image 0.6s ease;
+      filter: brightness(0.3) contrast(1.5) grayscale(1);
+      transition: 0.8s ease;
     }
 
-    #bg-overlay {
-      position: fixed; inset: 0; z-index: 2;
-      background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.9) 100%);
-      pointer-events: none;
-    }
-
-    /* HEADER */
-    #top-header {
+    /* HEADER & HORIZONTAL NAV */
+    #header-console {
       position: fixed; top: 0; left: 0; width: 100%;
-      padding: 15px; z-index: 100; text-align: center;
-      border-bottom: 1px solid rgba(255, 0, 0, 0.2);
-      background: rgba(0,0,0,0.5);
-    }
-    #top-header h1 { font-size: 16px; letter-spacing: 5px; }
-
-    /* NAWIGACJA - ZAWSZE PO PRAWEJ */
-    .nav-container {
-      position: fixed; right: 15px; top: 50%;
-      transform: translateY(-50%);
-      z-index: 2000; 
-      display: flex; flex-direction: column; gap: 15px;
+      z-index: 2000; background: rgba(0,0,0,0.9);
+      border-bottom: 1px solid #ff0000;
+      padding-top: 15px;
     }
 
-    .btn {
-      width: 50px; height: 50px;
-      background: rgba(10, 0, 0, 0.9);
+    #header-console h1 {
+      font-size: 14px; text-align: center; letter-spacing: 8px;
+      margin-bottom: 15px; opacity: 0.8;
+    }
+
+    .nav-horizontal {
+      display: flex; justify-content: center;
+      gap: 5px; padding-bottom: 10px;
+    }
+
+    .nav-item {
+      padding: 8px 12px; font-size: 11px;
+      cursor: pointer; transition: 0.3s;
+      border: 1px solid transparent;
+      letter-spacing: 1px;
+    }
+
+    .nav-item:hover { color: #fff; text-shadow: 0 0 10px #ff0000; }
+    .nav-item.active { 
       border: 1px solid #ff0000;
-      color: #ff0000;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: bold; cursor: pointer;
-      transition: 0.3s;
+      background: rgba(255, 0, 0, 0.1);
+      box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.2);
     }
-    .btn.active { background: #ff0000; color: #000; box-shadow: 0 0 15px #ff0000; }
 
-    /* PANEL - POPRAWKA SZEROKOŚCI */
+    /* CENTRAL PANEL */
     #panel {
-      position: fixed; left: -110%; top: 60px;
-      width: calc(100% - 85px); /* Miejsce na przyciski */
-      height: calc(100vh - 110px);
-      background: rgba(5, 0, 0, 0.95);
+      position: fixed; top: -100%; left: 50%;
+      transform: translateX(-50%);
+      width: 95%; max-width: 600px;
+      height: 70vh;
+      background: rgba(5, 0, 0, 0.98);
       border: 1px solid #ff0000;
-      padding: 20px; z-index: 1500;
-      transition: 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+      border-top: none;
+      padding: 30px 20px; z-index: 1500;
+      transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
       display: flex; flex-direction: column;
     }
-    #panel.active { left: 10px; }
+
+    #panel.active { top: 95px; } /* Wysunięcie spod menu */
 
     #p-text {
       flex-grow: 1; overflow-y: auto;
-      font-size: 13px; line-height: 1.8; /* Większa czytelność */
-      color: #ccc; margin: 15px 0;
-      word-break: break-all;
+      font-size: 13px; line-height: 1.8;
+      color: #ddd; margin-top: 10px;
     }
 
-    .close-btn {
-      padding: 10px; border: 1px solid #ff0000;
-      color: #ff0000; text-align: center; font-size: 10px;
-      letter-spacing: 2px; cursor: pointer;
+    .close-area {
+      margin-top: 15px; padding: 10px;
+      border-top: 1px solid rgba(255,0,0,0.3);
+      text-align: center; font-size: 10px;
+      cursor: pointer; opacity: 0.6;
     }
+    .close-area:hover { opacity: 1; color: #fff; }
 
-    /* CENTER LOGO & CALL TO ACTION */
+    /* LOGO IN BACKGROUND */
     #center-logo {
-      position: fixed; left: 45%; top: 50%;
+      position: fixed; left: 50%; top: 55%;
       transform: translate(-50%, -50%);
-      z-index: 5; text-align: center;
+      z-index: 5; opacity: 0.4; pointer-events: none;
+      transition: 0.5s;
     }
-    #center-logo img { width: min(55vw, 240px); opacity: 0.8; }
-    
-    .cta-text {
-      font-size: 9px; margin-top: 15px; letter-spacing: 2px;
-      animation: pulse 2s infinite; color: #ff0000;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+    #center-logo img { width: 220px; }
+    body.module-open #center-logo { opacity: 0.1; filter: blur(5px); }
 
     /* STATUS BAR */
     #statusbar { 
       position: fixed; bottom: 0; width: 100%; 
-      background: #000; color: #ff0000; 
-      padding: 6px 15px; font-size: 9px; 
-      z-index: 2100; border-top: 1px solid #330000;
+      background: #000; border-top: 1px solid #330000;
+      padding: 6px 15px; font-size: 9px; z-index: 2100;
       display: flex; justify-content: space-between;
     }
 
-    /* PROJEKTY */
-    .preview-card { border: 1px solid #440000; padding: 10px; margin-bottom: 15px; background: #0a0000; }
-    .preview-frame { height: 110px; overflow: hidden; margin: 8px 0; border: 1px solid #222; }
-    .preview-frame iframe { width: 1000px; height: 700px; transform: scale(0.25); transform-origin: 0 0; border: none; filter: grayscale(1); }
+    /* PREVIEWS */
+    .preview-card { border: 1px solid #300; padding: 10px; margin-bottom: 15px; background: #080000; }
+    .preview-frame { height: 130px; overflow: hidden; margin: 10px 0; border: 1px solid #200; }
+    .preview-frame iframe { width: 1000px; height: 700px; transform: scale(0.3); transform-origin: 0 0; border: none; filter: grayscale(1) brightness(0.7); }
+
   </style>
 </head>
 <body>
 
-  <header id="top-header">
+  <div id="bg-layer"></div>
+
+  <header id="header-console">
     <h1>VIBE WEB STUDIO</h1>
+    <nav class="nav-horizontal">
+      <div class="nav-item" id="btn1" onclick="openMod(1, './bg1.jpg', 'IDENTYFIKACJA', txt1, false)">[ 01_BIO ]</div>
+      <div class="nav-item" id="btn2" onclick="openMod(2, './bg2.jpg', 'DYREKTYWY', txt2, false)">[ 02_TASK ]</div>
+      <div class="nav-item" id="btn3" onclick="openMod(3, './bg3.jpg', 'ARCHIWUM', txt3, true)">[ 03_WORK ]</div>
+      <div class="nav-item" id="btn4" onclick="openMod(4, './bg4.jpg', 'UPLINK', txt4, false)">[ 04_LINK ]</div>
+    </nav>
   </header>
 
-  <div id="bg-layer"></div>
-  <div id="bg-overlay"></div>
-
   <div id="center-logo">
-    <img src="./IMG_20260203_123501.png" alt="Logo">
-    <div class="cta-text">[ INITIALIZE_SYSTEM_VIA_01-04 ]</div>
-  </div>
-
-  <div class="nav-container">
-    <div class="btn" id="btn1" onclick="openMod(1, './bg1.jpg', 'KIM_JESTEM', txt1, false)">01</div>
-    <div class="btn" id="btn2" onclick="openMod(2, './bg2.jpg', 'CO_ROBIĘ', txt2, false)">02</div>
-    <div class="btn" id="btn3" onclick="openMod(3, './bg3.jpg', 'PROJEKTY', txt3, true)">03</div>
-    <div class="btn" id="btn4" onclick="openMod(4, './bg4.jpg', 'KONTAKT', txt4, false)">04</div>
+    <img src="./IMG_20260203_123501.png" alt="Core">
   </div>
 
   <div id="panel">
-    <div id="p-title" style="font-size: 18px; border-bottom: 1px solid #ff0000;"></div>
+    <div id="p-title" style="font-size: 14px; letter-spacing: 2px; color: #ff0000; font-weight: bold;"></div>
     <div id="p-text"></div>
-    <div class="close-btn" onclick="closeMod()">[ TERMINATE_SESSION ]</div>
+    <div class="close-area" onclick="closeMod()">> DEACTIVATE_SESSION <</div>
   </div>
 
   <div id="statusbar">
-    <div id="sys-log">SYS_READY</div>
+    <div id="sys-log">CORE_IDLE</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
   <script>
     let timer = null;
 
-    const txt1 = `[PROFILE] Kim jestem\n\nProjektuję i buduję strony oraz systemy treści, które działają stabilnie – nie tylko wyglądają.\n\nŁączę estetykę z logiką:\n• czytelność i struktura\n• spójny klimat\n• modułowa budowa\n• gotowe wdrożenie`;
-    const txt2 = `[OFFER] Co mogę zrobić\n\n• strony portfolio i autorskie\n• strony usługowe pod sprzedaż\n• systemy tekstów i publikacji\n• wdrożenia GitHub / Netlify`;
-    const txt3 = `<div>[PROOFS] Wybrane projekty:</div>
+    const txt1 = `[ID] Kim jestem\n\nTworzę ekosystemy cyfrowe, które działają stabilnie. Skupiam się na surowej estetyce i niezawodności kodu.\n\nŁączę estetykę z logiką:\n• czytelność i struktura\n• spójny klimat\n• modułowa budowa\n• gotowe wdrożenie`;
+    const txt2 = `[OPERATIONS] Co robię\n\n• strony portfolio i autorskie\n• strony usługowe pod sprzedaż\n• systemy tekstów i publikacji\n• wdrożenia GitHub / Netlify`;
+    const txt3 = `<div>[DATA_STREAM] Wybrane jednostki:</div>
       <div class="preview-card">
         <strong>M. ZAWORSKI</strong>
         <div class="preview-frame"><iframe src="https://progressorkit.github.io/marekzaworski.github.io/"></iframe></div>
-        <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#ff0000; font-size:11px;">[ VIEW_LIVE ]</a>
+        <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#ff0000; font-size:10px;">[ OPEN_DATA ]</a>
       </div>
       <div class="preview-card">
         <strong>P. BARCZEWSKA</strong>
         <div class="preview-frame"><iframe src="https://pbarczewska.github.io/"></iframe></div>
-        <a href="https://pbarczewska.github.io/" target="_blank" style="color:#ff0000; font-size:11px;">[ VIEW_LIVE ]</a>
+        <a href="https://pbarczewska.github.io/" target="_blank" style="color:#ff0000; font-size:10px;">[ OPEN_DATA ]</a>
       </div>`;
-    const txt4 = `[CONTACT] Kontakt\n\nEmail: progresskit7@gmail.com\n\nStatus: Awaiting parameters...`;
+    const txt4 = `[CONNECT] Kontakt\n\nUplink: progresskit7@gmail.com\n\nStatus: Awaiting signal...`;
 
     function openMod(id, img, title, content, isHtml) {
       document.getElementById('bg-layer').style.backgroundImage = `url('${img}')`;
+      document.body.classList.add('module-open');
       document.getElementById('p-title').innerText = "> " + title;
       const pText = document.getElementById('p-text');
       
-      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.getElementById('btn'+id).classList.add('active');
 
       if (timer) clearInterval(timer);
@@ -183,14 +178,15 @@
         }, 15);
       }
       document.getElementById('panel').classList.add('active');
-      document.getElementById('sys-log').innerText = `DATA_STREAM_0${id}_ACTIVE`;
+      document.getElementById('sys-log').innerText = `SECTOR_0${id}_CONNECTED`;
     }
 
     function closeMod() {
       if (timer) clearInterval(timer);
       document.getElementById('panel').classList.remove('active');
-      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('sys-log').innerText = "SYS_STANDBY";
+      document.body.classList.remove('module-open');
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('sys-log').innerText = "CORE_IDLE";
     }
 
     setInterval(() => {
