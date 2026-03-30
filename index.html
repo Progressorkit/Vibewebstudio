@@ -44,17 +44,17 @@
       margin-bottom: 8px; text-shadow: 0 0 15px rgba(255,0,0,0.6);
     }
 
+    /* ZMIANA NA BIAŁY TEKST - LEPSZA CZYTELNOŚĆ */
     .nav-instruction {
-      font-size: 8px; text-align: center; color: var(--header-red);
+      font-size: 8px; text-align: center; color: #ffffff;
       letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase;
-      opacity: 0.9; line-height: 1.4;
+      opacity: 0.8; line-height: 1.4; text-shadow: 0 0 5px rgba(255,255,255,0.2);
     }
 
     .nav-horizontal {
       display: flex; justify-content: center; gap: 10px;
     }
 
-    /* ANIMACJA PULSOWANIA */
     @keyframes pulse-navy {
       0% { box-shadow: 0 0 5px var(--main-ui); border-color: var(--main-ui); }
       50% { box-shadow: 0 0 12px var(--glow-ui); border-color: var(--glow-ui); }
@@ -69,7 +69,6 @@
       transition: all 0.3s;
     }
 
-    /* PRZYCISK ŚWIECĄCY CAŁY PO KLIKNIĘCIU */
     .nav-item.active { 
       background: var(--main-ui); 
       color: #fff;
@@ -127,6 +126,14 @@
       color: var(--text-main); margin-top: 20px;
     }
 
+    /* NOTKA O CENIE */
+    .price-notice {
+      margin-top: 20px; padding: 10px;
+      border: 1px dashed var(--main-ui);
+      font-size: 12px; color: #aaa;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
     .close-area {
       margin-top: 20px; padding: 15px;
       border: 1px solid var(--main-ui);
@@ -176,14 +183,14 @@
   <script>
     let timer = null;
 
-    /* NOWY TEKST BIO O NIEKONWENCJONALNYM PODEJŚCIU */
     const txt1 = `Nie uznaję półśrodków ani masowych szablonów. Każda strona to projekt od zera, wykuty z Twojego pomysłu i mojej wizji. Stosuję niekonwencjonalne rozwiązania UI, które wybijają się z nudnego standardu sieci. To nie jest "składanie z gotowców" – to cyfrowa manufaktura skupiona na profesjonalizmie i unikalności.`;
     
-    const txt2 = `• Autorskie wizytówki www\n• Zaawansowane portfolio literackie i artystyczne\n• Niestandardowe systemy prezentacji treści\n• Szybkie wdrożenia (Static Hosting Expert)`;
+    /* DODANA NOTKA O CENIE W SEKCI TASK */
+    const txt2 = `• Autorskie wizytówki www\n• Zaawansowane portfolio literackie i artystyczne\n• Niestandardowe systemy prezentacji treści\n• Szybkie wdrożenia (Static Hosting Expert)\n\n<div class="price-notice">[ INFO ] Każdy projekt wyceniany jest indywidualnie w zależności od stopnia skomplikowania interfejsu oraz unikalności funkcji.</div>`;
     
     const txt3 = `
       <div style="border-left: 2px solid #0055aa; padding-left: 15px; margin-bottom: 25px;">
-        <strong>M. ZAWORSKI</strong><br><small style="color: #666;">System publikacji / Narracja</small><br>
+        <strong>MAREK ZAWORSKI</strong><br><small style="color: #666;">System publikacji / Narracja</small><br>
         <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#0077ff; text-decoration:none; font-size:12px;">>> URUCHOM_PROJEKT</a>
       </div>
       <div style="border-left: 2px solid #0055aa; padding-left: 15px;">
@@ -201,7 +208,7 @@
 
       if (timer) clearInterval(timer);
 
-      if (isHtml) { 
+      if (isHtml || content.includes('<div')) { 
         pText.innerHTML = content; 
       } else {
         pText.innerHTML = "";
