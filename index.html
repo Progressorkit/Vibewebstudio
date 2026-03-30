@@ -16,22 +16,47 @@
       color: #ff0000;
     }
 
-    /* Tło z poprawną ścieżką */
+    /* TŁO */
     #bg-layer {
       position: fixed; inset: 0; z-index: 1;
       background-size: cover; background-position: center;
       background-image: url('./bg1.jpg');
-      filter: brightness(0.6) contrast(1.2);
+      filter: brightness(0.5) contrast(1.2);
       transition: background-image 0.5s ease-in-out;
     }
 
     #bg-overlay {
       position: fixed; inset: 0; z-index: 2;
-      background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+      background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.9) 100%);
       pointer-events: none;
     }
 
-    /* Nawigacja zawsze na wierzchu */
+    /* NOWY ELEMENT: NAGŁÓWEK NA GÓRZE */
+    #top-header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      padding: 20px;
+      z-index: 100;
+      text-align: center;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+      pointer-events: none;
+    }
+
+    #top-header h1 {
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      text-shadow: 0 0 10px #ff0000;
+    }
+
+    #top-header p {
+      font-size: 10px;
+      color: rgba(255, 0, 0, 0.7);
+      letter-spacing: 1px;
+    }
+
+    /* NAWIGACJA */
     .nav-container {
       position: fixed; right: 20px; top: 50%;
       transform: translateY(-50%);
@@ -54,15 +79,16 @@
 
     .btn.active { background: #ff0000; color: #000; box-shadow: 0 0 20px #ff0000; }
 
-    /* Panel boczny z marginesami pod mobile */
+    /* PANEL BOCZNY */
     #panel {
       position: fixed; left: -110%; top: 5%;
       width: min(90%, 380px); height: 90vh;
-      background: rgba(10, 0, 0, 0.95);
+      background: rgba(10, 0, 0, 0.98);
       border: 1px solid #ff0000;
       padding: 20px; z-index: 1500;
       transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex; flex-direction: column;
+      box-shadow: 0 0 30px rgba(0,0,0,1);
     }
 
     #panel.active { left: 10px; }
@@ -85,9 +111,9 @@
       transform: translate(-50%, -50%);
       z-index: 5; text-align: center; pointer-events: none;
     }
-    #center-logo img { width: min(65vw, 280px); opacity: 0.8; }
+    #center-logo img { width: min(60vw, 260px); opacity: 0.9; filter: drop-shadow(0 0 10px #ff000055); }
 
-    /* Stylowanie projektów */
+    /* PROJEKTY */
     .preview-card { border: 1px solid #ff000055; padding: 10px; margin-bottom: 15px; background: rgba(255,0,0,0.05); }
     .preview-frame { height: 120px; overflow: hidden; position: relative; margin: 10px 0; border: 1px solid #333; }
     .preview-frame iframe { width: 1000px; height: 700px; transform: scale(0.28); transform-origin: 0 0; border: none; pointer-events: none; }
@@ -97,12 +123,17 @@
 </head>
 <body>
 
+  <header id="top-header">
+    <h1>VIBE WEB STUDIO</h1>
+    <p>DESIGN & CODE TERMINAL // SELEKTYWNE WDROŻENIA</p>
+  </header>
+
   <div id="bg-layer"></div>
   <div id="bg-overlay"></div>
 
   <div id="center-logo">
     <img src="./IMG_20260203_123501.png" alt="Logo">
-    <div id="core-text" style="font-size: 10px; margin-top: 10px;">&lt;system init="vibe_os" status="standby" /&gt;</div>
+    <div id="core-text" style="font-size: 10px; margin-top: 10px; opacity: 0.5;">&lt;system init="vibe_os" status="active" /&gt;</div>
   </div>
 
   <div class="nav-container">
@@ -113,35 +144,31 @@
   </div>
 
   <div id="panel">
-    <div id="p-title" style="font-size: 20px; border-bottom: 1px solid #ff0000; padding-bottom: 5px;"></div>
+    <div id="p-title" style="font-size: 20px; border-bottom: 1px solid #ff0000; padding-bottom: 5px; text-transform: uppercase;"></div>
     <div id="p-text"></div>
     <div class="close-btn" onclick="closeMod()">ZAMKNIJ_SYSTEM</div>
   </div>
 
-  <div id="statusbar">MODE: RED_OS | STATUS: STANDBY</div>
+  <div id="statusbar">MODE: RED_OS | ENCRYPTED CONNECTION | STANDBY</div>
 
   <script>
     let timer = null;
 
-    // TWOJE ORYGINALNE TEKSTY
     const txt1 = `[PROFILE] Kim jestem\nProjektuję i buduję strony oraz systemy treści, które działają stabilnie – nie tylko wyglądają.\n\nŁączę estetykę z logiką:\n• czytelność i struktura\n• spójny klimat\n• modułowa budowa\n• gotowe wdrożenie\n\nTen interfejs to demonstracja sposobu myślenia.`;
-    
     const txt2 = `[OFFER] Co mogę zrobić\n• strony portfolio i autorskie\n• strony usługowe pod sprzedaż\n• systemy tekstów i publikacji\n• wdrożenia GitHub / Netlify\n\nProjekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
-
     const txt3 = `<div>[PROOFS] Projekty</div>
       <div class="previews">
         <div class="preview-card">
           <strong>MAREK ZAWORSKI</strong><br><small>narracja / noir / system publikacji</small>
           <div class="preview-frame"><iframe src="https://progressorkit.github.io/marekzaworski.github.io/"></iframe></div>
-          <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px; border:1px solid #ff0000; padding:4px 8px; display:inline-block;">Otwórz pełną</a>
+          <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px; border:1px solid #ff0000; padding:4px 8px; display:inline-block; margin-top:5px;">Otwórz pełną</a>
         </div>
         <div class="preview-card">
           <strong>PAULINA</strong><br><small>pisarka, autorka powieści</small>
           <div class="preview-frame"><iframe src="https://pbarczewska.github.io/"></iframe></div>
-          <a href="https://pbarczewska.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px; border:1px solid #ff0000; padding:4px 8px; display:inline-block;">Otwórz pełną</a>
+          <a href="https://pbarczewska.github.io/" target="_blank" style="color:#ff0000; text-decoration:none; font-size:12px; border:1px solid #ff0000; padding:4px 8px; display:inline-block; margin-top:5px;">Otwórz pełną</a>
         </div>
       </div>`;
-
     const txt4 = `[CONTACT] Kontakt\n\nNajprościej: email.\n\nprogresskit7@gmail.com\n\nUstalamy cel → robię wdrożenie.`;
 
     function openMod(id, img, title, content, isHtml) {
@@ -149,7 +176,6 @@
       document.getElementById('p-title').innerText = "> " + title;
       const pText = document.getElementById('p-text');
       
-      // Podświetlenie przycisku
       document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
       document.getElementById('btn'+id).classList.add('active');
 
@@ -165,7 +191,7 @@
         }, 15);
       }
       document.getElementById('panel').classList.add('active');
-      document.getElementById('statusbar').innerText = `MODE: RED_OS | STATUS: MOD_${id}_LOADED`;
+      document.getElementById('statusbar').innerText = `MODE: RED_OS | STATUS: ACCESSING_SECTOR_0${id}`;
     }
 
     function closeMod() {
