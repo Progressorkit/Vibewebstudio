@@ -23,7 +23,7 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-image: url('./bg1.jpg');
+      background-image: url('bg1.jpg');
       filter: brightness(1.1) contrast(1.05) saturate(1.1);
       transition: background-image 0.6s ease-in-out;
     }
@@ -63,6 +63,7 @@
       transition: 0.35s ease;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
       user-select: none;
+      cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -139,7 +140,6 @@
       border-bottom: 1px solid rgba(255,0,0,0.4);
     }
 
-    /* ===== MINI PODGLĄDY ===== */
     .previews {
       margin-top: 10px;
       display: grid;
@@ -209,13 +209,12 @@
       font-size: 12px;
     }
 
-    /* ===== NOWE: CENTRALNE LOGO + HTML-TYPING ===== */
     #center-logo {
       position: fixed;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      z-index: 5; /* nad tłem, pod panelem */
+      z-index: 5;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -248,7 +247,6 @@
       transform: translateY(4px);
     }
 
-    /* opcjonalnie: lekko wygaszamy logo przy otwartym module */
     body.module-open #center-logo {
       opacity: 0.45;
       transition: 0.35s ease;
@@ -260,9 +258,8 @@
   <div id="bg-layer"></div>
   <div id="bg-overlay"></div>
 
-  <!-- NOWE: Logo na środku + piszący się kod -->
   <div id="center-logo" aria-hidden="true">
-    <img src="./IMG_20260203_123501.jpg" alt="">
+    <img src="IMG_20260203_123501.png" alt="Logo">
     <div id="core-text"></div>
   </div>
 
@@ -284,8 +281,7 @@
   <script>
     let typingTimer = null;
 
-    const txt1 =
-`[PROFILE] Kim jestem
+    const txt1 = `[PROFILE] Kim jestem
 Projektuję i buduję strony oraz systemy treści, które działają stabilnie – nie tylko wyglądają.
 
 Łączę estetykę z logiką:
@@ -296,8 +292,7 @@ Projektuję i buduję strony oraz systemy treści, które działają stabilnie �
 
 Ten interfejs to demonstracja sposobu myślenia.`;
 
-    const txt2 =
-`[OFFER] Co mogę zrobić
+    const txt2 = `[OFFER] Co mogę zrobić
 • strony portfolio i autorskie
 • strony usługowe pod sprzedaż
 • systemy tekstów i publikacji
@@ -305,10 +300,7 @@ Ten interfejs to demonstracja sposobu myślenia.`;
 
 Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
 
-    // UWAGA: To jest HTML (dla tego modułu WYŁĄCZAMY typewriter)
-    const txt3 =
-`<div>[PROOFS] Projekty (realne wdrożenia)</div>
-
+    const txt3 = `<div>[PROOFS] Projekty (realne wdrożenia)</div>
 <div class="previews">
   <div class="preview-card">
     <div class="preview-head">
@@ -337,8 +329,7 @@ Projekt ma być szybki, czytelny i gotowy do użycia – nie makieta.`;
   </div>
 </div>`;
 
-    const txt4 =
-`[CONTACT] Kontakt
+    const txt4 = `[CONTACT] Kontakt
 Najprościej: email.
 
 <a class="mail" href="mailto:progresskit7@gmail.com">progresskit7@gmail.com</a>
@@ -353,7 +344,7 @@ Ustalamy cel → robię wdrożenie.`;
 
       typingTimer = setInterval(() => {
         if (i < text.length) {
-          element.textContent += text.charAt(i); // textContent = bez interpretacji HTML
+          element.textContent += text.charAt(i);
           i++;
         } else {
           clearInterval(typingTimer);
@@ -367,7 +358,7 @@ Ustalamy cel → robię wdrożenie.`;
       const btns = document.querySelectorAll('.nav-container .btn');
       const pText = document.getElementById('p-text');
 
-      bg.style.backgroundImage = `url('./${img}?v=${Date.now()}')`;
+      bg.style.backgroundImage = `url('${img}')`;
       document.body.classList.add('module-open');
       btns.forEach(btn => btn.classList.toggle('active', btn.id === 'btn' + id));
 
@@ -377,10 +368,8 @@ Ustalamy cel → robię wdrożenie.`;
       if (typingTimer) clearInterval(typingTimer);
 
       if (isHtml) {
-        // HTML wchodzi od razu (żeby nie wypluwało tagów)
         pText.innerHTML = content;
       } else {
-        // zwykły tekst – typewriter
         pText.textContent = "";
         typeWriter('p-text', content);
       }
@@ -396,7 +385,6 @@ Ustalamy cel → robię wdrożenie.`;
       document.getElementById('statusbar').innerText = `MODE: RED_OS  STATUS: STANDBY`;
     }
 
-    /* ===== NOWE: TYPEWRITER POD LOGO (HTML/SYSTEM) ===== */
     const coreLine = `<system init="vibe_os" status="standby" />`;
     let coreIndex = 0;
 
