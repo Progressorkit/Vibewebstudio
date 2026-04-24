@@ -21,7 +21,7 @@
     #bg-image { position: fixed; inset: 0; background: url('zdjtlo.png') no-repeat center center; background-size: cover; z-index: 1; }
     #glass-overlay { position: fixed; inset: 0; z-index: 2; background: rgba(0, 0, 0, 0.4); }
 
-    /* HEADER & BUTTONS */
+    /* HEADER & NAV */
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 100; position: fixed;
       background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--main-ui);
@@ -33,26 +33,26 @@
       text-shadow: 0 0 15px rgba(255,0,0,0.6); margin-bottom: 15px;
     }
 
-    .nav-horizontal { display: flex; justify-content: center; gap: 15px; }
+    .nav-horizontal { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     
+    /* PRZYCISKI - LEKKIE ŚWIECENIE BAZOWE */
     .nav-item {
       padding: 10px 20px; font-size: 11px; font-weight: 900; cursor: pointer;
       border: 2px solid var(--main-ui); background: rgba(0, 119, 255, 0.05);
       color: #fff; transition: all 0.4s ease; letter-spacing: 1px;
-      /* Lekkie świecenie bazowe */
-      box-shadow: 0 0 8px rgba(0, 119, 255, 0.3);
+      box-shadow: 0 0 10px rgba(0, 119, 255, 0.4); /* Lekkie świecenie niebieskie */
       text-shadow: 0 0 5px rgba(0, 119, 255, 0.5);
     }
 
+    /* MOCNE ŚWIECENIE PO NAJECHANIU */
     .nav-item:hover { 
       background: rgba(0, 119, 255, 0.2); 
-      /* Mocniejsze świecenie po najechaniu */
-      box-shadow: 0 0 20px var(--glow-ui); 
-      text-shadow: 0 0 10px #fff;
+      box-shadow: 0 0 25px var(--glow-ui); 
+      text-shadow: 0 0 12px #fff;
       transform: translateY(-2px);
     }
 
-    .nav-item.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 25px #fff; }
+    .nav-item.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 30px #fff; }
 
     /* PANEL - BLACK GLASS MORPHISM 65% */
     #panel {
@@ -60,15 +60,14 @@
       transform: translateX(-50%); width: 95%; max-width: 1100px;
       height: 75vh; 
       background: rgba(0, 0, 0, 0.65); /* 65% czarne tło */
-      backdrop-filter: blur(15px); /* Efekt szkła */
+      backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
       border: 1px solid rgba(0, 119, 255, 0.4);
       padding: 35px; transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-      overflow-y: auto; opacity: 0; box-shadow: 0 0 40px rgba(0,0,0,0.8);
+      overflow-y: auto; opacity: 0;
     }
     #panel.active { top: 160px; opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ELEMENTY OPISU */
     .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; }
     .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(255,255,255,0.02); }
     .tech-table th, .tech-table td { border: 1px solid rgba(0, 119, 255, 0.3); padding: 12px; text-align: left; font-size: 13px; }
@@ -97,7 +96,7 @@
     <nav class="nav-horizontal">
       <div class="nav-item" id="btn1" onclick="openMod(1, 'BIO')">BIO</div>
       <div class="nav-item" id="btn2" onclick="openMod(2, 'GLIKPRO')">🦅 GLIKPRO</div>
-      <div class="nav-item" id="btn3" onclick="openMod(3, 'RWR')">📊 SYSTEM RWR</div>
+      <div class="nav-item" id="btn3" onclick="openMod(3, 'SYSTEM_RWR')">📊 PROJEKTY HTML</div>
       <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">PROCES</div>
     </nav>
   </header>
@@ -154,25 +153,21 @@
           <div class="gallery-item"><img src="1000015076.jpg"></div>
           <div class="gallery-item"><img src="1000006255.jpg"></div>
         </div>
-
-        <div class="section-title">☢️ SPECYFIKACJA TECHNICZNA (Dla kumatych)</div>
-        <p>"Nie budujemy stron. Budujemy potęgę."</p>
-        <ul>
-          <li>Frontend: .NET MAUI (C#) – Cross-platformowa potęga.</li>
-          <li>Backend: Python 3.12 / FastAPI – Skalowalność i szybkość.</li>
-          <li>AI Engine: Groq Cloud + Llama 3.1 70B – Najszybsza inteligencja na planecie.</li>
-          <li>Database: SQLite (Local) + PostgreSQL (Cloud Sync).</li>
-        </ul>
       `,
 
-      RWR: `
-        <div class="section-title">📊 SYSTEM KONTROLI BILETÓW (RWR)</div>
-        <p>Zaawansowany system raportowania i ewidencji pracy kontrolerów. Automatyczne generowanie zestawień PDF, statystyki indywidualne oraz zespołowe.</p>
+      SYSTEM_RWR: `
+        <div class="section-title">📊 SYSTEM RWR (RAPORTY I ROZLICZENIA)</div>
+        <p>Zaawansowana platforma do ewidencji pracy i kontroli. Generowanie raportów PDF w czasie rzeczywistym.</p>
         <div class="gallery-grid">
           <div class="gallery-item"><img src="rwr1.png"></div>
           <div class="gallery-item"><img src="rwr2.png"></div>
-          <div class="gallery-item"><img src="rwr3.png"></div>
         </div>
+
+        <div class="section-title">⚖️ P.A. BARCZEWSKA - KANCELARIA ADWOKACKA</div>
+        <p>Oficjalna wizytówka premium zrealizowana w czystym HTML/CSS. Minimalizm i profesjonalizm skrojony pod branżę prawniczą.</p>
+        
+        <div class="section-title">📖 MAREK ZAWORSKI - AUTOR SERII "CENA DECYZJI"</div>
+        <p>Oficjalna strona autora z pełną prezentacją dorobku literackiego. Dynamiczny interfejs zachęcający do zapoznania się z twórczością.</p>
       `,
 
       PROCES: `01 // ANALIZA<br>02 // PROJEKT INTERFEJSU<br>03 // WDROŻENIE<br>04 // PUBLIKACJA`
