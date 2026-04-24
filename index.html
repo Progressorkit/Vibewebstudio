@@ -21,6 +21,11 @@
     #bg-image { position: fixed; inset: 0; background: url('zdjtlo.png') no-repeat center center; background-size: cover; z-index: 1; }
     #glass-overlay { position: fixed; inset: 0; z-index: 2; background: rgba(0, 0, 0, 0.4); }
 
+    /* CUSTOM SCROLLBAR FOR GLASS PANEL */
+    #panel::-webkit-scrollbar { width: 6px; }
+    #panel::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    #panel::-webkit-scrollbar-thumb { background: var(--main-ui); border-radius: 10px; }
+
     /* HEADER & NAV */
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 100; position: fixed;
@@ -55,7 +60,7 @@
     #panel {
       z-index: 110; position: fixed; top: 110%; left: 50%;
       transform: translateX(-50%); width: 95%; max-width: 1100px;
-      height: 75vh; 
+      height: 70vh; 
       background: rgba(0, 0, 0, 0.65);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
@@ -66,7 +71,7 @@
     #panel.active { top: 160px; opacity: 1; transform: translateX(-50%) translateY(0); }
 
     .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; text-transform: uppercase; }
-    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding-left: 15px; margin: 20px 0; font-style: italic; background: rgba(255,0,0,0.05); }
+    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding-left: 15px; margin: 20px 0; font-style: italic; background: rgba(255,0,0,0.05); padding-top: 10px; padding-bottom: 10px; }
     
     .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(255,255,255,0.02); }
     .tech-table th, .tech-table td { border: 1px solid rgba(0, 119, 255, 0.3); padding: 12px; text-align: left; font-size: 13px; }
@@ -103,6 +108,7 @@
       <div class="nav-item" id="btn2" onclick="openMod(2, 'GLIKPRO')">🦅 GLIKPRO</div>
       <div class="nav-item" id="btn3" onclick="openMod(3, 'PORTFOLIO')">📊 PROJEKTY HTML</div>
       <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">🚀 PROCES (SALES)</div>
+      <div class="nav-item" id="btn5" onclick="openMod(5, 'KONTAKT')">📧 KONTAKT</div>
     </nav>
   </header>
 
@@ -223,6 +229,25 @@
         <p style="margin-top:15px;"><strong>04 // PUBLIKACJA I WSPARCIE:</strong> Nie zostawiamy Cię z plikami. Hostujemy, optymalizujemy i dbamy, aby system był zawsze ONLINE.</p>
 
         <div class="sell-highlight">Jeśli szukasz "taniej stronki", idź do konkurencji. Jeśli szukasz narzędzia, które zmiażdży Twoją konkurencję — jesteś w dobrym miejscu.</div>
+      `,
+
+      KONTAKT: `
+        <div class="section-title">📡 PROTOKÓŁ KOMUNIKACJI: WYŚLIJ SYGNAŁ</div>
+        <div class="sell-highlight">"Nie szukamy klientów. Szukamy partnerów do budowania cyfrowej dominacji. Jeśli Twój projekt wymaga precyzji, a nie półśrodków – pisz."</div>
+        
+        <div style="margin-top:30px;">
+          <p><strong>E-MAIL:</strong> <span style="color: var(--glow-ui);">progressorkit@gmail.com</span></p>
+          <p style="margin-top:10px;"><strong>LOKALIZACJA:</strong> Baza Operacyjna: Polska // Zasięg: Globalny</p>
+          <p style="margin-top:10px;"><strong>STATUS:</strong> Dostępny dla projektów wysokiego priorytetu.</p>
+        </div>
+
+        <div class="section-title">💬 KANAŁY SZYFROWANE</div>
+        <p>Preferujesz bezpośredni kontakt? Znajdziesz mnie na GitHubie, gdzie trzymam czysty kod moich systemów.</p>
+        <a href="https://github.com/progressorkit" target="_blank" class="project-link">OTWÓRZ_PROFIL_GITHUB ></a>
+
+        <div class="sell-highlight" style="margin-top:40px; border-left: 3px solid var(--glow-ui);">
+          UWAGA: Odpowiadam tylko na konkretne zapytania systemowe. Żadnego spamu, tylko architektura rozwiązań.
+        </div>
       `
     };
 
@@ -237,12 +262,4 @@
     function closeMod() {
       document.getElementById('panel').classList.remove('active');
       document.getElementById('center-container').style.opacity = "1";
-      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-    }
-
-    setInterval(() => { 
-        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
-    }, 1000);
-  </script>
-</body>
-</html>
+      document.querySelectorAll('.nav-
