@@ -9,10 +9,10 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --main-ui: #003366;
-      --glow-ui: #0077ff;
+      --main-ui: #0077ff; /* Jaśniejszy niebieski dla widoczności */
+      --glow-ui: #00aaff;
       --header-red: #ff0000;
-      --text-gray: #b0b0b0;
+      --text-gray: #e0e0e0;
       --hero-x: 0px;
       --hero-y: 0px;
     }
@@ -26,7 +26,6 @@
       color: #fff;
     }
 
-    /* TŁO */
     #bg-image {
       position: fixed;
       inset: 0;
@@ -39,9 +38,8 @@
       position: fixed;
       inset: 0;
       z-index: 2;
-      background: rgba(0, 4, 12, 0.55);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      background: rgba(0, 5, 15, 0.7); /* Ciemniejsze tło dla lepszego kontrastu */
+      backdrop-filter: blur(8px);
     }
 
     #grid-layer {
@@ -50,268 +48,152 @@
       z-index: 3;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(0, 119, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 119, 255, 0.035) 1px, transparent 1px);
-      background-size: 40px 40px;
+        linear-gradient(rgba(0, 119, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 119, 255, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
     }
 
-    header, #center-container, #panel, #statusbar {
-      z-index: 100;
-      position: fixed;
-    }
-
-    /* HEADER & CLAIM */
+    /* NAGŁÓWEK I WIDOCZNE PRZYCISKI */
     #header-console {
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.85);
-      border-bottom: 1px solid var(--main-ui);
-      padding: 20px 10px;
+      top: 0; left: 0; width: 100%;
+      z-index: 100; position: fixed;
+      background: rgba(0,0,0,0.95);
+      border-bottom: 2px solid var(--main-ui);
+      padding: 25px 10px;
       text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
     }
 
     #header-console h1 {
       color: var(--header-red);
-      font-size: 18px;
-      letter-spacing: 6px;
+      font-size: 22px;
+      letter-spacing: 8px;
       font-weight: 900;
-      text-shadow: 0 0 6px rgba(255,0,0,0.35);
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(255,0,0,0.5);
     }
 
-    .sub-claim {
-      font-size: 9px;
-      color: var(--text-gray);
-      margin-top: 8px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    /* NAV */
     .nav-horizontal {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-top: 15px;
+      gap: 15px;
     }
 
     .nav-item {
-      padding: 10px 16px;
-      font-size: 10px;
-      font-weight: bold;
+      padding: 12px 24px;
+      font-size: 11px;
+      font-weight: 900;
       cursor: pointer;
-      border: 1px solid var(--main-ui);
-      background: rgba(0, 30, 60, 0.3);
-      color: var(--glow-ui);
-      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      border: 2px solid var(--main-ui); /* Grubsza ramka */
+      background: rgba(0, 119, 255, 0.15);
+      color: #fff; /* Biały tekst dla max widoczności */
+      transition: all 0.3s;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 0 5px var(--main-ui);
     }
 
     .nav-item:hover {
-      background: rgba(0, 119, 255, 0.2);
-      box-shadow: 0 0 15px var(--glow-ui);
+      background: var(--main-ui);
+      color: #000;
+      box-shadow: 0 0 20px var(--glow-ui);
     }
 
     .nav-item.active {
-      background: var(--glow-ui);
-      color: #fff;
-      box-shadow: 0 0 25px var(--glow-ui);
+      background: #fff;
+      color: #000;
       border-color: #fff;
+      box-shadow: 0 0 25px #fff;
     }
 
     /* CENTER CONTAINER */
     #center-container {
-      left: 50%;
-      top: 52%;
+      z-index: 90; position: fixed;
+      left: 50%; top: 55%;
       transform: translate(-50%, -50%);
       text-align: center;
-      transition: opacity 0.5s ease;
-      width: 100%;
-    }
-
-    #hero-core {
-      display: inline-block;
-      transform: translate(var(--hero-x), var(--hero-y));
-      transition: transform 0.22s ease-out;
-      will-change: transform;
-    }
-
-    @keyframes heartbeatLogo {
-      0%   { transform: scale(1); }
-      14%  { transform: scale(1.06); }
-      28%  { transform: scale(1); }
-      42%  { transform: scale(1.09); }
-      70%  { transform: scale(1); }
-      100% { transform: scale(1); }
+      transition: opacity 0.5s;
     }
 
     .center-logo {
-      width: 180px;
-      margin-bottom: 10px;
-      display: inline-block;
-      animation: heartbeatLogo 2.4s ease-in-out infinite;
-      transform-origin: center center;
-      will-change: transform;
-      filter: drop-shadow(0 0 12px rgba(255,255,255,0.08));
-      transition: filter 0.25s ease;
+      width: 200px;
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
     }
 
-    .center-logo:hover {
-      filter: drop-shadow(0 0 18px rgba(255,255,255,0.16));
-    }
-
-    .main-cta {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 18px 35px;
-      border: 1px solid #fff;
-      color: #fff;
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 3px;
-      background: rgba(255, 255, 255, 0.05);
-      transition: 0.3s;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(255,255,255,0.08);
-    }
-
-    .main-cta:hover {
-      background: #fff;
-      color: #000;
-      box-shadow: 0 0 30px #fff;
-    }
-
-    /* PANEL */
+    /* ROZSZERZONY PANEL */
     #panel {
-      top: 110%;
-      left: 50%;
-      transform: translateX(-50%) translateY(30px);
-      width: 92%;
-      max-width: 500px;
-      max-height: 60vh;
-      background: rgba(0, 8, 20, 0.95);
-      border: 1px solid var(--glow-ui);
-      padding: 25px;
-      transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      z-index: 110; position: fixed;
+      top: 110%; left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 1000px; /* Rozszerzone do 1000px */
+      height: 65vh; /* Większa wysokość */
+      background: rgba(0, 10, 25, 0.98);
+      border: 2px solid var(--main-ui);
+      padding: 35px;
+      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
       overflow-y: auto;
       opacity: 0;
-      box-shadow: 0 0 30px rgba(0, 119, 255, 0.08);
+      box-shadow: 0 0 50px rgba(0, 119, 255, 0.3);
     }
 
     #panel.active {
-      top: 160px;
+      top: 180px;
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
     .panel-header {
-      font-size: 11px;
-      color: var(--glow-ui);
-      margin-bottom: 20px;
-      letter-spacing: 2px;
-      border-bottom: 1px solid rgba(0, 119, 255, 0.3);
-      padding-bottom: 5px;
-    }
-
-    #p-text {
-      color: #eee;
-      line-height: 1.5;
-      font-size: 13px;
-      letter-spacing: 0.5px;
-    }
-
-    .work-item {
-      margin-bottom: 22px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .work-title {
-      color: var(--glow-ui);
-      font-weight: bold;
       font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    .work-desc {
-      font-size: 12px;
-      color: #ccc;
-      margin-bottom: 10px;
-    }
-
-    .work-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .case-tag {
-      display: inline-block;
-      padding: 4px 7px;
-      border: 1px solid rgba(0, 119, 255, 0.2);
-      background: rgba(0, 119, 255, 0.08);
-      color: #cfe6ff;
-      font-size: 9px;
-      letter-spacing: 1px;
-    }
-
-    .work-link {
-      color: #fff;
-      text-decoration: none;
-      font-size: 10px;
-      border: 1px solid rgba(255,255,255,0.18);
-      padding: 6px 10px;
-      transition: 0.3s;
-      display: inline-block;
-    }
-
-    .work-link:hover {
-      border-color: var(--glow-ui);
       color: var(--glow-ui);
-      box-shadow: 0 0 12px rgba(0,119,255,0.15);
+      margin-bottom: 25px;
+      letter-spacing: 4px;
+      border-bottom: 1px solid var(--main-ui);
+      padding-bottom: 10px;
     }
 
-    .close-btn {
-      margin-top: 20px;
-      color: #666;
-      cursor: pointer;
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 2px;
+    /* GALERIA - SIATKA */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
     }
 
-    .close-btn:hover {
-      color: var(--glow-ui);
-    }
-
-    /* FOOTER */
-    #statusbar {
-      bottom: 0;
-      width: 100%;
+    .gallery-item {
+      border: 1px solid var(--main-ui);
+      padding: 10px;
       background: #000;
-      padding: 12px 20px;
+      transition: 0.3s;
+    }
+
+    .gallery-item:hover {
+      border-color: #fff;
+      transform: translateY(-5px);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .gallery-label {
       font-size: 9px;
+      color: var(--glow-ui);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    #statusbar {
+      z-index: 120; position: fixed;
+      bottom: 0; width: 100%;
+      background: #000;
+      padding: 15px 25px;
+      font-size: 10px;
       display: flex;
       justify-content: space-between;
-      color: var(--glow-ui);
-      border-top: 1px solid var(--main-ui);
-      letter-spacing: 1px;
-    }
-
-    @media (max-width: 480px) {
-      .center-logo {
-        width: 170px;
-      }
-
-      .main-cta {
-        padding: 16px 28px;
-        font-size: 10px;
-        letter-spacing: 2px;
-      }
-
-      #panel.active {
-        top: 155px;
-      }
+      color: var(--main-ui);
+      border-top: 2px solid var(--main-ui);
     }
   </style>
 </head>
@@ -323,143 +205,52 @@
 
   <header id="header-console">
     <h1>VIBE WEB STUDIO</h1>
-    <div class="sub-claim">Autorskie strony i interfejsy bez szablonów</div>
     <nav class="nav-horizontal">
       <div class="nav-item" id="btn1" onclick="openMod(1, 'BIO')">BIO</div>
       <div class="nav-item" id="btn2" onclick="openMod(2, 'PROCES')">PROCES</div>
-      <div class="nav-item" id="btn3" onclick="openMod(3, 'WORK')">PROJEKTY</div>
-      <div class="nav-item" id="btn4" onclick="openMod(4, 'GALLERY')">GALERIA</div>
+      <div class="nav-item" id="btn3" onclick="openMod(3, 'PROJEKTY')">PROJEKTY</div>
+      <div class="nav-item" id="btn4" onclick="openMod(4, 'GALERIA')">GALERIA</div>
     </nav>
   </header>
 
   <div id="center-container">
-    <div id="hero-core">
-      <img src="IMG_20260203_123501.png" alt="Logo" class="center-logo">
-      <br>
-      <a href="mailto:progresskit7@gmail.com" class="main-cta">[ ROZPOCZNIJ PROJEKT ]</a>
-    </div>
+    <img src="IMG_20260203_123501.png" alt="Logo" class="center-logo">
   </div>
 
   <div id="panel">
     <div id="p-header" class="panel-header">MODUŁ_DANYCH</div>
     <div id="p-text"></div>
-    <div class="close-btn" onclick="closeMod()">[ ZAMKNIJ_SYSTEM ]</div>
+    <div style="margin-top: 40px; color: #555; cursor: pointer; text-align: center; font-size: 12px; font-weight: bold;" onclick="closeMod()">[ ZAMKNIJ_MODUŁ ]</div>
   </div>
 
   <div id="statusbar">
-    <div>RESPONSE_MODE_ACTIVE // CUSTOM_UI_READY</div>
+    <div>SYSTEM_STATUS: ACTIVE // ENCRYPTED_CONNECTION</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
   <script>
     const content = {
-      BIO: `Projektuję i wdrażam autorskie strony internetowe dla marek osobistych i twórców, którzy nie chcą wyglądać jak reszta.<br><br>Każdy interfejs powstaje od zera — bez szablonów, bez gotowców, bez kompromisów technicznych. Łączę surowy, nowoczesny design z precyzyjnym celem sprzedażowym.`,
-
-      PROCES: `01 // ANALIZA<br>Definiujemy cel strony, architekturę treści i kierunek wizualny.<br><br>02 // PROJEKT INTERFEJSU<br>Tworzę autorski projekt od czystej kartki, dopasowany do charakteru marki.<br><br>03 // WDROŻENIE<br>Budowa responsywnego systemu, optymalizacja prędkości i SEO.<br><br>04 // PUBLIKACJA<br>Testy końcowe, wdrożenie na serwer i oddanie gotowego systemu.`,
-
-      WORK: `
-        <div class="work-item">
-          <div class="work-title">SYSTEM KONTROLI BILETÓW (RWR)</div>
-          <div class="work-desc">Zaawansowany system raportowania i ewidencji pracy kontrolerów. Automatyczne generowanie zestawień PDF, statystyki indywidualne oraz zespołowe.</div>
-          <div class="work-meta">
-            <span class="case-tag">WEB APP</span>
-            <span class="case-tag">DATA VISUALIZATION</span>
-            <span class="case-tag">PDF GENERATION</span>
-          </div>
-          <span class="work-link" style="opacity: 0.6; cursor: default;">SYSTEM WEWNĘTRZNY</span>
-        </div>
-
-        <div class="work-item">
-          <div class="work-title">GLYCO-TRACKER</div>
-          <div class="work-desc">Aplikacja wspomagająca codzienną kontrolę glikemii. Pozwala na monitorowanie poziomu cukru, planowanie posiłków i analizę trendów zdrowotnych.</div>
-          <div class="work-meta">
-            <span class="case-tag">HEALTH TECH</span>
-            <span class="case-tag">UX/UI DESIGN</span>
-            <span class="case-tag">DEDYKOWANY SYSTEM</span>
-          </div>
-          <span class="work-link" style="opacity: 0.6; cursor: default;">PROJEKT WDROŻENIOWY</span>
-        </div>
-
-        <div class="work-item">
-          <div class="work-title">M. ZAWORSKI</div>
-          <div class="work-desc">Strona noir dla pisarza. Cel: budowa marki, własnego klimatu i sprzedaży książki poza platformami marketplace.</div>
-          <div class="work-meta">
-            <span class="case-tag">NOIR BRANDING</span>
-            <span class="case-tag">CUSTOM UI</span>
-            <span class="case-tag">SPRZEDAŻ</span>
-          </div>
-          <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" rel="noopener noreferrer" class="work-link">ZOBACZ REALIZACJĘ</a>
-        </div>
-
-        <div class="work-item">
-          <div class="work-title">P. BARCZEWSKA</div>
-          <div class="work-desc">Autorska strona wizerunkowa dla marki osobistej. Cel: zbudować wiarygodność, estetykę i spójny ton komunikacji.</div>
-          <div class="work-meta">
-            <span class="case-tag">PERSONAL BRAND</span>
-            <span class="case-tag">WIZERUNEK</span>
-            <span class="case-tag">CUSTOM LAYOUT</span>
-          </div>
-          <a href="https://pbarczewska.github.io/" target="_blank" rel="noopener noreferrer" class="work-link">ZOBACZ REALIZACJĘ</a>
-        </div>
-      `,
-
-      GALLERY: `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px;">
-          <div class="work-item" style="grid-column: span 2; border: none; margin-bottom: 5px;">
-            <div class="work-title">DOKUMENTACJA WIZUALNA PROJEKTÓW</div>
-            <div style="font-size: 10px; color: var(--glow-ui); margin-top: 5px; opacity: 0.8;">
-              STATUS: ZWERYFIKOWANO // ARCHIWUM_CYFROWE
-            </div>
-          </div>
-          
-          <div style="grid-column: span 2; font-size: 11px; color: var(--glow-ui); border-bottom: 1px solid #111; margin: 10px 0 5px 0;">[PROJEKT: SYSTEM_RWR]</div>
-          
-          <div style="border: 1px solid var(--main-ui); padding: 5px; background: rgba(0,255,0,0.03); text-align: center;">
-            <img src="rwr1.png" alt="RWR 1" style="width: 100%; height: auto; border: 1px solid #222;">
-            <p style="font-size: 8px; color: var(--glow-ui); margin-top: 5px;">rwr1.png</p>
-          </div>
-          
-          <div style="border: 1px solid var(--main-ui); padding: 5px; background: rgba(0,255,0,0.03); text-align: center;">
-            <img src="rwr2.png" alt="RWR 2" style="width: 100%; height: auto; border: 1px solid #222;">
-            <p style="font-size: 8px; color: var(--glow-ui); margin-top: 5px;">rwr2.png</p>
-          </div>
-
-          <div style="border: 1px solid var(--main-ui); padding: 5px; background: rgba(0,255,0,0.03); text-align: center; grid-column: span 2;">
-            <img src="rwr3.png" alt="RWR 3" style="width: 100%; height: auto; border: 1px solid #222;">
-            <p style="font-size: 8px; color: var(--glow-ui); margin-top: 5px;">rwr3.png</p>
-          </div>
-
-          <div style="grid-column: span 2; font-size: 11px; color: var(--glow-ui); border-bottom: 1px solid #111; margin: 20px 0 5px 0;">[PROJEKT: PANEL_KONTROLNY]</div>
-
-          <div style="border: 1px solid var(--main-ui); padding: 5px; background: rgba(0,255,0,0.03); text-align: center;">
-            <img src="1000015077.jpg" alt="App 1" style="width: 100%; height: auto; border: 1px solid #222;">
-            <p style="font-size: 8px; color: var(--glow-ui); margin-top: 5px;">1000015077.jpg</p>
-          </div>
-
-          <div style="border: 1px solid var(--main-ui); padding: 5px; background: rgba(0,255,0,0.03); text-align: center;">
-            <img src="1000015076.jpg" alt="App 2" style="width: 100%; height: auto; border: 1px solid #222;">
-            <p style="font-size: 8px; color: var(--glow-ui); margin-top: 5px;">1000015076.jpg</p>
-          </div>
-
-          <div style="border: 1px solid var(--main-ui); padding: 5px; background: rgba(0,255,0,0.03); text-align: center; grid-column: span 2;">
-            <img src="1000006255.jpg" alt="App 3" style="width: 100%; height: auto; border: 1px solid #222;">
-            <p style="font-size: 8px; color: var(--glow-ui); margin-top: 5px;">1000006255.jpg</p>
-          </div>
+      BIO: `Projektuję i wdrażam autorskie systemy webowe. Bez szablonów. Tylko czysty kod i unikalny design.`,
+      PROCES: `ANALIZA -> DESIGN -> KOD -> DEPLOY. Każdy etap pod Twoją kontrolą.`,
+      PROJEKTY: `System RWR, Glyco-Tracker oraz dedykowane strony dla twórców i firm.`,
+      GALERIA: `
+        <div class="gallery-grid">
+          <div class="gallery-item"><img src="rwr1.png"><div class="gallery-label">RWR_SYSTEM_01</div></div>
+          <div class="gallery-item"><img src="rwr2.png"><div class="gallery-label">RWR_SYSTEM_02</div></div>
+          <div class="gallery-item"><img src="rwr3.png"><div class="gallery-label">RWR_SYSTEM_03</div></div>
+          <div class="gallery-item"><img src="1000015077.jpg"><div class="gallery-label">ANALYSIS_CORE</div></div>
+          <div class="gallery-item"><img src="1000015076.jpg"><div class="gallery-label">DATA_ENGINE</div></div>
+          <div class="gallery-item"><img src="1000006255.jpg"><div class="gallery-label">PDF_GENERATOR</div></div>
         </div>
       `
     };
 
     function openMod(id, key) {
-      document.getElementById('center-container').style.opacity = "0.05";
-      const pText = document.getElementById('p-text');
-      const pHeader = document.getElementById('p-header');
-
+      document.getElementById('center-container').style.opacity = "0.1";
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.getElementById('btn' + id).classList.add('active');
-
-      pHeader.innerText = `MODUŁ_${key}`;
-      pText.innerHTML = content[key];
-
+      document.getElementById('p-header').innerText = `MODUŁ_${key}`;
+      document.getElementById('p-text').innerHTML = content[key === 'GALERIA' ? 'GALERIA' : key === 'PROJEKTY' ? 'PROJEKTY' : key];
       document.getElementById('panel').classList.add('active');
     }
 
@@ -468,34 +259,6 @@
       document.getElementById('center-container').style.opacity = "1";
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     }
-
-    function setHeroOffset(clientX, clientY) {
-      const offsetX = ((clientX / window.innerWidth) - 0.5) * 8;
-      const offsetY = ((clientY / window.innerHeight) - 0.5) * 8;
-
-      document.documentElement.style.setProperty('--hero-x', `${offsetX.toFixed(2)}px`);
-      document.documentElement.style.setProperty('--hero-y', `${offsetY.toFixed(2)}px`);
-    }
-
-    function resetHeroOffset() {
-      document.documentElement.style.setProperty('--hero-x', '0px');
-      document.documentElement.style.setProperty('--hero-y', '0px');
-    }
-
-    document.addEventListener('mousemove', (e) => {
-      setHeroOffset(e.clientX, e.clientY);
-    });
-
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches && e.touches[0]) {
-        setHeroOffset(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: true });
-
-    document.addEventListener('touchend', resetHeroOffset);
-    window.addEventListener('mouseout', (e) => {
-      if (!e.relatedTarget) resetHeroOffset();
-    });
 
     setInterval(() => {
       document.getElementById('sys-time').innerText = new Date().toLocaleTimeString();
