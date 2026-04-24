@@ -66,7 +66,7 @@
     #panel.active { top: 160px; opacity: 1; transform: translateX(-50%) translateY(0); }
 
     .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; text-transform: uppercase; }
-    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding-left: 15px; margin: 20px 0; font-style: italic; }
+    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding-left: 15px; margin: 20px 0; font-style: italic; background: rgba(255,0,0,0.05); }
     
     .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(255,255,255,0.02); }
     .tech-table th, .tech-table td { border: 1px solid rgba(0, 119, 255, 0.3); padding: 12px; text-align: left; font-size: 13px; }
@@ -77,6 +77,9 @@
     .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
     .gallery-item { border: 1px solid rgba(255,255,255,0.1); padding: 5px; background: rgba(0,0,0,0.3); }
     .gallery-item img { width: 100%; height: auto; display: block; }
+
+    ul { margin-left: 20px; margin-bottom: 15px; }
+    li { margin-bottom: 8px; }
 
     #center-container { z-index: 90; position: fixed; left: 50%; top: 55%; transform: translate(-50%, -50%); text-align: center; }
     .center-logo { width: 180px; opacity: 0.7; }
@@ -96,7 +99,7 @@
   <header id="header-console">
     <h1>VIBE WEB STUDIO</h1>
     <nav class="nav-horizontal">
-      <div class="nav-item" id="btn1" onclick="openMod(1, 'BIO')">BIO</div>
+      <div class="nav-item" id="btn1" onclick="openMod(1, 'MANIFEST')">⚡ MANIFEST</div>
       <div class="nav-item" id="btn2" onclick="openMod(2, 'GLIKPRO')">🦅 GLIKPRO</div>
       <div class="nav-item" id="btn3" onclick="openMod(3, 'PORTFOLIO')">📊 PROJEKTY HTML</div>
       <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">🚀 PROCES (SALES)</div>
@@ -119,45 +122,45 @@
 
   <script>
     const content = {
-      BIO: `🦅 VIBE WEB STUDIO: ARCHITEKTURA CYFROWEJ DOMINACJI
-Nie budujemy "stronek". Tworzymy cyfrowe ekosystemy, które pracują na Twój sukces, podczas gdy konkurencja walczy z aktualizacjami wtyczek. W Vibe Web Studio odrzucamy drogę na skróty. Naszym fundamentem jest czysty kod, natywna wydajność i inteligencja, która wyprzedza rynek.
+      MANIFEST: `
+        <div class="section-title">🦅 VIBE WEB STUDIO: ARCHITEKTURA CYFROWEJ DOMINACJI</div>
+        <div class="sell-highlight">Nie budujemy "stronek". Tworzymy cyfrowe ekosystemy, które pracują na Twój sukces, podczas gdy konkurencja walczy z aktualizacjami wtyczek. W Vibe Web Studio odrzucamy drogę na skróty. Naszym fundamentem jest czysty kod, natywna wydajność i inteligencja, która wyprzedza rynek.</div>
 
-🛠️ CO ROBIMY? (BEZ KOMPROMISÓW)
-1. Natywne Systemy Biznesowe
-Projektujemy i wdrażamy dedykowane systemy operacyjne dla firm (ERP, CRM, Workflow). Zapomnij o gotowcach, do których musisz się dostosować. My budujemy system wokół Twoich procesów.
+        <div class="section-title">🛠️ CO ROBIMY? (BEZ KOMPROMISÓW)</div>
+        
+        <p><strong>1. Natywne Systemy Biznesowe</strong><br>
+        Projektujemy i wdrażamy dedykowane systemy operacyjne dla firm (ERP, CRM, Workflow). Zapomnij o gotowcach, do których musisz się dostosować. My budujemy system wokół Twoich procesów.<br>
+        <span style="color: var(--glow-ui);">[Technologia]:</span> .NET Core / C# / SQL Server.<br>
+        <span style="color: var(--glow-ui);">[Cel]:</span> Maksymalna automatyzacja i eliminacja błędów ludzkich.</p>
 
-Technologia: .NET Core / C# / SQL Server.
+        <p style="margin-top: 15px;"><strong>2. Aplikacje Mobilne & Cross-platformowe (.NET MAUI)</strong><br>
+        Budujemy potężne aplikacje natywne, które oferują najwyższą wydajność na iOS, Android i Windows z jednej bazy kodu.<br>
+        <span style="color: var(--glow-ui);">[Native Power]:</span> Pełny dostęp do hardware’u urządzenia, zero lagów, płynność 120 FPS.<br>
+        <span style="color: var(--glow-ui);">[GlikPro Standard]:</span> Interfejsy klasy Premium (Glassmorphism, Dark Marble) zintegrowane z lokalnymi bazami SQLite.</p>
 
-Cel: Maksymalna automatyzacja i eliminacja błędów ludzkich.
+        <p style="margin-top: 15px;"><strong>3. Wysokowydajne Systemy Webowe</strong><br>
+        Kiedy standardowy web zawodzi, my wchodzimy z architekturą opartą na FastAPI i React/Next.js. Budujemy serwisy zdolne obsługiwać tysiące zapytań na sekundę bez zadyszki.<br>
+        <span style="color: var(--glow-ui);">[Koniec z WordPress]:</span> Nie używamy szablonów. Każdy pixel i każda linia kodu są napisane z myślą o SEO, szybkości i bezpieczeństwie.</p>
 
-2. Aplikacje Mobilne & Cross-platformowe (.NET MAUI)
-Budujemy potężne aplikacje natywne, które oferują najwyższą wydajność na iOS, Android i Windows z jednej bazy kodu.
+        <p style="margin-top: 15px;"><strong>4. Integracja AquilaAI (Sztuczna Inteligencja)</strong><br>
+        Wdrażamy autorski moduł AquilaAI. Integrujemy Twoje systemy z najpotężniejszymi modelami językowymi (Llama 3.1, GPT-4) przez ultra-szybkie API (Groq).<br>
+        <span style="color: var(--glow-ui);">[Zastosowanie]:</span> Automatyczna analiza danych, inteligentne boty sprzedażowe, generowanie raportów w czasie rzeczywistym.</p>
 
-Native Power: Pełny dostęp do hardware’u urządzenia, zero lagów, płynność 120 FPS.
+        <div class="section-title">🛡️ DLACZEGO MY? (VIBE CHECK)</div>
+        <ul>
+          <li><strong>Nienawidzimy Bloatu:</strong> Nasz kod jest chudy, szybki i bezpieczny. Żadnych niepotrzebnych bibliotek, żadnego śmieciowego kodu.</li>
+          <li><strong>Security First:</strong> Twoje dane to Twoja forteca. Stosujemy standardy szyfrowania klasy bankowej.</li>
+          <li><strong>Transparentność:</strong> Nie mydlimy oczu technicznym żargonem. Mówimy konkretnie: co zrobimy, jak to zarobi dla Ciebie pieniądze i dlaczego będzie lepsze od wszystkiego, co widziałeś.</li>
+        </ul>
 
-GlikPro Standard: Interfejsy klasy Premium (Glassmorphism, Dark Marble) zintegrowane z lokalnymi bazami SQLite.
+        <div class="section-title">🚀 MOJA FILOZOFIA</div>
+        <p>Prowadząc projekty takie jak GlikPro, udowodniłem, że połączenie pasji do designu z surową mocą C# i Pythona pozwala tworzyć narzędzia, które realnie zmieniają życie użytkowników. W Vibe Web Studio nie szukamy klientów – szukamy partnerów do budowania cyfrowej przyszłości.</p>
+        
+        <div class="sell-highlight" style="text-align: center; font-weight: 900; font-size: 16px; margin-top: 30px; border-left: none; border-bottom: 3px solid var(--header-red); padding: 15px;">
+          MASZ SYSTEM DO ZBUDOWANIA? POROZMAWIAJMY O KONKRETACH.
+        </div>
+      `,
 
-3. Wysokowydajne Systemy Webowe
-Kiedy standardowy web zawodzi, my wchodzimy z architekturą opartą na FastAPI i React/Next.js. Budujemy serwisy zdolne obsługiwać tysiące zapytań na sekundę bez zadyszki.
-
-Koniec z WordPress: Nie używamy szablonów. Każdy pixel i każda linia kodu są napisane z myślą o SEO, szybkości i bezpieczeństwie.
-
-4. Integracja AquilaAI (Sztuczna Inteligencja)
-Wdrażamy autorski moduł AquilaAI. Integrujemy Twoje systemy z najpotężniejszymi modelami językowymi (Llama 3.1, GPT-4) przez ultra-szybkie API (Groq).
-
-Zastosowanie: Automatyczna analiza danych, inteligentne boty sprzedażowe, generowanie raportów w czasie rzeczywistym.
-
-🛡️ DLACZEGO MY? (VIBE CHECK)
-Nienawidzimy Bloatu: Nasz kod jest chudy, szybki i bezpieczny. Żadnych niepotrzebnych bibliotek, żadnego śmieciowego kodu.
-
-Security First: Twoje dane to Twoja forteca. Stosujemy standardy szyfrowania klasy bankowej.
-
-Transparentność: Nie mydlimy oczu technicznym żargonem. Mówimy konkretnie: co zrobimy, jak to zarobi dla Ciebie pieniądze i dlaczego będzie lepsze od wszystkiego, co widziałeś.
-
-🚀 MOJA FILOZOFIA
-Prowadząc projekty takie jak GlikPro, udowodniłem, że połączenie pasji do designu z surową mocą C# i Pythona pozwala tworzyć narzędzia, które realnie zmieniają życie użytkowników. W Vibe Web Studio nie szukamy klientów – szukamy partnerów do budowania cyfrowej przyszłości.
-
-Masz system do zbudowania? Porozmawiajmy o konkretach.
       GLIKPRO: `
         <div class="section-title">🦅 GLIKPRO: EKOSYSTEM PRECYZJI (Powered by AquilaAI)</div>
         <p>GlikPro to nie jest kolejna "apka do cukru". To natywny, pancerny ekosystem mobilny stworzony dla tych, którzy wymagają absolutnej kontroli i szybkości. Koniec z mulącymi rozwiązaniami webowymi i śmieciowym kodem. Tu rządzi .NET MAUI i silnik AquilaAI.</p>
