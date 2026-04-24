@@ -35,21 +35,18 @@
 
     .nav-horizontal { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     
-    /* PRZYCISKI - LEKKIE ŚWIECENIE BAZOWE */
     .nav-item {
       padding: 10px 20px; font-size: 11px; font-weight: 900; cursor: pointer;
       border: 2px solid var(--main-ui); background: rgba(0, 119, 255, 0.05);
       color: #fff; transition: all 0.4s ease; letter-spacing: 1px;
-      box-shadow: 0 0 10px rgba(0, 119, 255, 0.4); /* Lekkie świecenie niebieskie */
+      box-shadow: 0 0 10px rgba(0, 119, 255, 0.4);
       text-shadow: 0 0 5px rgba(0, 119, 255, 0.5);
     }
 
-    /* MOCNE ŚWIECENIE PO NAJECHANIU */
     .nav-item:hover { 
       background: rgba(0, 119, 255, 0.2); 
       box-shadow: 0 0 25px var(--glow-ui); 
       text-shadow: 0 0 12px #fff;
-      transform: translateY(-2px);
     }
 
     .nav-item.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 30px #fff; }
@@ -59,7 +56,7 @@
       z-index: 110; position: fixed; top: 110%; left: 50%;
       transform: translateX(-50%); width: 95%; max-width: 1100px;
       height: 75vh; 
-      background: rgba(0, 0, 0, 0.65); /* 65% czarne tło */
+      background: rgba(0, 0, 0, 0.65);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
       border: 1px solid rgba(0, 119, 255, 0.4);
@@ -68,10 +65,15 @@
     }
     #panel.active { top: 160px; opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; }
+    .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; text-transform: uppercase; }
+    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding-left: 15px; margin: 20px 0; font-style: italic; }
+    
     .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(255,255,255,0.02); }
     .tech-table th, .tech-table td { border: 1px solid rgba(0, 119, 255, 0.3); padding: 12px; text-align: left; font-size: 13px; }
     
+    .project-link { display: inline-block; margin-top: 10px; color: var(--glow-ui); text-decoration: none; font-weight: bold; font-size: 12px; border: 1px solid var(--glow-ui); padding: 5px 10px; transition: 0.3s; }
+    .project-link:hover { background: var(--glow-ui); color: #000; }
+
     .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
     .gallery-item { border: 1px solid rgba(255,255,255,0.1); padding: 5px; background: rgba(0,0,0,0.3); }
     .gallery-item img { width: 100%; height: auto; display: block; }
@@ -96,8 +98,8 @@
     <nav class="nav-horizontal">
       <div class="nav-item" id="btn1" onclick="openMod(1, 'BIO')">BIO</div>
       <div class="nav-item" id="btn2" onclick="openMod(2, 'GLIKPRO')">🦅 GLIKPRO</div>
-      <div class="nav-item" id="btn3" onclick="openMod(3, 'SYSTEM_RWR')">📊 PROJEKTY HTML</div>
-      <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">PROCES</div>
+      <div class="nav-item" id="btn3" onclick="openMod(3, 'PORTFOLIO')">📊 PROJEKTY HTML</div>
+      <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">🚀 PROCES (SALES)</div>
     </nav>
   </header>
 
@@ -124,7 +126,6 @@
         <p>GlikPro to nie jest kolejna "apka do cukru". To natywny, pancerny ekosystem mobilny stworzony dla tych, którzy wymagają absolutnej kontroli i szybkości. Koniec z mulącymi rozwiązaniami webowymi i śmieciowym kodem. Tu rządzi .NET MAUI i silnik AquilaAI.</p>
         
         <div class="section-title">🛡️ FILOZOFIA PROJEKTU: NATIVE OR NOTHING</div>
-        <p>Większość aplikacji na rynku to opakowane strony internetowe. My budujemy natywnie.</p>
         <ul>
           <li><strong>Zero Lagów:</strong> Architektura C# i .NET zapewnia płynność, której nie osiągnie żaden JavaScript.</li>
           <li><strong>Offline First:</strong> Twoje dane są w telefonie, a nie tylko w chmurze. System działa w tunelu metra i na szczycie góry.</li>
@@ -140,37 +141,49 @@
           <tr><td>Kontekst Medyczny</td><td>Wykrywanie trendów, hipoglikemii i błędów dietetycznych w czasie rzeczywistym.</td><td>Instant</td></tr>
         </table>
 
-        <div class="section-title">🛠️ MODUŁY OPERACYJNE</div>
-        <p><strong>1. Centrum Dowodzenia (Mobilne)</strong></p>
-        <ul>
-          <li>Kalkulator WW/WBT: Precyzyjne wyliczenia wymienników węglowodanowych i białkowo-tłuszczowych.</li>
-          <li>Pancerne SQLite: Lokalna baza danych z unikalnym kluczem dla każdego pomiaru.</li>
-          <li>Tryb Ciemny "Dark Glass": Marmurowe tekstury, przyciemniane szkło – UI, który wygląda jak kokpit luksusowego auta.</li>
-        </ul>
-
         <div class="gallery-grid">
           <div class="gallery-item"><img src="1000015077.jpg"></div>
           <div class="gallery-item"><img src="1000015076.jpg"></div>
           <div class="gallery-item"><img src="1000006255.jpg"></div>
         </div>
+
+        <div class="section-title">☢️ SPECYFIKACJA TECHNICZNA (Dla kumatych)</div>
+        <ul>
+          <li>Frontend: .NET MAUI (C#) – Cross-platformowa potęga.</li>
+          <li>Backend: Python 3.12 / FastAPI – Skalowalność i szybkość.</li>
+          <li>AI Engine: Groq Cloud + Llama 3.1 70B – Najszybsza inteligencja na planecie.</li>
+          <li>Database: SQLite (Local) + PostgreSQL (Cloud Sync).</li>
+        </ul>
       `,
 
-      SYSTEM_RWR: `
+      PORTFOLIO: `
         <div class="section-title">📊 SYSTEM RWR (RAPORTY I ROZLICZENIA)</div>
-        <p>Zaawansowana platforma do ewidencji pracy i kontroli. Generowanie raportów PDF w czasie rzeczywistym.</p>
+        <p>Zaawansowana platforma do ewidencji pracy i kontroli. Automatyczne generowanie zestawień PDF.</p>
         <div class="gallery-grid">
-          <div class="gallery-item"><img src="rwr1.png"></div>
-          <div class="gallery-item"><img src="rwr2.png"></div>
+            <div class="gallery-item"><img src="rwr1.png"></div>
+            <div class="gallery-item"><img src="rwr2.png"></div>
         </div>
 
-        <div class="section-title">⚖️ P.A. BARCZEWSKA - KANCELARIA ADWOKACKA</div>
-        <p>Oficjalna wizytówka premium zrealizowana w czystym HTML/CSS. Minimalizm i profesjonalizm skrojony pod branżę prawniczą.</p>
-        
+        <div class="section-title">✍️ P.A. BARCZEWSKA - AUTORKA</div>
+        <p>Oficjalna wizytówka premium stworzona w czystym HTML/CSS. Minimalizm skrojony pod świat literatury i marki osobistej autorki.</p>
+        <a href="https://progressorkit.github.io/pabarczewska.github.io/" target="_blank" class="project-link">URUCHOM_PROJEKT ></a>
+
         <div class="section-title">📖 MAREK ZAWORSKI - AUTOR SERII "CENA DECYZJI"</div>
-        <p>Oficjalna strona autora z pełną prezentacją dorobku literackiego. Dynamiczny interfejs zachęcający do zapoznania się z twórczością.</p>
+        <p>Dedykowany interfejs dla autora, skupiony na prezentacji dorobku literackiego i konwersji czytelnika.</p>
+        <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" class="project-link">URUCHOM_PROJEKT ></a>
       `,
 
-      PROCES: `01 // ANALIZA<br>02 // PROJEKT INTERFEJSU<br>03 // WDROŻENIE<br>04 // PUBLIKACJA`
+      PROCES: `
+        <div class="section-title">🚀 DLACZEGO VIBE WEB STUDIO? (MAX SALES)</div>
+        <div class="sell-highlight">"Większość agencji sprzedaje Ci kolorowe obrazki. My sprzedajemy Ci dominację technologiczną."</div>
+        
+        <p><strong>01 // ANALIZA AGRESYWNA:</strong> Nie pytamy, jakie kolory lubisz. Analizujemy Twój rynek i znajdujemy luki, które Twoja nowa strona musi wypełnić, aby zarabiać.</p>
+        <p style="margin-top:15px;"><strong>02 // ARCHITEKTURA NATIVE:</strong> Twoja strona nie będzie "ciężkim klockiem" na WordPressie. Piszemy czysty kod, który Google uwielbia, a użytkownicy ładują w ułamku sekundy.</p>
+        <p style="margin-top:15px;"><strong>03 // IMPLEMENTACJA AI (OPCJONALNIE):</strong> Wdrażamy systemy AquilaAI, które automatyzują obsługę klienta lub analizę danych bezpośrednio na Twojej stronie.</p>
+        <p style="margin-top:15px;"><strong>04 // PUBLIKACJA I WSPARCIE:</strong> Nie zostawiamy Cię z plikami. Hostujemy, optymalizujemy i dbamy, aby system był zawsze ONLINE.</p>
+
+        <div class="sell-highlight">Jeśli szukasz "taniej stronki", idź do konkurencji. Jeśli szukasz narzędzia, które zmiażdży Twoją konkurencję — jesteś w dobrym miejscu.</div>
+      `
     };
 
     function openMod(id, key) {
@@ -187,7 +200,9 @@
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     }
 
-    setInterval(() => { document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); }, 1000);
+    setInterval(() => { 
+        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
+    }, 1000);
   </script>
 </body>
 </html>
