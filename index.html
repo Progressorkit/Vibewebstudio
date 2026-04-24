@@ -18,17 +18,18 @@
       background: #000; font-family: 'Courier New', monospace; color: #fff;
     }
 
-    #bg-image { position: fixed; inset: 0; background: url('zdjtlo.png') no-repeat center center; background-size: cover; z-index: 1; }
-    #glass-overlay { position: fixed; inset: 0; z-index: 2; background: rgba(0, 0, 0, 0.4); }
+    /* TŁO - pointer-events: none gwarantuje, że nie zablokuje kliknięć */
+    #bg-image { position: fixed; inset: 0; background: url('zdjtlo.png') no-repeat center center; background-size: cover; z-index: 1; pointer-events: none; }
+    #glass-overlay { position: fixed; inset: 0; z-index: 2; background: rgba(0, 0, 0, 0.4); pointer-events: none; }
 
-    /* CUSTOM SCROLLBAR FOR GLASS PANEL */
+    /* CUSTOM SCROLLBAR */
     #panel::-webkit-scrollbar { width: 6px; }
     #panel::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
     #panel::-webkit-scrollbar-thumb { background: var(--main-ui); border-radius: 10px; }
 
-    /* HEADER & NAV */
+    /* HEADER & NAV - z-index: 200 dla absolutnej pewności */
     #header-console {
-      top: 0; left: 0; width: 100%; z-index: 100; position: fixed;
+      top: 0; left: 0; width: 100%; z-index: 200; position: fixed;
       background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--main-ui);
       padding: 20px 10px; text-align: center;
     }
@@ -38,60 +39,49 @@
       text-shadow: 0 0 15px rgba(255,0,0,0.6); margin-bottom: 15px;
     }
 
-    .nav-horizontal { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+    .nav-horizontal { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
     
     .nav-item {
-      padding: 10px 20px; font-size: 11px; font-weight: 900; cursor: pointer;
-      border: 2px solid var(--main-ui); background: rgba(0, 119, 255, 0.05);
-      color: #fff; transition: all 0.4s ease; letter-spacing: 1px;
-      box-shadow: 0 0 10px rgba(0, 119, 255, 0.4);
-      text-shadow: 0 0 5px rgba(0, 119, 255, 0.5);
+      padding: 10px 15px; font-size: 11px; font-weight: 900; cursor: pointer;
+      border: 2px solid var(--main-ui); background: rgba(0, 119, 255, 0.1);
+      color: #fff; transition: all 0.3s ease; letter-spacing: 1px;
+      user-select: none;
     }
 
-    .nav-item:hover { 
-      background: rgba(0, 119, 255, 0.2); 
-      box-shadow: 0 0 25px var(--glow-ui); 
-      text-shadow: 0 0 12px #fff;
-    }
+    .nav-item:hover { background: rgba(0, 119, 255, 0.3); box-shadow: 0 0 15px var(--glow-ui); }
+    .nav-item.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 20px #fff; }
 
-    .nav-item.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 30px #fff; }
-
-    /* PANEL - BLACK GLASS MORPHISM 65% */
+    /* PANEL */
     #panel {
-      z-index: 110; position: fixed; top: 110%; left: 50%;
+      z-index: 300; position: fixed; top: 120%; left: 50%;
       transform: translateX(-50%); width: 95%; max-width: 1100px;
       height: 70vh; 
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(0, 119, 255, 0.4);
-      padding: 35px; transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-      overflow-y: auto; opacity: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--main-ui);
+      padding: 30px; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+      overflow-y: auto; opacity: 0; visibility: hidden;
     }
-    #panel.active { top: 160px; opacity: 1; transform: translateX(-50%) translateY(0); }
+    #panel.active { top: 160px; opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-    .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; text-transform: uppercase; }
-    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding-left: 15px; margin: 20px 0; font-style: italic; background: rgba(255,0,0,0.05); padding-top: 10px; padding-bottom: 10px; }
+    .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid rgba(0,170,255,0.2); }
+    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding: 10px 15px; margin: 20px 0; font-style: italic; background: rgba(255,0,0,0.1); }
     
-    .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(255,255,255,0.02); }
-    .tech-table th, .tech-table td { border: 1px solid rgba(0, 119, 255, 0.3); padding: 12px; text-align: left; font-size: 13px; }
+    .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    .tech-table th, .tech-table td { border: 1px solid rgba(0, 119, 255, 0.3); padding: 10px; text-align: left; font-size: 12px; }
     
-    .project-link { display: inline-block; margin-top: 10px; color: var(--glow-ui); text-decoration: none; font-weight: bold; font-size: 12px; border: 1px solid var(--glow-ui); padding: 5px 10px; transition: 0.3s; }
-    .project-link:hover { background: var(--glow-ui); color: #000; }
+    .project-link { display: inline-block; margin-top: 10px; color: var(--glow-ui); text-decoration: none; font-weight: bold; border: 1px solid var(--glow-ui); padding: 5px 10px; }
 
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
-    .gallery-item { border: 1px solid rgba(255,255,255,0.1); padding: 5px; background: rgba(0,0,0,0.3); }
-    .gallery-item img { width: 100%; height: auto; display: block; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
+    .gallery-item { border: 1px solid rgba(255,255,255,0.1); background: #000; line-height: 0; }
+    .gallery-item img { width: 100%; height: auto; }
 
-    ul { margin-left: 20px; margin-bottom: 15px; }
-    li { margin-bottom: 8px; }
-
-    #center-container { z-index: 90; position: fixed; left: 50%; top: 55%; transform: translate(-50%, -50%); text-align: center; }
-    .center-logo { width: 180px; opacity: 0.7; }
+    #center-container { z-index: 50; position: fixed; left: 50%; top: 55%; transform: translate(-50%, -50%); text-align: center; transition: 0.5s; }
+    .center-logo { width: 150px; opacity: 0.5; }
 
     #statusbar {
-      z-index: 120; position: fixed; bottom: 0; width: 100%;
-      background: #000; padding: 12px 25px; font-size: 10px;
+      z-index: 400; position: fixed; bottom: 0; width: 100%;
+      background: #000; padding: 10px 20px; font-size: 10px;
       display: flex; justify-content: space-between; color: var(--main-ui); border-top: 1px solid var(--main-ui);
     }
   </style>
@@ -106,8 +96,8 @@
     <nav class="nav-horizontal">
       <div class="nav-item" id="btn1" onclick="openMod(1, 'MANIFEST')">⚡ MANIFEST</div>
       <div class="nav-item" id="btn2" onclick="openMod(2, 'GLIKPRO')">🦅 GLIKPRO</div>
-      <div class="nav-item" id="btn3" onclick="openMod(3, 'PORTFOLIO')">📊 PROJEKTY HTML</div>
-      <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">🚀 PROCES (SALES)</div>
+      <div class="nav-item" id="btn3" onclick="openMod(3, 'PORTFOLIO')">📊 PROJEKTY</div>
+      <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">🚀 PROCES</div>
       <div class="nav-item" id="btn5" onclick="openMod(5, 'KONTAKT')">📧 KONTAKT</div>
     </nav>
   </header>
@@ -118,148 +108,108 @@
 
   <div id="panel">
     <div id="p-text"></div>
-    <div style="margin-top: 50px; color: #555; cursor: pointer; text-align: center; font-size: 11px;" onclick="closeMod()">[ ZAMKNIJ_SYSTEM ]</div>
+    <div style="margin-top: 50px; color: #ff0000; cursor: pointer; text-align: center; font-weight: bold;" onclick="closeMod()">[ ZAMKNIJ_SYSTEM ]</div>
   </div>
 
   <div id="statusbar">
-    <div>SYSTEM_STATUS: ACTIVE // AQUILAAI_CORE: ONLINE</div>
+    <div>SYSTEM_STATUS: ACTIVE // VIBE_OS: v3.0</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
   <script>
     const content = {
       MANIFEST: `
-        <div class="section-title">🦅 VIBE WEB STUDIO: ARCHITEKTURA CYFROWEJ DOMINACJI</div>
-        <div class="sell-highlight">Nie budujemy "stronek". Tworzymy cyfrowe ekosystemy, które pracują na Twój sukces, podczas gdy konkurencja walczy z aktualizacjami wtyczek. W Vibe Web Studio odrzucamy drogę na skróty. Naszym fundamentem jest czysty kod, natywna wydajność i inteligencja, która wyprzedza rynek.</div>
-
-        <div class="section-title">🛠️ CO ROBIMY? (BEZ KOMPROMISÓW)</div>
-        
-        <p><strong>1. Natywne Systemy Biznesowe</strong><br>
-        Projektujemy i wdrażamy dedykowane systemy operacyjne dla firm (ERP, CRM, Workflow). Zapomnij o gotowcach, do których musisz się dostosować. My budujemy system wokół Twoich procesów.<br>
-        <span style="color: var(--glow-ui);">[Technologia]:</span> .NET Core / C# / SQL Server.<br>
-        <span style="color: var(--glow-ui);">[Cel]:</span> Maksymalna automatyzacja i eliminacja błędów ludzkich.</p>
-
-        <p style="margin-top: 15px;"><strong>2. Aplikacje Mobilne & Cross-platformowe (.NET MAUI)</strong><br>
-        Budujemy potężne aplikacje natywne, które oferują najwyższą wydajność na iOS, Android i Windows z jednej bazy kodu.<br>
-        <span style="color: var(--glow-ui);">[Native Power]:</span> Pełny dostęp do hardware’u urządzenia, zero lagów, płynność 120 FPS.<br>
-        <span style="color: var(--glow-ui);">[GlikPro Standard]:</span> Interfejsy klasy Premium (Glassmorphism, Dark Marble) zintegrowane z lokalnymi bazami SQLite.</p>
-
-        <p style="margin-top: 15px;"><strong>3. Wysokowydajne Systemy Webowe</strong><br>
-        Kiedy standardowy web zawodzi, my wchodzimy z architekturą opartą na FastAPI i React/Next.js. Budujemy serwisy zdolne obsługiwać tysiące zapytań na sekundę bez zadyszki.<br>
-        <span style="color: var(--glow-ui);">[Koniec z WordPress]:</span> Nie używamy szablonów. Każdy pixel i każda linia kodu są napisane z myślą o SEO, szybkości i bezpieczeństwie.</p>
-
-        <p style="margin-top: 15px;"><strong>4. Integracja AquilaAI (Sztuczna Inteligencja)</strong><br>
-        Wdrażamy autorski moduł AquilaAI. Integrujemy Twoje systemy z najpotężniejszymi modelami językowymi (Llama 3.1, GPT-4) przez ultra-szybkie API (Groq).<br>
-        <span style="color: var(--glow-ui);">[Zastosowanie]:</span> Automatyczna analiza danych, inteligentne boty sprzedażowe, generowanie raportów w czasie rzeczywistym.</p>
-
-        <div class="section-title">🛡️ DLACZEGO MY? (VIBE CHECK)</div>
-        <ul>
-          <li><strong>Nienawidzimy Bloatu:</strong> Nasz kod jest chudy, szybki i bezpieczny. Żadnych niepotrzebnych bibliotek, żadnego śmieciowego kodu.</li>
-          <li><strong>Security First:</strong> Twoje dane to Twoja forteca. Stosujemy standardy szyfrowania klasy bankowej.</li>
-          <li><strong>Transparentność:</strong> Nie mydlimy oczu technicznym żargonem. Mówimy konkretnie: co zrobimy, jak to zarobi dla Ciebie pieniądze i dlaczego będzie lepsze od wszystkiego, co widziałeś.</li>
-        </ul>
-
-        <div class="section-title">🚀 MOJA FILOZOFIA</div>
-        <p>Prowadząc projekty takie jak GlikPro, udowodniłem, że połączenie pasji do designu z surową mocą C# i Pythona pozwala tworzyć narzędzia, które realnie zmieniają życie użytkowników. W Vibe Web Studio nie szukamy klientów – szukamy partnerów do budowania cyfrowej przyszłości.</p>
-        
-        <div class="sell-highlight" style="text-align: center; font-weight: 900; font-size: 16px; margin-top: 30px; border-left: none; border-bottom: 3px solid var(--header-red); padding: 15px;">
-          MASZ SYSTEM DO ZBUDOWANIA? POROZMAWIAJMY O KONKRETACH.
-        </div>
+        <div class="section-title">🦅 VIBE WEB STUDIO: ARCHITEKTURA DOMINACJI</div>
+        <div class="sell-highlight">Nie budujemy "stronek". Tworzymy cyfrowe ekosystemy, które pracują na Twój sukces. Naszym fundamentem jest czysty kod, natywna wydajność i AI, która wyprzedza rynek.</div>
+        <p><strong>1. Systemy Biznesowe:</strong> Dedykowane rozwiązania ERP/CRM w .NET Core.</p>
+        <p style="margin-top:10px;"><strong>2. Mobile:</strong> Natywne aplikacje .NET MAUI (120 FPS, zero lagów).</p>
+        <p style="margin-top:10px;"><strong>3. High-End Web:</strong> FastAPI + React. Zapomnij o wolnym WordPressie.</p>
+        <p style="margin-top:10px;"><strong>4. AquilaAI:</strong> Integracja z Llama 3.1 i GPT-4 dla Twojego biznesu.</p>
       `,
 
       GLIKPRO: `
-        <div class="section-title">🦅 GLIKPRO: EKOSYSTEM PRECYZJI (Powered by AquilaAI)</div>
-        <p>GlikPro to nie jest kolejna "apka do cukru". To natywny, pancerny ekosystem mobilny stworzony dla tych, którzy wymagają absolutnej kontroli i szybkości. Koniec z mulącymi rozwiązaniami webowymi i śmieciowym kodem. Tu rządzi .NET MAUI i silnik AquilaAI.</p>
-        
-        <div class="section-title">🛡️ FILOZOFIA PROJEKTU: NATIVE OR NOTHING</div>
-        <ul>
-          <li><strong>Zero Lagów:</strong> Architektura C# i .NET zapewnia płynność, której nie osiągnie żaden JavaScript.</li>
-          <li><strong>Offline First:</strong> Twoje dane są w telefonie, a nie tylko w chmurze. System działa w tunelu metra i na szczycie góry.</li>
-          <li><strong>Zero WP:</strong> Nie używamy półśrodków. Czysty kod, pełna kontrola nad pamięcią, agresywna wydajność.</li>
-        </ul>
-
-        <div class="section-title">🧠 MÓZG SYSTEMU: AQUILLAAI (THE BRAIN)</div>
-        <p>Serce GlikPro to autorski backend w FastAPI, który komunikuje się bezpośrednio z modelem Llama 3.1 przez ultra-szybkie API Groq.</p>
+        <div class="section-title">🦅 GLIKPRO: EKOSYSTEM PRECYZJI</div>
+        <p>Natywny, pancerny ekosystem mobilny stworzony w .NET MAUI. Silnik AquilaAI zapewnia analizę danych w ułamku sekundy.</p>
         <table class="tech-table">
-          <tr><th>Funkcja</th><th>Opis Techniczny</th><th>Szybkość Reakcji</th></tr>
-          <tr><td>Analiza danych</td><td>W czasie < 1s dzięki Groq LPU.</td><td>Błyskawiczna</td></tr>
-          <tr><td>Adaptacja Stylu</td><td>Trzy tryby komunikacji: Senior, Pro, Youth.</td><td>Real-time</td></tr>
-          <tr><td>Kontekst Medyczny</td><td>Wykrywanie trendów, hipoglikemii i błędów dietetycznych w czasie rzeczywistym.</td><td>Instant</td></tr>
+          <tr><th>Funkcja</th><th>Opis</th><th>Szybkość</th></tr>
+          <tr><td>Analiza AI</td><td>Groq LPU (Llama 3.1)</td><td>&lt; 1s</td></tr>
+          <tr><td>Performance</td><td>Natywny kod C#</td><td>120 FPS</td></tr>
         </table>
-
         <div class="gallery-grid">
           <div class="gallery-item"><img src="1000015077.jpg"></div>
           <div class="gallery-item"><img src="1000015076.jpg"></div>
-          <div class="gallery-item"><img src="1000006255.jpg"></div>
         </div>
-
-        <div class="section-title">☢️ SPECYFIKACJA TECHNICZNA (Dla kumatych)</div>
-        <ul>
-          <li>Frontend: .NET MAUI (C#) – Cross-platformowa potęga.</li>
-          <li>Backend: Python 3.12 / FastAPI – Skalowalność i szybkość.</li>
-          <li>AI Engine: Groq Cloud + Llama 3.1 70B – Najszybsza inteligencja na planecie.</li>
-          <li>Database: SQLite (Local) + PostgreSQL (Cloud Sync).</li>
-        </ul>
       `,
 
       PORTFOLIO: `
-        <div class="section-title">📊 SYSTEM RWR (RAPORTY I ROZLICZENIA)</div>
-        <p>Zaawansowana platforma do ewidencji pracy i kontroli. Automatyczne generowanie zestawień PDF.</p>
+        <div class="section-title">📊 WYBRANE REALIZACJE</div>
+        <p><strong>SYSTEM RWR:</strong> Ewidencja i raportowanie PDF.</p>
         <div class="gallery-grid">
             <div class="gallery-item"><img src="rwr1.png"></div>
             <div class="gallery-item"><img src="rwr2.png"></div>
         </div>
-
-        <div class="section-title">✍️ P.A. BARCZEWSKA - AUTORKA</div>
-        <p>Oficjalna wizytówka premium stworzona w czystym HTML/CSS. Minimalizm skrojony pod świat literatury i marki osobistej autorki.</p>
-        <a href="https://progressorkit.github.io/pabarczewska.github.io/" target="_blank" class="project-link">URUCHOM_PROJEKT ></a>
-
-        <div class="section-title">📖 MAREK ZAWORSKI - AUTOR SERII "CENA DECYZJI"</div>
-        <p>Dedykowany interfejs dla autora, skupiony na prezentacji dorobku literackiego i konwersji czytelnika.</p>
-        <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" class="project-link">URUCHOM_PROJEKT ></a>
+        <div class="section-title">WEB PREMIUM</div>
+        <p>P.A. BARCZEWSKA - Autorska wizytówka literacka.</p>
+        <a href="https://progressorkit.github.io/pabarczewska.github.io/" target="_blank" class="project-link">OTWÓRZ ></a>
       `,
 
       PROCES: `
-        <div class="section-title">🚀 DLACZEGO VIBE WEB STUDIO? (MAX SALES)</div>
-        <div class="sell-highlight">"Większość agencji sprzedaje Ci kolorowe obrazki. My sprzedajemy Ci dominację technologiczną."</div>
-        
-        <p><strong>01 // ANALIZA AGRESYWNA:</strong> Nie pytamy, jakie kolory lubisz. Analizujemy Twój rynek i znajdujemy luki, które Twoja nowa strona musi wypełnić, aby zarabiać.</p>
-        <p style="margin-top:15px;"><strong>02 // ARCHITEKTURA NATIVE:</strong> Twoja strona nie będzie "ciężkim klockiem" na WordPressie. Piszemy czysty kod, który Google uwielbia, a użytkownicy ładują w ułamku sekundy.</p>
-        <p style="margin-top:15px;"><strong>03 // IMPLEMENTACJA AI (OPCJONALNIE):</strong> Wdrażamy systemy AquilaAI, które automatyzują obsługę klienta lub analizę danych bezpośrednio na Twojej stronie.</p>
-        <p style="margin-top:15px;"><strong>04 // PUBLIKACJA I WSPARCIE:</strong> Nie zostawiamy Cię z plikami. Hostujemy, optymalizujemy i dbamy, aby system był zawsze ONLINE.</p>
-
-        <div class="sell-highlight">Jeśli szukasz "taniej stronki", idź do konkurencji. Jeśli szukasz narzędzia, które zmiażdży Twoją konkurencję — jesteś w dobrym miejscu.</div>
+        <div class="section-title">🚀 STRATEGIA WDROŻENIA</div>
+        <div class="sell-highlight">"Większość agencji sprzedaje obrazki. My sprzedajemy technologię."</div>
+        <ul>
+          <li><strong>01:</strong> Analiza agresywna rynku.</li>
+          <li><strong>02:</strong> Architektura Native (Zero Bloat).</li>
+          <li><strong>03:</strong> Implementacja AI (AquilaAI Core).</li>
+          <li><strong>04:</strong> Hosting i wsparcie 24/7.</li>
+        </ul>
       `,
 
       KONTAKT: `
-        <div class="section-title">📡 PROTOKÓŁ KOMUNIKACJI: WYŚLIJ SYGNAŁ</div>
-        <div class="sell-highlight">"Nie szukamy klientów. Szukamy partnerów do budowania cyfrowej dominacji. Jeśli Twój projekt wymaga precyzji, a nie półśrodków – pisz."</div>
-        
-        <div style="margin-top:30px;">
-          <p><strong>E-MAIL:</strong> <span style="color: var(--glow-ui);">progressorkit@gmail.com</span></p>
-          <p style="margin-top:10px;"><strong>LOKALIZACJA:</strong> Baza Operacyjna: Polska // Zasięg: Globalny</p>
-          <p style="margin-top:10px;"><strong>STATUS:</strong> Dostępny dla projektów wysokiego priorytetu.</p>
-        </div>
-
-        <div class="section-title">💬 KANAŁY SZYFROWANE</div>
-        <p>Preferujesz bezpośredni kontakt? Znajdziesz mnie na GitHubie, gdzie trzymam czysty kod moich systemów.</p>
-        <a href="https://github.com/progressorkit" target="_blank" class="project-link">OTWÓRZ_PROFIL_GITHUB ></a>
-
-        <div class="sell-highlight" style="margin-top:40px; border-left: 3px solid var(--glow-ui);">
-          UWAGA: Odpowiadam tylko na konkretne zapytania systemowe. Żadnego spamu, tylko architektura rozwiązań.
-        </div>
+        <div class="section-title">📡 PROTOKÓŁ KOMUNIKACJI</div>
+        <div class="sell-highlight">"Szukamy partnerów do budowania cyfrowej przyszłości. Pisz konkretnie."</div>
+        <p><strong>E-MAIL:</strong> <span style="color: var(--glow-ui);">progressorkit@gmail.com</span></p>
+        <p style="margin-top:15px;"><strong>GITHUB:</strong> <a href="https://github.com/progressorkit" target="_blank" style="color:#fff;">github.com/progressorkit</a></p>
+        <p style="margin-top:15px;"><strong>STATUS:</strong> Dostępny dla nowych systemów.</p>
       `
     };
 
     function openMod(id, key) {
+      console.log("Inicjalizacja modułu:", key); // Debug w konsoli (F12)
+      
+      // Ukryj logo w tle
       document.getElementById('center-container').style.opacity = "0.05";
+      
+      // Reset przycisków
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-      document.getElementById('btn' + id).classList.add('active');
-      document.getElementById('p-text').innerHTML = content[key];
-      document.getElementById('panel').classList.add('active');
+      
+      // Aktywuj wybrany
+      const activeBtn = document.getElementById('btn' + id);
+      if(activeBtn) activeBtn.classList.add('active');
+      
+      // Wstrzyknij treść i pokaż panel
+      const panel = document.getElementById('panel');
+      const pText = document.getElementById('p-text');
+      
+      if(panel && pText) {
+        pText.innerHTML = content[key];
+        panel.classList.add('active');
+        panel.scrollTop = 0;
+      }
     }
 
     function closeMod() {
-      document.getElementById('panel').classList.remove('active');
-      document.getElementById('center-container').style.opacity = "1";
-      document.querySelectorAll('.nav-
+      const panel = document.getElementById('panel');
+      if(panel) panel.classList.remove('active');
+      
+      document.getElementById('center-container').style.opacity = "0.5";
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    }
+
+    // Zegar systemowy
+    setInterval(() => { 
+        const timeBox = document.getElementById('sys-time');
+        if(timeBox) timeBox.innerText = new Date().toLocaleTimeString(); 
+    }, 1000);
+  </script>
+</body>
+</html>
