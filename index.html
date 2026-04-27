@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vibe Web Studio</title>
+  <title>Vibe Web Studio | Cyber OS</title>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --main-ui: #0077ff;
-      --glow-ui: #00aaff;
-      --header-red: #ff0000;
+      --ui-blue: #0077ff;
+      --ui-blue-glow: #00aaff;
+      --ui-red: #ff0000;
+      --ui-red-glow: #ff4444;
+      --glass: rgba(0, 5, 15, 0.85);
     }
 
     html, body {
@@ -18,72 +20,129 @@
       background: #000; font-family: 'Courier New', monospace; color: #fff;
     }
 
-    /* TŁO - pointer-events: none gwarantuje, że nie zablokuje kliknięć */
-    #bg-image { position: fixed; inset: 0; background: url('zdjtlo.png') no-repeat center center; background-size: cover; z-index: 1; pointer-events: none; }
-    #glass-overlay { position: fixed; inset: 0; z-index: 2; background: rgba(0, 0, 0, 0.4); pointer-events: none; }
+    /* BACKGROUND LAYER */
+    #bg-image { 
+      position: fixed; inset: 0; 
+      background: url('zdjtlo.png') no-repeat center center; 
+      background-size: cover; 
+      z-index: 1; 
+      pointer-events: none; 
+    }
 
-    /* CUSTOM SCROLLBAR */
-    #panel::-webkit-scrollbar { width: 6px; }
-    #panel::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-    #panel::-webkit-scrollbar-thumb { background: var(--main-ui); border-radius: 10px; }
+    /* DARK GLASS OVERLAY - To jest to "ciemne szkło" na całości */
+    #glass-overlay { 
+      position: fixed; inset: 0; 
+      z-index: 2; 
+      background: radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%), rgba(0, 8, 20, 0.6);
+      backdrop-filter: blur(12px) brightness(0.6);
+      -webkit-backdrop-filter: blur(12px) brightness(0.6);
+      pointer-events: none; 
+    }
 
-    /* HEADER & NAV - z-index: 200 dla absolutnej pewności */
+    /* GRID PATTERN */
+    #glass-overlay::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0, 119, 255, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 119, 255, 0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    /* HEADER */
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 200; position: fixed;
-      background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--main-ui);
-      padding: 20px 10px; text-align: center;
+      background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--ui-blue);
+      padding: 15px; text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
     }
 
     #header-console h1 {
-      color: var(--header-red); font-size: 24px; letter-spacing: 10px; font-weight: 900;
-      text-shadow: 0 0 15px rgba(255,0,0,0.6); margin-bottom: 15px;
+      color: var(--ui-red); font-size: 20px; letter-spacing: 8px; font-weight: 900;
+      text-shadow: 0 0 15px var(--ui-red); margin-bottom: 10px;
     }
 
-    .nav-horizontal { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .nav-horizontal { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
     
     .nav-item {
-      padding: 10px 15px; font-size: 11px; font-weight: 900; cursor: pointer;
-      border: 2px solid var(--main-ui); background: rgba(0, 119, 255, 0.1);
-      color: #fff; transition: all 0.3s ease; letter-spacing: 1px;
-      user-select: none;
+      padding: 8px 12px; font-size: 10px; font-weight: 900; cursor: pointer;
+      border: 1px solid var(--ui-blue); background: rgba(0, 119, 255, 0.1);
+      color: #fff; transition: all 0.3s; letter-spacing: 1px;
+      position: relative; overflow: hidden;
     }
 
-    .nav-item:hover { background: rgba(0, 119, 255, 0.3); box-shadow: 0 0 15px var(--glow-ui); }
-    .nav-item.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 20px #fff; }
+    .nav-item:hover { background: var(--ui-blue); color: #000; box-shadow: 0 0 15px var(--ui-blue-glow); }
+    .nav-item.active { background: var(--ui-red); color: #fff; border-color: var(--ui-red); box-shadow: 0 0 20px var(--ui-red-glow); }
 
-    /* PANEL */
+    /* TILES CONTAINER (PANEL) */
     #panel {
-      z-index: 300; position: fixed; top: 120%; left: 50%;
-      transform: translateX(-50%); width: 95%; max-width: 1100px;
-      height: 70vh; 
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      border: 1px solid var(--main-ui);
-      padding: 30px; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+      z-index: 300; position: fixed; top: 110%; left: 50%;
+      transform: translateX(-50%); width: 95%; max-width: 1200px;
+      height: 75vh; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
       overflow-y: auto; opacity: 0; visibility: hidden;
+      padding-bottom: 50px;
     }
-    #panel.active { top: 160px; opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    #panel.active { top: 140px; opacity: 1; visibility: visible; }
 
-    .section-title { color: var(--glow-ui); font-size: 18px; margin: 25px 0 10px; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid rgba(0,170,255,0.2); }
-    .sell-highlight { color: #fff; border-left: 3px solid var(--header-red); padding: 10px 15px; margin: 20px 0; font-style: italic; background: rgba(255,0,0,0.1); }
+    /* TILE GRID LAYOUT */
+    .tile-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+      gap: 20px; padding: 10px;
+    }
+
+    /* SINGLE TILE STYLE */
+    .content-tile {
+      background: rgba(0, 20, 40, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 119, 255, 0.3);
+      padding: 20px;
+      position: relative;
+      transition: 0.3s;
+      animation: tileIn 0.5s ease forwards;
+      opacity: 0; transform: translateY(30px);
+    }
+
+    @keyframes tileIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .content-tile:hover { border-color: var(--ui-blue-glow); box-shadow: inset 0 0 15px rgba(0, 119, 255, 0.2); }
     
-    .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-    .tech-table th, .tech-table td { border: 1px solid rgba(0, 119, 255, 0.3); padding: 10px; text-align: left; font-size: 12px; }
-    
-    .project-link { display: inline-block; margin-top: 10px; color: var(--glow-ui); text-decoration: none; font-weight: bold; border: 1px solid var(--glow-ui); padding: 5px 10px; }
+    .tile-header { 
+      color: var(--ui-blue-glow); font-size: 14px; font-weight: bold; 
+      margin-bottom: 15px; border-left: 3px solid var(--ui-red); padding-left: 10px;
+      text-transform: uppercase;
+    }
 
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
-    .gallery-item { border: 1px solid rgba(255,255,255,0.1); background: #000; line-height: 0; }
-    .gallery-item img { width: 100%; height: auto; }
+    .content-tile p { font-size: 13px; line-height: 1.6; color: #ccc; }
 
-    #center-container { z-index: 50; position: fixed; left: 50%; top: 55%; transform: translate(-50%, -50%); text-align: center; transition: 0.5s; }
-    .center-logo { width: 150px; opacity: 0.5; }
+    /* CUSTOM ELEMENTS */
+    .sell-alert { 
+      background: rgba(255, 0, 0, 0.1); border: 1px solid var(--ui-red); 
+      padding: 15px; font-style: italic; font-size: 12px; margin-top: 15px;
+    }
+
+    .stat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 11px; }
+    .stat-val { color: var(--ui-blue-glow); font-weight: bold; }
+
+    #center-container { z-index: 50; position: fixed; left: 50%; top: 55%; transform: translate(-50%, -50%); text-align: center; }
+    .center-logo { width: 140px; opacity: 0.3; filter: drop-shadow(0 0 20px var(--ui-blue)); }
 
     #statusbar {
       z-index: 400; position: fixed; bottom: 0; width: 100%;
-      background: #000; padding: 10px 20px; font-size: 10px;
-      display: flex; justify-content: space-between; color: var(--main-ui); border-top: 1px solid var(--main-ui);
+      background: rgba(0,0,0,0.9); padding: 8px 20px; font-size: 9px;
+      display: flex; justify-content: space-between; color: var(--ui-blue); border-top: 1px solid var(--ui-blue);
+      text-transform: uppercase;
     }
+
+    .close-btn { 
+      display: block; width: 100%; padding: 15px; color: var(--ui-red); 
+      text-align: center; cursor: pointer; font-weight: bold; letter-spacing: 5px;
+      margin-top: 20px; border-top: 1px dashed var(--ui-red);
+    }
+
+    /* SCROLLBAR */
+    #panel::-webkit-scrollbar { width: 4px; }
+    #panel::-webkit-scrollbar-thumb { background: var(--ui-red); }
   </style>
 </head>
 <body>
@@ -92,13 +151,13 @@
   <div id="glass-overlay"></div>
 
   <header id="header-console">
-    <h1>VIBE WEB STUDIO</h1>
+    <h1>VIBE WEB STUDIO // OS v.3</h1>
     <nav class="nav-horizontal">
-      <div class="nav-item" id="btn1" onclick="openMod(1, 'MANIFEST')">⚡ MANIFEST</div>
-      <div class="nav-item" id="btn2" onclick="openMod(2, 'GLIKPRO')">🦅 GLIKPRO</div>
-      <div class="nav-item" id="btn3" onclick="openMod(3, 'PORTFOLIO')">📊 PROJEKTY</div>
-      <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">🚀 PROCES</div>
-      <div class="nav-item" id="btn5" onclick="openMod(5, 'KONTAKT')">📧 KONTAKT</div>
+      <div class="nav-item" id="btn1" onclick="openMod(1, 'MANIFEST')">MANIFEST</div>
+      <div class="nav-item" id="btn2" onclick="openMod(2, 'GLIKPRO')">GLIKPRO</div>
+      <div class="nav-item" id="btn3" onclick="openMod(3, 'PORTFOLIO')">PROJEKTY</div>
+      <div class="nav-item" id="btn4" onclick="openMod(4, 'PROCES')">PROCES</div>
+      <div class="nav-item" id="btn5" onclick="openMod(5, 'KONTAKT')">KONTAKT</div>
     </nav>
   </header>
 
@@ -107,108 +166,123 @@
   </div>
 
   <div id="panel">
-    <div id="p-text"></div>
-    <div style="margin-top: 50px; color: #ff0000; cursor: pointer; text-align: center; font-weight: bold;" onclick="closeMod()">[ ZAMKNIJ_SYSTEM ]</div>
+    <div id="p-text" class="tile-grid"></div>
+    <div class="close-btn" onclick="closeMod()">[ ZAMKNIJ_SYSTEM ]</div>
   </div>
 
   <div id="statusbar">
-    <div>SYSTEM_STATUS: ACTIVE // VIBE_OS: v3.0</div>
+    <div id="status-left">CORE: ONLINE // ENCRYPTION: ACTIVE // SHADOW_UI: LOADED</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
   <script>
     const content = {
       MANIFEST: `
-        <div class="section-title">🦅 VIBE WEB STUDIO: ARCHITEKTURA DOMINACJI</div>
-        <div class="sell-highlight">Nie budujemy "stronek". Tworzymy cyfrowe ekosystemy, które pracują na Twój sukces. Naszym fundamentem jest czysty kod, natywna wydajność i AI, która wyprzedza rynek.</div>
-        <p><strong>1. Systemy Biznesowe:</strong> Dedykowane rozwiązania ERP/CRM w .NET Core.</p>
-        <p style="margin-top:10px;"><strong>2. Mobile:</strong> Natywne aplikacje .NET MAUI (120 FPS, zero lagów).</p>
-        <p style="margin-top:10px;"><strong>3. High-End Web:</strong> FastAPI + React. Zapomnij o wolnym WordPressie.</p>
-        <p style="margin-top:10px;"><strong>4. AquilaAI:</strong> Integracja z Llama 3.1 i GPT-4 dla Twojego biznesu.</p>
+        <div class="content-tile">
+          <div class="tile-header">Architektura Dominacji</div>
+          <p>Tworzymy cyfrowe ekosystemy, które pracują na Twój sukces. W Vibe Web Studio odrzucamy drogę na skróty. Fundamentem jest czysty kod i natywna wydajność.</p>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.1s">
+          <div class="tile-header">01 // Systemy Biznesowe</div>
+          <p>Dedykowane ERP/CRM budowane w .NET Core. Budujemy system wokół Twoich procesów, a nie odwrotnie.</p>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.2s">
+          <div class="tile-header">02 // Mobile Native</div>
+          <p>Aplikacje .NET MAUI. Pełna moc hardware'u, płynność 120 FPS, zero lagów. Native or nothing.</p>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.3s">
+          <div class="tile-header">03 // AquilaAI Core</div>
+          <p>Integracja z Llama 3.1 przez ultra-szybkie API Groq. Inteligentne boty i analiza danych w ułamku sekundy.</p>
+          <div class="sell-alert">"Nie szukamy klientów. Szukamy partnerów do budowania cyfrowej dominacji."</div>
+        </div>
       `,
 
       GLIKPRO: `
-        <div class="section-title">🦅 GLIKPRO: EKOSYSTEM PRECYZJI</div>
-        <p>Natywny, pancerny ekosystem mobilny stworzony w .NET MAUI. Silnik AquilaAI zapewnia analizę danych w ułamku sekundy.</p>
-        <table class="tech-table">
-          <tr><th>Funkcja</th><th>Opis</th><th>Szybkość</th></tr>
-          <tr><td>Analiza AI</td><td>Groq LPU (Llama 3.1)</td><td>&lt; 1s</td></tr>
-          <tr><td>Performance</td><td>Natywny kod C#</td><td>120 FPS</td></tr>
-        </table>
-        <div class="gallery-grid">
-          <div class="gallery-item"><img src="1000015077.jpg"></div>
-          <div class="gallery-item"><img src="1000015076.jpg"></div>
+        <div class="content-tile">
+          <div class="tile-header">GlikPro: System Taktyczny</div>
+          <p>Natywny, pancerny ekosystem mobilny stworzony dla absolutnej kontroli danych medycznych i dietetycznych.</p>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.1s">
+          <div class="tile-header">Specyfikacja Silnika</div>
+          <div class="stat-row"><span>Silnik AI:</span><span class="stat-val">Llama 3.1 70B</span></div>
+          <div class="stat-row"><span>Backend:</span><span class="stat-val">FastAPI / Python</span></div>
+          <div class="stat-row"><span>Latency:</span><span class="stat-val">&lt; 1.0s</span></div>
+          <div class="stat-row"><span>Frontend:</span><span class="stat-val">.NET MAUI</span></div>
+        </div>
+        <div class="content-tile" style="grid-column: span 1; animation-delay: 0.2s">
+          <div class="tile-header">Visual Core</div>
+          <img src="1000015077.jpg" style="width:100%; border: 1px solid var(--ui-blue);">
         </div>
       `,
 
       PORTFOLIO: `
-        <div class="section-title">📊 WYBRANE REALIZACJE</div>
-        <p><strong>SYSTEM RWR:</strong> Ewidencja i raportowanie PDF.</p>
-        <div class="gallery-grid">
-            <div class="gallery-item"><img src="rwr1.png"></div>
-            <div class="gallery-item"><img src="rwr2.png"></div>
+        <div class="content-tile">
+          <div class="tile-header">System RWR</div>
+          <p>Zaawansowana ewidencja pracy i rozliczeń. Automatyzacja raportów PDF i kontrola workflow.</p>
         </div>
-        <div class="section-title">WEB PREMIUM</div>
-        <p>P.A. BARCZEWSKA - Autorska wizytówka literacka.</p>
-        <a href="https://progressorkit.github.io/pabarczewska.github.io/" target="_blank" class="project-link">OTWÓRZ ></a>
+        <div class="content-tile" style="animation-delay: 0.1s">
+          <div class="tile-header">P.A. Barczewska</div>
+          <p>Wizytówka Premium. Czysty kod HTML/CSS dla marki osobistej.</p>
+          <a href="https://progressorkit.github.io/pabarczewska.github.io/" target="_blank" style="color:var(--ui-blue-glow); font-size:11px;">[ OTWÓRZ_PROJEKT ]</a>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.2s">
+          <div class="tile-header">Marek Zaworski</div>
+          <p>Interfejs literacki skupiony na konwersji i estetyce Dark-Mode.</p>
+          <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:var(--ui-blue-glow); font-size:11px;">[ OTWÓRZ_PROJEKT ]</a>
+        </div>
       `,
 
       PROCES: `
-        <div class="section-title">🚀 STRATEGIA WDROŻENIA</div>
-        <div class="sell-highlight">"Większość agencji sprzedaje obrazki. My sprzedajemy technologię."</div>
-        <ul>
-          <li><strong>01:</strong> Analiza agresywna rynku.</li>
-          <li><strong>02:</strong> Architektura Native (Zero Bloat).</li>
-          <li><strong>03:</strong> Implementacja AI (AquilaAI Core).</li>
-          <li><strong>04:</strong> Hosting i wsparcie 24/7.</li>
-        </ul>
+        <div class="content-tile">
+          <div class="tile-header">Protokół Wdrożenia</div>
+          <div class="stat-row"><span>01</span><span>Analiza Agresywna</span></div>
+          <div class="stat-row"><span>02</span><span>Architektura Native</span></div>
+          <div class="stat-row"><span>03</span><span>AquilaAI Inject</span></div>
+          <div class="stat-row"><span>04</span><span>Final Deployment</span></div>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.2s">
+          <div class="tile-header">Vibe Check</div>
+          <p>Większość agencji sprzedaje obrazki. My sprzedajemy technologię, która miażdży konkurencję.</p>
+          <div class="sell-alert" style="color: var(--ui-red-glow);">OSTRZEŻENIE: Nie robimy "tanich stron". Robimy systemy, które zarabiają.</div>
+        </div>
       `,
 
       KONTAKT: `
-        <div class="section-title">📡 PROTOKÓŁ KOMUNIKACJI</div>
-        <div class="sell-highlight">"Szukamy partnerów do budowania cyfrowej przyszłości. Pisz konkretnie."</div>
-        <p><strong>E-MAIL:</strong> <span style="color: var(--glow-ui);">progressorkit@gmail.com</span></p>
-        <p style="margin-top:15px;"><strong>GITHUB:</strong> <a href="https://github.com/progressorkit" target="_blank" style="color:#fff;">github.com/progressorkit</a></p>
-        <p style="margin-top:15px;"><strong>STATUS:</strong> Dostępny dla nowych systemów.</p>
+        <div class="content-tile" style="border-color: var(--ui-red);">
+          <div class="tile-header" style="border-left-color: var(--ui-blue);">Wyślij Sygnał</div>
+          <p>Email: <span style="color: var(--ui-red-glow);">progressorkit@gmail.com</span></p>
+          <p style="margin-top:10px;">GitHub: <a href="https://github.com/progressorkit" target="_blank" style="color:#fff;">/progressorkit</a></p>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.2s">
+          <div class="tile-header">Lokalizacja</div>
+          <p>Baza: Polska // Zasięg: Globalny</p>
+          <p style="margin-top:10px; color: var(--ui-blue-glow);">Status: Dostępny dla projektów High-Priority.</p>
+        </div>
       `
     };
 
     function openMod(id, key) {
-      console.log("Inicjalizacja modułu:", key); // Debug w konsoli (F12)
-      
-      // Ukryj logo w tle
       document.getElementById('center-container').style.opacity = "0.05";
-      
-      // Reset przycisków
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-      
-      // Aktywuj wybrany
       const activeBtn = document.getElementById('btn' + id);
       if(activeBtn) activeBtn.classList.add('active');
       
-      // Wstrzyknij treść i pokaż panel
       const panel = document.getElementById('panel');
       const pText = document.getElementById('p-text');
       
-      if(panel && pText) {
-        pText.innerHTML = content[key];
-        panel.classList.add('active');
-        panel.scrollTop = 0;
-      }
+      pText.innerHTML = content[key];
+      panel.classList.add('active');
+      panel.scrollTop = 0;
     }
 
     function closeMod() {
-      const panel = document.getElementById('panel');
-      if(panel) panel.classList.remove('active');
-      
-      document.getElementById('center-container').style.opacity = "0.5";
+      document.getElementById('panel').classList.remove('active');
+      document.getElementById('center-container').style.opacity = "0.3";
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     }
 
-    // Zegar systemowy
     setInterval(() => { 
-        const timeBox = document.getElementById('sys-time');
-        if(timeBox) timeBox.innerText = new Date().toLocaleTimeString(); 
+        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
     }, 1000);
   </script>
 </body>
