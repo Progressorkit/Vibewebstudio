@@ -6,6 +6,7 @@
   <title>Vibe Web Studio | Cyber OS</title>
 
   <style>
+    /* RESET I ZMIENNE SYSTEMOWE */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --ui-blue: #0077ff;
@@ -20,7 +21,7 @@
       background: #000; font-family: 'Courier New', monospace; color: #fff;
     }
 
-    /* BACKGROUND LAYER */
+    /* WARSTWA TŁA (ZDJĘCIE) */
     #bg-image { 
       position: fixed; inset: 0; 
       background: url('zdjtlo.png') no-repeat center center; 
@@ -29,7 +30,7 @@
       pointer-events: none; 
     }
 
-    /* DARK GLASS OVERLAY - To jest to "ciemne szkło" na całości */
+    /* CIEMNE SZKŁO Z SIATKĄ */
     #glass-overlay { 
       position: fixed; inset: 0; 
       z-index: 2; 
@@ -39,7 +40,6 @@
       pointer-events: none; 
     }
 
-    /* GRID PATTERN */
     #glass-overlay::after {
       content: ""; position: absolute; inset: 0;
       background-image: linear-gradient(rgba(0, 119, 255, 0.05) 1px, transparent 1px),
@@ -47,7 +47,7 @@
       background-size: 30px 30px;
     }
 
-    /* HEADER */
+    /* KONSOLA NAGŁÓWKA */
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 200; position: fixed;
       background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--ui-blue);
@@ -72,7 +72,7 @@
     .nav-item:hover { background: var(--ui-blue); color: #000; box-shadow: 0 0 15px var(--ui-blue-glow); }
     .nav-item.active { background: var(--ui-red); color: #fff; border-color: var(--ui-red); box-shadow: 0 0 20px var(--ui-red-glow); }
 
-    /* TILES CONTAINER (PANEL) */
+    /* PANEL GŁÓWNY (KAFELKI) */
     #panel {
       z-index: 300; position: fixed; top: 110%; left: 50%;
       transform: translateX(-50%); width: 95%; max-width: 1200px;
@@ -82,14 +82,14 @@
     }
     #panel.active { top: 140px; opacity: 1; visibility: visible; }
 
-    /* TILE GRID LAYOUT */
+    /* UKŁAD KAFELKÓW */
     .tile-grid { 
       display: grid; 
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
       gap: 20px; padding: 10px;
     }
 
-    /* SINGLE TILE STYLE */
+    /* STYL POJEDYNCZEGO KAFELKA */
     .content-tile {
       background: rgba(0, 20, 40, 0.7);
       backdrop-filter: blur(10px);
@@ -115,10 +115,11 @@
 
     .content-tile p { font-size: 13px; line-height: 1.6; color: #ccc; }
 
-    /* CUSTOM ELEMENTS */
+    /* DODATKI UI */
     .sell-alert { 
       background: rgba(255, 0, 0, 0.1); border: 1px solid var(--ui-red); 
-      padding: 15px; font-style: italic; font-size: 12px; margin-top: 15px;
+      padding: 15px; font-style: italic; font-size: 11px; margin-top: 15px;
+      color: #fff;
     }
 
     .stat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 11px; }
@@ -137,8 +138,9 @@
     .close-btn { 
       display: block; width: 100%; padding: 15px; color: var(--ui-red); 
       text-align: center; cursor: pointer; font-weight: bold; letter-spacing: 5px;
-      margin-top: 20px; border-top: 1px dashed var(--ui-red);
+      margin-top: 20px; border-top: 1px dashed var(--ui-red); transition: 0.3s;
     }
+    .close-btn:hover { background: rgba(255,0,0,0.1); color: #fff; }
 
     /* SCROLLBAR */
     #panel::-webkit-scrollbar { width: 4px; }
@@ -176,91 +178,91 @@
   </div>
 
   <script>
+    // AGRESYWNA TREŚĆ SYSTEMOWA
     const content = {
       MANIFEST: `
         <div class="content-tile">
-          <div class="tile-header">Architektura Dominacji</div>
-          <p>Tworzymy cyfrowe ekosystemy, które pracują na Twój sukces. W Vibe Web Studio odrzucamy drogę na skróty. Fundamentem jest czysty kod i natywna wydajność.</p>
+          <div class="tile-header">01 // DOKTRYNA VIBE</div>
+          <p>Nie budujemy "stronek". Budujemy cyfrowy oręż. W świecie, gdzie liczą się milisekundy, dostarczamy rozwiązania, które miażdżą konkurencję swoją wydajnością. Każdy bit kodu jest optymalizowany pod kątem totalnej dominacji.</p>
         </div>
         <div class="content-tile" style="animation-delay: 0.1s">
-          <div class="tile-header">01 // Systemy Biznesowe</div>
-          <p>Dedykowane ERP/CRM budowane w .NET Core. Budujemy system wokół Twoich procesów, a nie odwrotnie.</p>
+          <div class="tile-header">02 // INŻYNIERIA PRZEWAGI</div>
+          <p>Korzystasz z gotowców? Już przegrałeś. Nasze systemy .NET Core to czysta siła obliczeniowa. Eliminujemy wąskie gardła w Twoim biznesie, zastępując chaos precyzyjnym mechanizmem.</p>
         </div>
         <div class="content-tile" style="animation-delay: 0.2s">
-          <div class="tile-header">02 // Mobile Native</div>
-          <p>Aplikacje .NET MAUI. Pełna moc hardware'u, płynność 120 FPS, zero lagów. Native or nothing.</p>
-        </div>
-        <div class="content-tile" style="animation-delay: 0.3s">
-          <div class="tile-header">03 // AquilaAI Core</div>
-          <p>Integracja z Llama 3.1 przez ultra-szybkie API Groq. Inteligentne boty i analiza danych w ułamku sekundy.</p>
-          <div class="sell-alert">"Nie szukamy klientów. Szukamy partnerów do budowania cyfrowej dominacji."</div>
+          <div class="tile-header">03 // AQUILA AI: WYWIAD CYFROWY</div>
+          <p>Implementujemy AI jako mózg operacyjny Twojej firmy. Llama 3.1 i GPT-4 w naszych rękach stają się narzędziami do analityki agresywnej i automatyzacji zysku.</p>
+          <div class="sell-alert">STATUS: TYLKO DLA LIDERÓW RYNKU. NIE OBSŁUGUJEMY PROJEKTÓW BEZ POTENCJAŁU.</div>
         </div>
       `,
 
       GLIKPRO: `
         <div class="content-tile">
-          <div class="tile-header">GlikPro: System Taktyczny</div>
-          <p>Natywny, pancerny ekosystem mobilny stworzony dla absolutnej kontroli danych medycznych i dietetycznych.</p>
+          <div class="tile-header">PROJEKT: GLIKPRO // PROTOKÓŁ ALPHA</div>
+          <p>Medyczna precyzja, cyfrowa brutalność. Ekosystem mobilny, który przejmuje kontrolę nad danymi z szybkością natywnego kodu C#.</p>
         </div>
         <div class="content-tile" style="animation-delay: 0.1s">
-          <div class="tile-header">Specyfikacja Silnika</div>
-          <div class="stat-row"><span>Silnik AI:</span><span class="stat-val">Llama 3.1 70B</span></div>
-          <div class="stat-row"><span>Backend:</span><span class="stat-val">FastAPI / Python</span></div>
-          <div class="stat-row"><span>Latency:</span><span class="stat-val">&lt; 1.0s</span></div>
-          <div class="stat-row"><span>Frontend:</span><span class="stat-val">.NET MAUI</span></div>
+          <div class="tile-header">PARAMETRY OPERACYJNE</div>
+          <div class="stat-row"><span>MODEL AI:</span><span class="stat-val">AQUILA-X (LLAMA 3.1)</span></div>
+          <div class="stat-row"><span>CZAS REAKCJI:</span><span class="stat-val">INSTANT (&lt;0.8s)</span></div>
+          <div class="stat-row"><span>FRAME RATE:</span><span class="stat-val">120 FPS STABLE</span></div>
+          <div class="stat-row"><span>FRAMEWORK:</span><span class="stat-val">.NET MAUI NATIVE</span></div>
         </div>
-        <div class="content-tile" style="grid-column: span 1; animation-delay: 0.2s">
-          <div class="tile-header">Visual Core</div>
-          <img src="1000015077.jpg" style="width:100%; border: 1px solid var(--ui-blue);">
+        <div class="content-tile" style="animation-delay: 0.2s">
+          <div class="tile-header">WIZUALIZACJA SYSTEMU</div>
+          <img src="1000015077.jpg" style="width:100%; border: 1px solid var(--ui-red); filter: grayscale(0.4) contrast(1.1);">
         </div>
       `,
 
       PORTFOLIO: `
         <div class="content-tile">
-          <div class="tile-header">System RWR</div>
-          <p>Zaawansowana ewidencja pracy i rozliczeń. Automatyzacja raportów PDF i kontrola workflow.</p>
+          <div class="tile-header">SYSTEM RWR // LOGISTYKA</div>
+          <p>Bezlitosna ewidencja i raportowanie. System, który wymusza porządek w strukturach firmy. Zero wycieków, 100% kontroli.</p>
         </div>
         <div class="content-tile" style="animation-delay: 0.1s">
-          <div class="tile-header">P.A. Barczewska</div>
-          <p>Wizytówka Premium. Czysty kod HTML/CSS dla marki osobistej.</p>
-          <a href="https://progressorkit.github.io/pabarczewska.github.io/" target="_blank" style="color:var(--ui-blue-glow); font-size:11px;">[ OTWÓRZ_PROJEKT ]</a>
+          <div class="tile-header">WEB PREMIUM: BARCZEWSKA</div>
+          <p>Estetyka, która uderza. Wizytówka literacka zaprojektowana tak, by nie dawać wyboru – użytkownik musi wejść w interakcję.</p>
+          <a href="https://progressorkit.github.io/pabarczewska.github.io/" target="_blank" style="color:var(--ui-red-glow); font-size:11px; text-decoration: none; font-weight: bold;">[ PENETRACJA_RYNKU > ]</a>
         </div>
         <div class="content-tile" style="animation-delay: 0.2s">
-          <div class="tile-header">Marek Zaworski</div>
-          <p>Interfejs literacki skupiony na konwersji i estetyce Dark-Mode.</p>
-          <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:var(--ui-blue-glow); font-size:11px;">[ OTWÓRZ_PROJEKT ]</a>
+          <div class="tile-header">INFRASTRUKTURA: ZAWORSKI</div>
+          <p>Maksymalny minimalizm. Interfejs ostry jak skalpel, skupiony na jednym celu: konwersji widza w klienta.</p>
+          <a href="https://progressorkit.github.io/marekzaworski.github.io/" target="_blank" style="color:var(--ui-red-glow); font-size:11px; text-decoration: none; font-weight: bold;">[ SPRAWDŹ_STRUKTURĘ > ]</a>
         </div>
       `,
 
       PROCES: `
         <div class="content-tile">
-          <div class="tile-header">Protokół Wdrożenia</div>
-          <div class="stat-row"><span>01</span><span>Analiza Agresywna</span></div>
-          <div class="stat-row"><span>02</span><span>Architektura Native</span></div>
-          <div class="stat-row"><span>03</span><span>AquilaAI Inject</span></div>
-          <div class="stat-row"><span>04</span><span>Final Deployment</span></div>
+          <div class="tile-header">FAZA 01: REKONESANS</div>
+          <p>Analizujemy Twoje słabe punkty. Nie zadajemy zbędnych pytań – szukamy sposobu na najszybsze przejęcie rynku.</p>
+        </div>
+        <div class="content-tile" style="animation-delay: 0.1s">
+          <div class="tile-header">FAZA 02: EGZEKUCJA</div>
+          <p>Piszemy kod, który nie wybacza błędów. Architektura Native zostawia konkurencję w erze WordPressa.</p>
         </div>
         <div class="content-tile" style="animation-delay: 0.2s">
-          <div class="tile-header">Vibe Check</div>
-          <p>Większość agencji sprzedaje obrazki. My sprzedajemy technologię, która miażdży konkurencję.</p>
-          <div class="sell-alert" style="color: var(--ui-red-glow);">OSTRZEŻENIE: Nie robimy "tanich stron". Robimy systemy, które zarabiają.</div>
+          <div class="tile-header">FAZA 03: DOMINACJA</div>
+          <p>Wdrażamy system i monitorujemy go 24/7. Jeśli coś stoi na drodze Twojego sukcesu – usuwamy to programowo.</p>
+          <div class="sell-alert" style="color: var(--ui-red-glow); border-color: var(--ui-red);">OSTRZEŻENIE: NASZE ROZWIĄZANIA SĄ AGRESYWNIE SKUTECZNE.</div>
         </div>
       `,
 
       KONTAKT: `
-        <div class="content-tile" style="border-color: var(--ui-red);">
-          <div class="tile-header" style="border-left-color: var(--ui-blue);">Wyślij Sygnał</div>
-          <p>Email: <span style="color: var(--ui-red-glow);">progressorkit@gmail.com</span></p>
-          <p style="margin-top:10px;">GitHub: <a href="https://github.com/progressorkit" target="_blank" style="color:#fff;">/progressorkit</a></p>
+        <div class="content-tile" style="border-left: 5px solid var(--ui-red);">
+          <div class="tile-header">RAPORTUJ PROJEKT</div>
+          <p>Masz konkretny problem? Pisz. Nie marnuj czasu na zapytania bez specyfikacji.</p>
+          <p style="margin-top:20px;">E-MAIL: <span style="color: var(--ui-red-glow); font-weight: bold;">progressorkit@gmail.com</span></p>
         </div>
         <div class="content-tile" style="animation-delay: 0.2s">
-          <div class="tile-header">Lokalizacja</div>
-          <p>Baza: Polska // Zasięg: Globalny</p>
-          <p style="margin-top:10px; color: var(--ui-blue-glow);">Status: Dostępny dla projektów High-Priority.</p>
+          <div class="tile-header">STREFA KODU</div>
+          <p>Wszystkie silniki testowane w najcięższych warunkach.</p>
+          <p style="margin-top:10px;">GITHUB: <a href="https://github.com/progressorkit" target="_blank" style="color:#fff;">/PROGRESSORKIT</a></p>
+          <p style="margin-top:15px; color: var(--ui-blue-glow);">STATUS: GOTOWY DO DZIAŁAŃ O WYSOKIM PRIORYTECIE.</p>
         </div>
       `
     };
 
+    // LOGIKA OPERACYJNA
     function openMod(id, key) {
       document.getElementById('center-container').style.opacity = "0.05";
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -282,7 +284,8 @@
     }
 
     setInterval(() => { 
-        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
+        const timeBox = document.getElementById('sys-time');
+        if(timeBox) timeBox.innerText = new Date().toLocaleTimeString(); 
     }, 1000);
   </script>
 </body>
