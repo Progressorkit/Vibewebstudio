@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>VIBE WEB STUDIO | FULL STACK SOLUTIONS</title>
+  <title>ARCHITEKT ZYSKU | VIBE WEB STUDIO</title>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,7 +12,7 @@
       --ui-blue-glow: #00aaff;
       --ui-red: #ff0000;
       --ui-red-glow: #ff4444;
-      --glass: rgba(0, 5, 15, 0.9);
+      --glass: rgba(0, 5, 15, 0.95);
     }
 
     html, body {
@@ -28,34 +28,26 @@
 
     #glass-overlay { 
       position: fixed; inset: 0; z-index: 2; 
-      background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.9) 100%), rgba(0, 8, 20, 0.7);
-      backdrop-filter: blur(15px) brightness(0.6);
-      -webkit-backdrop-filter: blur(15px) brightness(0.6);
-      pointer-events: none; 
-    }
-
-    #glass-overlay::after {
-      content: ""; position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(0, 119, 255, 0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 119, 255, 0.05) 1px, transparent 1px);
-      background-size: 35px 35px;
+      background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%), rgba(0, 8, 20, 0.7);
+      backdrop-filter: blur(20px) brightness(0.5);
+      -webkit-backdrop-filter: blur(20px) brightness(0.5);
     }
 
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 500; position: fixed;
-      background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--ui-blue);
-      padding: 12px; text-align: center;
+      background: rgba(0,0,0,0.98); border-bottom: 2px solid var(--ui-blue);
+      padding: 15px; text-align: center;
     }
 
     #header-console h1 {
-      color: var(--ui-red); font-size: 16px; letter-spacing: 4px; font-weight: 900;
-      text-shadow: 0 0 10px var(--ui-red);
+      color: var(--ui-red); font-size: 14px; letter-spacing: 5px; font-weight: 900;
+      text-shadow: 0 0 10px var(--ui-red); margin-bottom: 10px;
     }
 
-    .nav-horizontal { display: flex; justify-content: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .nav-horizontal { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
     
     .nav-item {
-      padding: 6px 15px; font-size: 9px; font-weight: 900; cursor: pointer;
+      padding: 8px 16px; font-size: 10px; font-weight: 900; cursor: pointer;
       border: 1px solid var(--ui-blue); color: #fff; transition: 0.3s;
       background: rgba(0, 119, 255, 0.1); text-transform: uppercase;
     }
@@ -64,52 +56,44 @@
     .nav-item.important { border-color: var(--ui-red); color: var(--ui-red-glow); }
 
     #panel {
-      z-index: 300; position: fixed; top: 110px; left: 50%;
-      transform: translateX(-50%); width: 95%; max-width: 1200px;
-      height: calc(100vh - 160px); overflow-y: auto;
+      z-index: 300; position: fixed; top: 125px; left: 50%;
+      transform: translateX(-50%); width: 95%; max-width: 1300px;
+      height: calc(100vh - 180px); overflow-y: auto;
       padding-bottom: 50px; scroll-behavior: smooth;
     }
 
-    .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; margin-bottom: 30px; }
+    .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; margin-bottom: 40px; }
     
     .tile {
-      background: rgba(0, 20, 40, 0.7); backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 119, 255, 0.2); padding: 25px;
-      animation: fadeIn 0.4s ease forwards; opacity: 0; transform: translateY(15px);
+      background: rgba(0, 15, 30, 0.8); backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 119, 255, 0.2); padding: 30px;
+      animation: fadeIn 0.5s ease forwards; opacity: 0;
     }
 
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
     .tile-header { 
       color: var(--ui-blue-glow); font-size: 11px; font-weight: bold; 
-      margin-bottom: 15px; border-left: 3px solid var(--ui-red); padding-left: 10px;
+      margin-bottom: 15px; border-left: 4px solid var(--ui-red); padding-left: 12px;
       text-transform: uppercase; letter-spacing: 2px;
     }
 
-    .tile h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
-    .tile p { font-size: 13px; line-height: 1.6; color: #ccc; margin-bottom: 12px; }
+    .tile h2 { font-size: 24px; margin-bottom: 12px; color: #fff; letter-spacing: -1px; }
+    .tile p { font-size: 14px; line-height: 1.6; color: #bbb; margin-bottom: 15px; }
 
-    .price-tag { font-size: 18px; color: var(--ui-red-glow); font-weight: 900; margin: 10px 0; display: block; }
-    
     .cta-button { 
-      display: inline-block; padding: 12px 25px; background: var(--ui-red); color: #fff; 
-      text-decoration: none; font-weight: 900; font-size: 11px; letter-spacing: 2px;
-      border: none; cursor: pointer; transition: 0.3s; margin: 5px; text-transform: uppercase;
+      display: inline-block; padding: 14px 28px; background: var(--ui-red); color: #fff; 
+      text-decoration: none; font-weight: 900; font-size: 12px; letter-spacing: 2px;
+      border: none; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin: 5px;
     }
     .cta-button.alt { background: transparent; border: 1px solid #fff; }
-    .cta-button:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
+    .cta-button:hover { background: #fff; color: #000; box-shadow: 0 0 25px #fff; }
 
-    .case-visual { 
-      margin: 10px 0; background: #000; border: 1px solid var(--ui-blue); padding: 5px;
-      overflow: hidden; text-align: center;
-    }
-    .case-visual img { width: 100%; max-height: 200px; object-fit: cover; filter: grayscale(0.2); }
-
-    .stat-result { background: rgba(0, 255, 100, 0.1); border: 1px solid #00ff66; padding: 8px; margin-top: 10px; font-weight: 900; color: #00ff66; font-size: 11px; text-align: center; }
+    .stat-box { background: rgba(0, 255, 100, 0.05); border: 1px solid #00ff66; padding: 12px; margin-top: 15px; color: #00ff66; font-weight: 900; font-size: 12px; text-align: center; }
 
     #statusbar {
       z-index: 500; position: fixed; bottom: 0; width: 100%;
-      background: #000; padding: 8px 20px; font-size: 9px;
+      background: #000; padding: 10px 25px; font-size: 10px;
       display: flex; justify-content: space-between; color: var(--ui-blue); border-top: 1px solid var(--ui-blue);
     }
   </style>
@@ -120,7 +104,7 @@
   <div id="glass-overlay"></div>
 
   <header id="header-console">
-    <h1>VIBE WEB STUDIO // ARCHITEKT TWOJEGO ZYSKU</h1>
+    <h1>ARCHITEKT ZYSKU // SYSTEMY & SPRZEDAŻ</h1>
     <nav class="nav-horizontal">
       <div class="nav-item active" onclick="loadModule('START')">Start</div>
       <div class="nav-item" onclick="loadModule('ROZWIAZANIA')">Rozwiązania</div>
@@ -136,7 +120,7 @@
   </div>
 
   <div id="statusbar">
-    <div>SYSTEM: FULL_STACK // PROJECTS_LOADED: 5 // STATUS: READY</div>
+    <div>ROLE: BUSINESS_PROBLEM_SOLVER // SYSTEM: .NET_AI_WEB // VERSION: 9.0</div>
     <div id="sys-time">00:00:00</div>
   </div>
 
@@ -144,11 +128,11 @@
     const modules = {
       START: `
         <div class="tile" style="grid-column: 1 / -1; text-align: center;">
-          <div class="tile-header">MODUŁ: POZYCJONOWANIE</div>
-          <h2 style="font-size: 34px; line-height: 1.1;">Tworzę strony i systemy, które <br><span style="color:var(--ui-red);">ZWIĘKSZAJĄ SPRZEDAŻ</span> i automatyzują biznes.</h2>
-          <p style="font-size: 16px; max-width: 800px; margin: 15px auto;">Projektuję i wdrażam zaawansowane ekosystemy Web + .NET / AI. Od stron marek osobistych po ciężkie systemy logistyczne. Skutecznie łączę design z brutalną wydajnością kodu.</p>
-          <div style="margin-top: 25px;">
-            <button class="cta-button" onclick="loadModule('PROJEKTY')">ZOBACZ PORTFOLIO</button>
+          <div class="tile-header">MANIFEST</div>
+          <h2 style="font-size: 42px; line-height: 1.1; margin-bottom: 20px;">Terminujemy chaos. <br><span style="color:var(--ui-red);">Programujemy zysk.</span></h2>
+          <p style="font-size: 18px; max-width: 850px; margin: 0 auto 25px auto;">Tworzę strony i systemy, które <strong>zwiększają sprzedaż</strong> i automatyzują Twój biznes. Skupiam się na wyniku finansowym, nie na „ładnych obrazkach”.</p>
+          <div>
+            <button class="cta-button" onclick="loadModule('PROJEKTY')">ZOBACZ PROJEKTY</button>
             <button class="cta-button alt" onclick="loadModule('KONTAKT')">UMÓW ROZMOWĘ 15 MIN</button>
           </div>
         </div>
@@ -157,12 +141,12 @@
       ROZWIAZANIA: `
         <div class="tile-grid">
           <div class="tile">
-            <div class="tile-header">TWOJE PROBLEMY</div>
-            <p>• Strona, która ładnie wygląda, ale nie generuje leadów ani sprzedaży.<br>• Chaos w dokumentacji i logistyce (marnujesz 2h dziennie).<br>• Brak spójnej marki, która buduje zaufanie w 5 sekund.</p>
+            <div class="tile-header">IDENTYFIKACJA PROBLEMÓW</div>
+            <p>• <strong>Niewidoczność:</strong> Twoja strona nie buduje zaufania w 5 sekund – tracisz klienta.<br>• <strong>Nieefektywność:</strong> Marnujesz 2h dziennie na ręczne procesy, które powinno robić AI.<br>• <strong>Brak Skalowania:</strong> Twoje obecne narzędzia blokują Twój wzrost.</p>
           </div>
           <div class="tile">
-            <div class="tile-header">MOJE ROZWIĄZANIA</div>
-            <p>• <strong>Brand Web:</strong> Strony dla autorów i firm (jak Marek Zaworski czy Barczewska).<br>• <strong>Custom ERP/CRM:</strong> Systemy jak RWR eliminują błędy operacyjne.<br>• <strong>High-End Mobile:</strong> Aplikacje typu Glikemia Premium budują produkt cyfrowy.</p>
+            <div class="tile-header">MOJE NARZĘDZIA ZYSKU</div>
+            <p>• <strong>Brand Web:</strong> Strony marek osobistych nastawione na autorytet i sprzedaż.<br>• <strong>Custom ERP/CRM:</strong> Systemy (jak RWR) eliminujące błędy operacyjne.<br>• <strong>High-End Mobile:</strong> Aplikacje użytkowe budujące realną wartość produktu.</p>
           </div>
         </div>
       `,
@@ -170,42 +154,35 @@
       PROJEKTY: `
         <div class="tile-grid">
           <div class="tile">
-            <div class="tile-header">BRAND_WEB: MAREK ZAWORSKI</div>
-            <h2>AUTOR "OBSERWATORA"</h2>
-            <p><strong>Cel:</strong> Stworzenie mrocznego, literackiego klimatu promującego twórczość i budującego listę mailingową czytelników.</p>
-            <p><strong>Efekt:</strong> Spójna identyfikacja wizualna autora i wysoka konwersja na zapisy.</p>
-            <div class="stat-result">TOP_NOTCH DESIGN // 100% KLIMATU</div>
+            <div class="tile-header">SYSTEM: RWR LOGISTYKA</div>
+            <h2>LOGISTICS CORE ENGINE</h2>
+            <p><strong>CEL:</strong> Eliminacja chaosu w zlecenich i błędów w fakturowaniu.</p>
+            <p><strong>EFEKT:</strong> Automatyczny obieg dokumentów i oszczędność 40% czasu operacyjnego.</p>
+            <div class="stat-box">ZYSK: PEŁNA KONTROLA OPERACYJNA</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">PERSONAL_BRAND: P.A. BARCZEWSKA</div>
-            <h2>WIZYTÓWKA PREMIUM</h2>
-            <p><strong>Cel:</strong> Profesjonalny wizerunek i automatyzacja zapytań ofertowych.</p>
-            <p><strong>Efekt:</strong> Minimalistyczny, luksusowy design, który buduje autorytet od pierwszego kliknięcia.</p>
-            <div class="stat-result">BUDOWA ZAUFANIA // AUTOMATYZACJA LEADÓW</div>
+            <div class="tile-header">BRAND: MAREK ZAWORSKI</div>
+            <h2>OBSERWATOR - STRONA AUTORA</h2>
+            <p><strong>CEL:</strong> Budowa mrocznego klimatu i konwersja czytelnika na subskrybenta.</p>
+            <p><strong>EFEKT:</strong> Unikalny design budujący autorytet literacki i sprzedaż książek.</p>
+            <div class="stat-box">WIZERUNEK: KLASA PREMIUM</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">SYSTEM_LOGISTYKA: RWR</div>
-            <h2>BACKEND & AUTOMATYZACJA</h2>
-            <p>Problem: Chaos w zleceniach. Rozwiązanie: Autorski silnik .NET do obiegu dokumentów.</p>
-            <div class="case-visual"><img src="Zrzut ekranu 2026-04-28 102420.jpg"></div>
-            <div class="stat-result">-40% CZASU OBSŁUGI</div>
+            <div class="tile-header">APP: GLIKEMIA PREMIUM</div>
+            <h2>HEALTH-TECH NATIVE APP</h2>
+            <p><strong>CEL:</strong> Stworzenie narzędzia do precyzyjnego monitorowania zdrowia.</p>
+            <p><strong>EFEKT:</strong> Interfejs klasy premium zintegrowany z analityką danych w czasie rzeczywistym.</p>
+            <div class="stat-box">PRODUCT: TOP-TIER UX</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">MOBILE_APP: GLIKEMIA PREMIUM</div>
-            <h2>PRODUCT DESIGN & DATA</h2>
-            <p>Precyzyjna aplikacja medyczna z natywnym interfejsem UX/UI.</p>
-            <div class="case-visual"><img src="Zrzut ekranu 2026-04-15 104759.jpg"></div>
-            <div class="stat-result PRECYZJA_KLASY_PREMIUM</div>
-          </div>
-
-          <div class="tile">
-            <div class="tile-header">SYSTEM_VIBE: TO PORTFOLIO</div>
-            <h2>DYNAMICZNA ARCHITEKTURA</h2>
-            <p>Dowód na to, że strona może być interaktywnym systemem, a nie nudnym PDF-em.</p>
-            <div class="stat-result">TECHNOLOGIA: CUSTOM JS + GLASS UI</div>
+            <div class="tile-header">BRAND: P.A. BARCZEWSKA</div>
+            <h2>PROFESSIONAL PERSONAL BRAND</h2>
+            <p><strong>CEL:</strong> Stworzenie wizerunku eksperta budującego zaufanie w 5 sekund.</p>
+            <p><strong>EFEKT:</strong> Systemowa wizytówka automatyzująca proces pozyskiwania leadów.</p>
+            <div class="stat-box">KONWERSJA: +100% ZAUFANIA</div>
           </div>
         </div>
       `,
@@ -213,21 +190,21 @@
       OFERTA: `
         <div class="tile-grid">
           <div class="tile">
-            <div class="tile-header">STRONA WIZYTÓWKA / BRAND</div>
-            <h2>PROFESSIONAL BRANDING</h2>
-            <p>Dla autorów, ekspertów i marek osobistych. Skupienie na wizerunku i konwersji.</p>
+            <div class="tile-header">01 // START</div>
+            <h2>BRAND WEB</h2>
+            <p>Dla autorów i ekspertów. Strona, która sprzedaje Twój autorytet. Zero szablonów.</p>
             <span class="price-tag">OD 800 €</span>
           </div>
           <div class="tile" style="border: 1px solid var(--ui-red);">
-            <div class="tile-header">SYSTEM / LANDING GROW</div>
-            <h2>LEJEK SPRZEDAŻOWY</h2>
-            <p>Zintegrowane systemy sprzedaży produktów lub usług. Analityka i wynik.</p>
+            <div class="tile-header">02 // GROWTH</div>
+            <h2>SALES SYSTEM</h2>
+            <p>Lejki sprzedażowe i landingi zoptymalizowane pod twardy wynik finansowy.</p>
             <span class="price-tag">1500 – 3000 €</span>
           </div>
           <div class="tile">
-            <div class="tile-header">SYSTEM / APKA CUSTOM</div>
-            <h2>INDUSTRIAL SOLUTIONS</h2>
-            <p>Pełna automatyzacja biznesu (jak RWR) lub customowa aplikacja (jak Glikemia).</p>
+            <div class="tile-header">03 // SYSTEM</div>
+            <h2>CUSTOM .NET / AI</h2>
+            <p>Pełna automatyzacja (jak RWR). Systemy dedykowane, które pracują na Twój zysk 24/7.</p>
             <span class="price-tag">OD 3000 €</span>
           </div>
         </div>
@@ -236,46 +213,21 @@
       DLACZEGO: `
         <div class="tile-grid">
           <div class="tile">
-            <div class="tile-header">MÓJ EDGE</div>
-            <p>• <strong>Brak Szablonów:</strong> Twoja marka nie może wyglądać jak tysiąc innych.<br>• <strong>Pełna Skalowalność:</strong> Zaczynamy od strony, kończymy na systemie ERP.<br>• <strong>Własność:</strong> Zero abonamentów za kod. Jesteś właścicielem wszystkiego.</p>
+            <div class="tile-header">DLACZEGO JA?</div>
+            <p>• <strong>Brak Szablonów:</strong> Twoja firma nie może wyglądać jak kopia kopii.<br>• <strong>Własność Kodu:</strong> Nie wynajmujesz u mnie strony. Jesteś jej właścicielem.<br>• <strong>Podejście Inżynierskie:</strong> Buduję rozwiązania w .NET, które są bezpieczne i skalowalne.</p>
           </div>
           <div class="tile">
-            <div class="tile-header">PROCES</div>
-            <p>1. Briefing i analiza celów.<br>2. Projekt unikalnej architektury.<br>3. Development (.NET/Web/Mobile).<br>4. Optymalizacja i start zysku.</p>
+            <div class="tile-header">PROCES EGZEKUCJI</div>
+            <p>1. Analiza biznesowa (Gdzie ucieka kasa?)<br>2. Architektura rozwiązania (Design + Logic)<br>3. Development i Testy (Kodowanie wyniku)<br>4. Deployment i Skalowanie.</p>
           </div>
         </div>
       `,
 
       KONTAKT: `
         <div class="tile" style="grid-column: 1 / -1; text-align: center;">
-          <div class="tile-header">KONTAKT / BRIEF</div>
-          <h2>MASZ PROJEKT? POROZMAWIAJMY.</h2>
-          <p>Wybierz formę, która Ci odpowiada. Sprawdźmy, jak mogę zwiększyć Twoje wyniki.</p>
+          <div class="tile-header">BRIEF / ROZMOWA</div>
+          <h2>PRZEJDŹMY DO KONKRETÓW</h2>
+          <p>Wybierz opcję, która najbardziej szanuje Twój czas.</p>
           <div style="margin-top: 30px;">
-            <a href="mailto:progressorkit@gmail.com" class="cta-button">WYŚLIJ BRIEF</a>
-            <button class="cta-button alt">UMÓW ROZMOWĘ 15 MIN</button>
-          </div>
-          <p style="margin-top: 25px; font-size: 10px;">EMAIL: progressorkit@gmail.com // GITHUB: /progressorkit</p>
-        </div>
-      `
-    };
-
-    function loadModule(key) {
-      const content = document.getElementById('p-content');
-      content.innerHTML = modules[key];
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-        if(item.innerText.toUpperCase().includes(key)) item.classList.add('active');
-      });
-      document.getElementById('panel').scrollTop = 0;
-    }
-
-    window.onload = () => {
-      loadModule('START');
-      setInterval(() => { 
-        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
-      }, 1000);
-    };
-  </script>
-</body>
-</html>
+            <a href="mailto:progressorkit@gmail.com" class="cta-button">WYŚLIJ BRIEF PROJEKTOWY</a>
+            <button class="cta-button alt">UMÓ
