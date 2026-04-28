@@ -3,224 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ProgressorKit Studio</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-background:#000;
-color:#fff;
-font-family:'Courier New',monospace;
-overflow:hidden;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-#bg-image{
-position:fixed;
-inset:0;
-background:url('zdjtlo.png') center/cover no-repeat;
-z-index:1;
+body {
+    background: #000;
+    color: #fff;
+    font-family: monospace;
 }
 
-#glass-overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.7);
-z-index:2;
+/* HEADER */
+header {
+    text-align: center;
+    padding: 20px;
 }
 
-#header-console{
-position:fixed;
-top:0;
-width:100%;
-z-index:10;
-background:#000;
-border-bottom:2px solid #0077ff;
-padding:15px;
-text-align:center;
+header h1 {
+    color: red;
+    letter-spacing: 5px;
 }
 
-#header-console h1{
-color:red;
-letter-spacing:4px;
+nav {
+    margin-top: 15px;
 }
 
-.nav-horizontal{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:10px;
+nav button {
+    background: transparent;
+    border: 1px solid #00aaff;
+    color: #fff;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
 }
 
-.nav-item{
-padding:8px 15px;
-border:1px solid #0077ff;
-cursor:pointer;
-font-size:10px;
+nav button:hover {
+    background: #00aaff;
 }
 
-.nav-item.active{
-background:#0077ff;
-color:#000;
+/* SEKCJE */
+.section {
+    display: none;
 }
 
-#panel{
-position:fixed;
-top:120px;
-left:50%;
-transform:translateX(-50%);
-width:95%;
-max-width:1200px;
-height:calc(100vh - 160px);
-overflow-y:auto;
-z-index:5;
+.section.active {
+    display: block;
 }
 
-.tile-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
+/* HERO */
+.hero {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
 }
 
-.tile{
-background:rgba(0,20,40,0.6);
-padding:20px;
-border:1px solid #0077ff;
+/* 🔥 KLUCZOWY FIX */
+.hero img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: 0;
 }
 
-.tile-header{
-color:#00aaff;
-margin-bottom:10px;
+/* overlay */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 0;
 }
 
-img{
-transition:0.3s;
-}
-img:hover{
-transform:scale(1.03);
+/* CONTENT */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 40px;
+    max-width: 1200px;
 }
 
+.red {
+    color: red;
+}
+
+/* PROJEKTY */
+.projects {
+    display: flex;
+    gap: 20px;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+.project {
+    width: 300px;
+    border: 1px solid #00aaff;
+    overflow: hidden;
+}
+
+.project img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project h3 {
+    padding: 10px;
+}
+
+.project p {
+    padding: 0 10px 10px;
+}
+
+/* KONTAKT */
+.hero.small {
+    height: 300px;
+}
 </style>
-</head>
 
+</head>
 <body>
 
-<div id="bg-image"></div>
-<div id="glass-overlay"></div>
+<header>
+    <h1>PROGRESSORKIT STUDIO</h1>
 
-<header id="header-console">
-<h1>PROGRESSORKIT STUDIO</h1>
-
-<div class="nav-horizontal">
-<div class="nav-item active" onclick="loadModule('HERO')">START</div>
-<div class="nav-item" onclick="loadModule('DOWODY')">PROJEKTY</div>
-<div class="nav-item" onclick="loadModule('KONTAKT')">KONTAKT</div>
-</div>
+    <nav>
+        <button onclick="showSection('start')">START</button>
+        <button onclick="showSection('projekty')">PROJEKTY</button>
+        <button onclick="showSection('kontakt')">KONTAKT</button>
+    </nav>
 </header>
 
-<div id="panel">
-<div id="p-content"></div>
-</div>
+<!-- START -->
+<section id="start" class="section active">
+    <div class="hero">
+        <img src="zaworski1.png">
+
+        <div class="hero-content">
+            <h2>TERMINUJEMY CHAOS.</h2>
+            <h2 class="red">PROGRAMUJEMY ZYSK.</h2>
+
+            <p>
+                Projektujemy systemy dla firm, strony immersyjne od zera
+                oraz rozwiązania .NET / AI nastawione na zysk.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- PROJEKTY -->
+<section id="projekty" class="section">
+
+    <div class="projects">
+
+        <div class="project">
+            <img src="zaworski2.png">
+            <h3>OBSERWATOR</h3>
+            <p>Marek Zaworski</p>
+        </div>
+
+        <div class="project">
+            <img src="rwr0.png">
+            <h3>RWR LOGISTYKA</h3>
+            <p>Backend + automatyzacja</p>
+        </div>
+
+        <div class="project">
+            <img src="rwr1.png">
+            <h3>GLIKEMIA APP</h3>
+            <p>Health-tech</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" class="section">
+    <div class="hero small">
+        <img src="zaworski3.png">
+
+        <div class="hero-content">
+            <h2>MASZ PROJEKT?</h2>
+            <p>progressorkit@gmail.com</p>
+        </div>
+    </div>
+</section>
 
 <script>
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('active');
+    });
 
-const modules = {
-
-HERO: `
-<div class="tile">
-<h2 style="font-size:40px;">
-TERMINUJEMY CHAOS.<br>
-<span style="color:red;">PROGRAMUJEMY ZYSK.</span>
-</h2>
-
-<p style="margin-top:20px;">
-Projektujemy systemy dla firm, strony immersyjne od zera oraz rozwiązania .NET / AI nastawione na zysk dla Ciebie i Twojej firmy.
-</p>
-</div>
-`,
-
-DOWODY: `
-<div class="tile-grid">
-
-<div class="tile">
-<div class="tile-header">LEJEK SPRZEDAŻOWY</div>
-<h2>MAREK ZAWORSKI</h2>
-
-<img src="zaworski1.png">
-<img src="zaworski2.png">
-<img src="zaworski3.png">
-
-<p>Strona sprzedażowa konwertująca ruch w klientów.</p>
-</div>
-
-<div class="tile">
-<div class="tile-header">SYSTEM</div>
-<h2>RWR LOGISTYKA</h2>
-
-<img src="rwr0.png">
-<img src="rwr1.png">
-<img src="rwr2.png">
-
-<p>Automatyzacja procesów i dokumentów.</p>
-</div>
-
-<div class="tile">
-<div class="tile-header">APP</div>
-<h2>GLIKEMIA PREMIUM</h2>
-
-<img src="apka1.jpg">
-<img src="apka2.jpg">
-<img src="apka3.jpg">
-
-<p>Aplikacja mobilna do monitorowania zdrowia.</p>
-</div>
-
-<div class="tile">
-<div class="tile-header">BRANDING</div>
-<h2>P.A. BARCZEWSKA</h2>
-
-<div style="
-height:200px;
-display:flex;
-align-items:center;
-justify-content:center;
-border:1px dashed #0077ff;
-color:#777;
-">
-W BUDOWIE
-</div>
-
-<p>Strona autorska dla pisarki (projekt w trakcie).</p>
-</div>
-
-</div>
-`,
-
-KONTAKT: `
-<div class="tile">
-<h2>MASZ PROJEKT?</h2>
-<p>progressorkit@gmail.com</p>
-</div>
-`
-
-};
-
-function loadModule(key){
-document.getElementById('p-content').innerHTML = modules[key];
-
-document.querySelectorAll('.nav-item').forEach(el=>{
-el.classList.remove('active');
-if(el.innerText===key || (key==='HERO' && el.innerText==='START')){
-el.classList.add('active');
+    document.getElementById(id).classList.add('active');
 }
-});
-}
-
-window.onload = ()=>{
-loadModule('HERO');
-};
-
 </script>
 
 </body>
