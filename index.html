@@ -3,143 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ProgressorKit Studio</title>
 
 <style>
-body {
-  margin:0;
-  background:#000;
-  color:#fff;
-  font-family: monospace;
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+background:#000;
+color:#fff;
+font-family:'Courier New',monospace;
+overflow:hidden;
 }
 
-#panel {
-  padding:20px;
+#bg-image{
+position:fixed;
+inset:0;
+background:url('zdjtlo.png') center/cover no-repeat;
+z-index:1;
 }
 
-.tile {
-  margin-bottom:40px;
+#glass-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+z-index:2;
 }
 
-img {
-  width:100%;
+#header-console{
+position:fixed;
+top:0;
+width:100%;
+z-index:10;
+background:#000;
+border-bottom:2px solid #0077ff;
+padding:15px;
+text-align:center;
 }
 
-button {
-  margin:5px;
-  padding:10px;
-  cursor:pointer;
+#header-console h1{
+color:red;
+letter-spacing:4px;
 }
+
+.nav-horizontal{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+.nav-item{
+padding:8px 15px;
+border:1px solid #0077ff;
+cursor:pointer;
+font-size:10px;
+}
+
+.nav-item.active{
+background:#0077ff;
+color:#000;
+}
+
+#panel{
+position:fixed;
+top:120px;
+left:50%;
+transform:translateX(-50%);
+width:95%;
+max-width:1200px;
+height:calc(100vh - 160px);
+overflow-y:auto;
+z-index:5;
+}
+
+.tile-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.tile{
+background:rgba(0,20,40,0.6);
+padding:20px;
+border:1px solid #0077ff;
+}
+
+.tile-header{
+color:#00aaff;
+margin-bottom:10px;
+}
+
+img{
+transition:0.3s;
+}
+img:hover{
+transform:scale(1.03);
+}
+
 </style>
 </head>
 
 <body>
 
+<div id="bg-image"></div>
+<div id="glass-overlay"></div>
+
+<header id="header-console">
+<h1>PROGRESSORKIT STUDIO</h1>
+
+<div class="nav-horizontal">
+<div class="nav-item active" onclick="loadModule('HERO')">START</div>
+<div class="nav-item" onclick="loadModule('DOWODY')">PROJEKTY</div>
+<div class="nav-item" onclick="loadModule('KONTAKT')">KONTAKT</div>
+</div>
+</header>
+
 <div id="panel">
-  <div id="p-content"></div>
+<div id="p-content"></div>
 </div>
 
 <script>
-
-let sliders = {
-  zaworski: 0,
-  barczewska: 0,
-  rwr: 0,
-  apka: 0
-};
-
-function nextSlide(id, total) {
-  sliders[id] = (sliders[id] + 1) % total;
-  updateSlide(id);
-}
-
-function prevSlide(id, total) {
-  sliders[id] = (sliders[id] - 1 + total) % total;
-  updateSlide(id);
-}
-
-function updateSlide(id) {
-  const slides = document.querySelectorAll("#"+id+" img");
-  slides.forEach((img, i) => {
-    img.style.display = (i === sliders[id]) ? "block" : "none";
-  });
-}
 
 const modules = {
 
 HERO: `
 <div class="tile">
-<h2>STRONY I SYSTEMY, KTÓRE ZWIĘKSZAJĄ SPRZEDAŻ</h2>
-<p>Projektujemy systemy dla firm, strony immersyjne oraz rozwiązania .NET / AI nastawione na zysk.</p>
+<h2 style="font-size:40px;">
+TERMINUJEMY CHAOS.<br>
+<span style="color:red;">PROGRAMUJEMY ZYSK.</span>
+</h2>
+
+<p style="margin-top:20px;">
+Projektujemy systemy dla firm, strony immersyjne od zera oraz rozwiązania .NET / AI nastawione na zysk dla Ciebie i Twojej firmy.
+</p>
 </div>
 `,
 
 DOWODY: `
+<div class="tile-grid">
+
 <div class="tile">
+<div class="tile-header">LEJEK SPRZEDAŻOWY</div>
+<h2>MAREK ZAWORSKI</h2>
 
-<h3>Marek Zaworski</h3>
-<div id="zaworski">
 <img src="zaworski1.png">
-<img src="zaworski2.png" style="display:none">
-<img src="zaworski3.png" style="display:none">
-<img src="zaworski4.png" style="display:none">
-<img src="zaworski5.png" style="display:none">
-<img src="zaworski6.png" style="display:none">
-</div>
-<button onclick="prevSlide('zaworski',6)">←</button>
-<button onclick="nextSlide('zaworski',6)">→</button>
+<img src="zaworski2.png">
+<img src="zaworski3.png">
 
-<h3>P.A. Barczewska</h3>
-<div id="barczewska">
-<img src="zaworski1.png">
-<img src="zaworski2.png" style="display:none">
+<p>Strona sprzedażowa konwertująca ruch w klientów.</p>
 </div>
-<button onclick="prevSlide('barczewska',2)">←</button>
-<button onclick="nextSlide('barczewska',2)">→</button>
 
-<h3>RWR SYSTEM</h3>
-<div id="rwr">
+<div class="tile">
+<div class="tile-header">SYSTEM</div>
+<h2>RWR LOGISTYKA</h2>
+
 <img src="rwr0.png">
-<img src="rwr1.png" style="display:none">
-<img src="rwr2.png" style="display:none">
-<img src="rwr3.png" style="display:none">
-<img src="rwr4.png" style="display:none">
-<img src="rwr5.png" style="display:none">
-</div>
-<button onclick="prevSlide('rwr',6)">←</button>
-<button onclick="nextSlide('rwr',6)">→</button>
+<img src="rwr1.png">
+<img src="rwr2.png">
 
-<h3>Glikemia Premium</h3>
-<div id="apka">
-<img src="apka1.jpg">
-<img src="apka2.jpg" style="display:none">
-<img src="apka3.jpg" style="display:none">
-<img src="apka4.jpg" style="display:none">
-<img src="apka6.jpg" style="display:none">
-<img src="apkapdf.jpg" style="display:none">
+<p>Automatyzacja procesów i dokumentów.</p>
 </div>
-<button onclick="prevSlide('apka',6)">←</button>
-<button onclick="nextSlide('apka',6)">→</button>
+
+<div class="tile">
+<div class="tile-header">APP</div>
+<h2>GLIKEMIA PREMIUM</h2>
+
+<img src="apka1.jpg">
+<img src="apka2.jpg">
+<img src="apka3.jpg">
+
+<p>Aplikacja mobilna do monitorowania zdrowia.</p>
+</div>
+
+<div class="tile">
+<div class="tile-header">BRANDING</div>
+<h2>P.A. BARCZEWSKA</h2>
+
+<div style="
+height:200px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:1px dashed #0077ff;
+color:#777;
+">
+W BUDOWIE
+</div>
+
+<p>Strona autorska dla pisarki (projekt w trakcie).</p>
+</div>
 
 </div>
 `,
 
 KONTAKT: `
 <div class="tile">
-<h2>MASZ PROJEKT? WYŚLIJ BRIEF</h2>
+<h2>MASZ PROJEKT?</h2>
 <p>progressorkit@gmail.com</p>
 </div>
 `
 
 };
 
-function loadModule(key) {
-  document.getElementById("p-content").innerHTML = modules[key];
+function loadModule(key){
+document.getElementById('p-content').innerHTML = modules[key];
+
+document.querySelectorAll('.nav-item').forEach(el=>{
+el.classList.remove('active');
+if(el.innerText===key || (key==='HERO' && el.innerText==='START')){
+el.classList.add('active');
+}
+});
 }
 
-// 🔥 START OD RAZU (to chciałeś)
-window.onload = () => {
-  loadModule("HERO");
+window.onload = ()=>{
+loadModule('HERO');
 };
 
 </script>
