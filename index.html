@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ProgressorKit Studio | Architekt Zysku</title>
+  <title>VIBE WEB STUDIO | ARCHITEKT ZYSKU</title>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,12 +20,14 @@
       background: #000; font-family: 'Courier New', monospace; color: #fff;
     }
 
+    /* BACKGROUND LAYER */
     #bg-image { 
       position: fixed; inset: 0; 
       background: url('zdjtlo.png') no-repeat center center; 
       background-size: cover; z-index: 1; pointer-events: none; 
     }
 
+    /* GLASS OVERLAY WITH GRID */
     #glass-overlay { 
       position: fixed; inset: 0; z-index: 2; 
       background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%), rgba(0, 8, 20, 0.7);
@@ -41,6 +43,7 @@
       background-size: 40px 40px;
     }
 
+    /* HEADER */
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 500; position: fixed;
       background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--ui-blue);
@@ -63,6 +66,7 @@
     .nav-item:hover, .nav-item.active { background: var(--ui-blue); color: #000; box-shadow: 0 0 15px var(--ui-blue-glow); }
     .nav-item.important { border-color: var(--ui-red); color: var(--ui-red-glow); }
 
+    /* CONTENT ENGINE */
     #panel {
       z-index: 300; position: fixed; top: 120px; left: 50%;
       transform: translateX(-50%); width: 95%; max-width: 1200px;
@@ -70,19 +74,13 @@
       padding-bottom: 50px; scroll-behavior: smooth;
     }
 
+    /* TILES */
     .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 40px; }
     
     .tile {
       background: rgba(0, 20, 40, 0.6); backdrop-filter: blur(10px);
       border: 1px solid rgba(0, 119, 255, 0.2); padding: 25px;
       animation: fadeIn 0.6s ease forwards; opacity: 0; transform: translateY(20px);
-    }
-
-    .tile img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      margin-bottom: 10px;
     }
 
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
@@ -93,9 +91,10 @@
       text-transform: uppercase; letter-spacing: 2px;
     }
 
-    .tile h2 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+    .tile h2 { font-size: 24px; margin-bottom: 10px; color: #fff; letter-spacing: -1px; }
     .tile p { font-size: 14px; line-height: 1.6; color: #bbb; margin-bottom: 15px; }
 
+    /* SPECIAL ELEMENTS */
     .price-tag { font-size: 20px; color: var(--ui-red-glow); font-weight: 900; display: block; margin: 10px 0; }
     .cta-button { 
       display: inline-block; padding: 12px 25px; background: var(--ui-red); color: #fff; 
@@ -107,97 +106,159 @@
     .stat-box { background: rgba(255,255,255,0.05); padding: 10px; border: 1px dashed var(--ui-blue); margin-top: 10px; }
     .stat-num { color: var(--ui-blue-glow); font-size: 18px; font-weight: 900; }
 
+    /* STATUSBAR */
     #statusbar {
       z-index: 500; position: fixed; bottom: 0; width: 100%;
       background: #000; padding: 10px 20px; font-size: 10px;
       display: flex; justify-content: space-between; color: var(--ui-blue); border-top: 1px solid var(--ui-blue);
     }
 
+    /* SCROLLBAR */
     #panel::-webkit-scrollbar { width: 4px; }
     #panel::-webkit-scrollbar-thumb { background: var(--ui-red); }
   </style>
 </head>
 <body>
 
-<div id="bg-image"></div>
-<div id="glass-overlay"></div>
+  <div id="bg-image"></div>
+  <div id="glass-overlay"></div>
 
-<header id="header-console">
-  <h1>PROGRESSORKIT STUDIO // PROFIT MAXIMIZER</h1>
-  <nav class="nav-horizontal">
-    <div class="nav-item active" onclick="loadModule('HERO')">START</div>
-    <div class="nav-item" onclick="loadModule('ANALIZA')">PROBLEM/SOL</div>
-    <div class="nav-item" onclick="loadModule('DOWODY')">CASE STUDIES</div>
-    <div class="nav-item" onclick="loadModule('CENNIK')">OFERTA</div>
-    <div class="nav-item" onclick="loadModule('EDGE')">PROCES/EDGE</div>
-    <div class="nav-item important" onclick="loadModule('KONTAKT')">REZERWUJ TERMIN</div>
-  </nav>
-</header>
+  <header id="header-console">
+    <h1>VIBE WEB STUDIO // PROFIT MAXIMIZER</h1>
+    <nav class="nav-horizontal">
+      <div class="nav-item active" onclick="loadModule('HERO')">START</div>
+      <div class="nav-item" onclick="loadModule('ANALIZA')">PROBLEM/SOL</div>
+      <div class="nav-item" onclick="loadModule('DOWODY')">CASE STUDIES</div>
+      <div class="nav-item" onclick="loadModule('CENNIK')">OFERTA</div>
+      <div class="nav-item" onclick="loadModule('EDGE')">PROCES/EDGE</div>
+      <div class="nav-item important" onclick="loadModule('KONTAKT')">REZERWUJ TERMIN</div>
+    </nav>
+  </header>
 
-<div id="panel">
-  <div id="p-content"></div>
-</div>
-
-<div id="statusbar">
-  <div>SYSTEM: ACTIVE // ROI_OPTIMIZER: ON // VIBE_OS: v4.0</div>
-  <div id="sys-time">00:00:00</div>
-</div>
-
-<script>
-const modules = {
-DOWODY: `
-<div class="tile-grid">
-  <div class="tile">
-    <div class="tile-header">CASE_STUDY_01</div>
-    <h2>+48% KONWERSJI</h2>
-    <p>E-commerce redesign</p>
+  <div id="panel">
+    <div id="p-content">
+      </div>
   </div>
 
-  <div class="tile">
-    <div class="tile-header">CASE_STUDY_02</div>
-    <h2>-40% CZASU</h2>
-    <p>System logistyczny</p>
-  </div>
-</div>
-
-<div class="tile-grid">
-  <div class="tile">
-    <img src="zaworski1.png">
-    <h2>MAREK ZAWORSKI</h2>
-    <p>Lejek sprzedażowy</p>
+  <div id="statusbar">
+    <div>SYSTEM: ACTIVE // ROI_OPTIMIZER: ON // VIBE_OS: v4.0</div>
+    <div id="sys-time">00:00:00</div>
   </div>
 
-  <div class="tile">
-    <img src="rwr0.png">
-    <h2>RWR SYSTEM</h2>
-    <p>Zarządzanie kontrolerami</p>
-  </div>
+  <script>
+    const modules = {
+      HERO: `
+        <div class="tile" style="grid-column: 1 / -1; text-align: center;">
+          <div class="tile-header">MODUŁ_01: POZYCJONOWANIE</div>
+          <h2 style="font-size: 40px;">TERMINUJEMY CHAOS. <br><span style="color:var(--ui-red);">PROGRAMUJEMY ZYSK.</span></h2>
+          <p style="font-size: 18px; max-width: 800px; margin: 20px auto;">Projektuję i wdrażam ekosystemy cyfrowe (Web + .NET / AI), które automatyzują sprzedaż i eliminują błędy operacyjne. Twoja konkurencja śpi, my budujemy Twoją przewagę.</p>
+          <button class="cta-button" onclick="loadModule('DOWODY')">ZOBACZ PROJEKTY</button>
+          <button class="cta-button" style="background:transparent; border: 1px solid #fff;" onclick="loadModule('KONTAKT')">UMÓW ROZMOWĘ</button>
+        </div>
+      `,
 
-  <div class="tile">
-    <img src="apka1.jpg">
-    <h2>GLIKEMIA PREMIUM</h2>
-    <p>Aplikacja mobilna</p>
-  </div>
+      ANALIZA: `
+        <div class="tile-grid">
+          <div class="tile">
+            <div class="tile-header">DIAGNOZA_BŁĘDÓW</div>
+            <p>• Strona, która tylko "ładnie wygląda", ale nie sprzedaje.<br>• Chaos w procesach i ręczne przepisywanie danych.<br>• Brak skalowalności i uzależnienie od wolnych szablonów.</p>
+          </div>
+          <div class="tile">
+            <div class="tile-header">ROZWIĄZANIE_VIBE</div>
+            <p>• Leady zamieniane w sprzedaż dzięki UX zorientowanemu na konwersję.<br>• Customowe systemy zarządzania (ERP/CRM) szyte na miarę.<br>• Integracje AI, które pracują 24/7 bez Twojego udziału.</p>
+          </div>
+        </div>
+      `,
 
-  <div class="tile">
-    <h2>P.A. BARCZEWSKA</h2>
-    <p>Strona w budowie</p>
-  </div>
-</div>
-`
-};
+      DOWODY: `
+        <div class="tile-grid">
+          <div class="tile">
+            <div class="tile-header">CASE_STUDY_01: E-COMMERCE</div>
+            <h2>RE-DESIGN & OPTYMALIZACJA</h2>
+            <p>Problem: Wysoki współczynnik odrzuceń na mobile.</p>
+            <div class="stat-box">WYNIK: <span class="stat-num">+48% KONWERSJI</span> w 21 dni.</div>
+          </div>
+          <div class="tile">
+            <div class="tile-header">CASE_STUDY_02: LOGISTYKA</div>
+            <h2>SYSTEM ZARZĄDZANIA (RWR)</h2>
+            <p>Problem: Chaos w raportowaniu i błędy w fakturach.</p>
+            <div class="stat-box">WYNIK: <span class="stat-num">-40% CZASU</span> obsługi procesu.</div>
+          </div>
+        </div>
+      `,
 
-function loadModule(key) {
-  document.getElementById('p-content').innerHTML = modules[key];
-}
+      CENNIK: `
+        <div class="tile-grid">
+          <div class="tile">
+            <div class="tile-header">PAKIET: START</div>
+            <h2>WIZYTÓWKA PREMIUM</h2>
+            <p>Strona typu High-Performance. Czysty kod, pełna optymalizacja pod Google.</p>
+            <span class="price-tag">OD 800 €</span>
+          </div>
+          <div class="tile" style="border: 2px solid var(--ui-red);">
+            <div class="tile-header">PAKIET: GROWTH</div>
+            <h2>LANDING + KONWERSJA</h2>
+            <p>Lejek sprzedażowy zaprojektowany pod konkretną kampanię. Analityka i testy A/B.</p>
+            <span class="price-tag">1500 – 3000 €</span>
+          </div>
+          <div class="tile">
+            <div class="tile-header">PAKIET: SYSTEM</div>
+            <h2>CUSTOM WEB + AI</h2>
+            <p>Pełna automatyzacja backendu, integracje z bazami danych i modelami AI.</p>
+            <span class="price-tag">OD 3000 €</span>
+          </div>
+        </div>
+      `,
 
-window.onload = () => {
-  loadModule('DOWODY');
-  setInterval(() => {
-    document.getElementById('sys-time').innerText = new Date().toLocaleTimeString();
-  }, 1000);
-};
-</script>
+      EDGE: `
+        <div class="tile-grid">
+          <div class="tile">
+            <div class="tile-header">DLACZEGO MY?</div>
+            <p><strong>ZERO SZABLONÓW:</strong> Każda linia kodu powstaje od zera. Pełne bezpieczeństwo i szybkość.<br><br><strong>WŁASNOŚĆ:</strong> Nie zamykamy Cię w systemach abonamentowych. Kod należy do Ciebie.</p>
+          </div>
+          <div class="tile">
+            <div class="tile-header">PROCES_OPERACYJNY</div>
+            <p>1. Analiza krytyczna potrzeb.<br>2. Projekt architektury UX/UI.<br>3. Development w .NET Core / Fast API.<br>4. Wdrożenie i monitoring zysku.</p>
+          </div>
+        </div>
+      `,
 
+      KONTAKT: `
+        <div class="tile" style="grid-column: 1 / -1;">
+          <div class="tile-header">PROTOKÓŁ_KOMUNIKACJI</div>
+          <h2>MASZ PROJEKT? WYŚLIJ BRIEF.</h2>
+          <p>Napisz konkretnie: Co chcesz osiągnąć? Jaki masz budżet? Jaki jest termin?</p>
+          <div style="margin-top: 20px;">
+            <p>E-MAIL: <span style="color:var(--ui-red-glow);">progressorkit@gmail.com</span></p>
+            <button class="cta-button" style="margin-top:20px;">POBIERZ BRIEF .PDF</button>
+          </div>
+        </div>
+      `
+    };
+
+    function loadModule(key) {
+      const content = document.getElementById('p-content');
+      content.innerHTML = modules[key];
+      
+      // Update nav active state
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if(item.innerText === key || (key === 'HERO' && item.innerText === 'START')) {
+          item.classList.add('active');
+        }
+      });
+
+      // Scroll to top
+      document.getElementById('panel').scrollTop = 0;
+    }
+
+    // Init
+    window.onload = () => {
+      loadModule('HERO');
+      setInterval(() => { 
+        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
+      }, 1000);
+    };
+  </script>
 </body>
 </html>
