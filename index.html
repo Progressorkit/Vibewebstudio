@@ -1,5 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProgressorKit Studio</title>
+
+<style>
+body {
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family: monospace;
+}
+
+#panel {
+  padding:20px;
+}
+
+.tile {
+  margin-bottom:40px;
+}
+
+img {
+  width:100%;
+}
+
+button {
+  margin:5px;
+  padding:10px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="panel">
+  <div id="p-content"></div>
+</div>
+
 <script>
-let sliders = {};
+
+let sliders = {
+  zaworski: 0,
+  barczewska: 0,
+  rwr: 0,
+  apka: 0
+};
 
 function nextSlide(id, total) {
   sliders[id] = (sliders[id] + 1) % total;
@@ -12,124 +59,90 @@ function prevSlide(id, total) {
 }
 
 function updateSlide(id) {
-  const slides = document.querySelectorAll(`#${id} img`);
+  const slides = document.querySelectorAll("#"+id+" img");
   slides.forEach((img, i) => {
-    img.style.display = i === sliders[id] ? 'block' : 'none';
+    img.style.display = (i === sliders[id]) ? "block" : "none";
   });
 }
 
 const modules = {
 
 HERO: `
-<div class="tile" style="grid-column: 1 / -1; text-align: center;">
-  <div class="tile-header">START</div>
-  <h2 style="font-size: 40px;">
-    STRONY I SYSTEMY,<br>
-    <span style="color:var(--ui-red);">KTÓRE ZWIĘKSZAJĄ SPRZEDAŻ</span>
-  </h2>
-  <p style="font-size: 18px; max-width: 800px; margin: 20px auto;">
-    Projektuję i wdrażam rozwiązania Web + .NET / AI, które automatyzują biznes i generują realny zysk.
-  </p>
-  <button class="cta-button" onclick="loadModule('DOWODY')">ZOBACZ PROJEKTY</button>
-  <button class="cta-button" style="background:transparent; border:1px solid #fff;" onclick="loadModule('KONTAKT')">UMÓW ROZMOWĘ</button>
+<div class="tile">
+<h2>STRONY I SYSTEMY, KTÓRE ZWIĘKSZAJĄ SPRZEDAŻ</h2>
+<p>Projektujemy systemy dla firm, strony immersyjne oraz rozwiązania .NET / AI nastawione na zysk.</p>
 </div>
 `,
 
 DOWODY: `
-<div class="tile-grid">
+<div class="tile">
 
-  <!-- ZAWORSKI -->
-  <div class="tile">
-    <div id="zaworski">
-      <img src="zaworski1.png" style="width:100%">
-      <img src="zaworski2.png" style="width:100%; display:none">
-      <img src="zaworski3.png" style="width:100%; display:none">
-      <img src="zaworski4.png" style="width:100%; display:none">
-      <img src="zaworski5.png" style="width:100%; display:none">
-      <img src="zaworski6.png" style="width:100%; display:none">
-    </div>
-    <button onclick="prevSlide('zaworski',6)">←</button>
-    <button onclick="nextSlide('zaworski',6)">→</button>
+<h3>Marek Zaworski</h3>
+<div id="zaworski">
+<img src="zaworski1.png">
+<img src="zaworski2.png" style="display:none">
+<img src="zaworski3.png" style="display:none">
+<img src="zaworski4.png" style="display:none">
+<img src="zaworski5.png" style="display:none">
+<img src="zaworski6.png" style="display:none">
+</div>
+<button onclick="prevSlide('zaworski',6)">←</button>
+<button onclick="nextSlide('zaworski',6)">→</button>
 
-    <div class="tile-header">MAREK ZAWORSKI</div>
-    <h2>LEJEK SPRZEDAŻOWY</h2>
-    <p>Projekt UX + optymalizacja konwersji dla autora książki.</p>
-    <div class="stat-box">+48% KONWERSJI</div>
-  </div>
+<h3>P.A. Barczewska</h3>
+<div id="barczewska">
+<img src="zaworski1.png">
+<img src="zaworski2.png" style="display:none">
+</div>
+<button onclick="prevSlide('barczewska',2)">←</button>
+<button onclick="nextSlide('barczewska',2)">→</button>
 
-  <!-- BARCZEWSKA -->
-  <div class="tile">
-    <div id="barczewska">
-      <img src="zaworski1.png" style="width:100%">
-      <img src="zaworski2.png" style="width:100%; display:none">
-    </div>
-    <button onclick="prevSlide('barczewska',2)">←</button>
-    <button onclick="nextSlide('barczewska',2)">→</button>
+<h3>RWR SYSTEM</h3>
+<div id="rwr">
+<img src="rwr0.png">
+<img src="rwr1.png" style="display:none">
+<img src="rwr2.png" style="display:none">
+<img src="rwr3.png" style="display:none">
+<img src="rwr4.png" style="display:none">
+<img src="rwr5.png" style="display:none">
+</div>
+<button onclick="prevSlide('rwr',6)">←</button>
+<button onclick="nextSlide('rwr',6)">→</button>
 
-    <div class="tile-header">P.A. BARCZEWSKA</div>
-    <h2>STRONA AUTORSKA</h2>
-    <p>Immersyjna strona dla pisarki. Branding + UX.</p>
-  </div>
-
-  <!-- RWR -->
-  <div class="tile">
-    <div id="rwr">
-      <img src="rwr0.png" style="width:100%">
-      <img src="rwr1.png" style="width:100%; display:none">
-      <img src="rwr2.png" style="width:100%; display:none">
-      <img src="rwr3.png" style="width:100%; display:none">
-      <img src="rwr4.png" style="width:100%; display:none">
-      <img src="rwr5.png" style="width:100%; display:none">
-    </div>
-    <button onclick="prevSlide('rwr',6)">←</button>
-    <button onclick="nextSlide('rwr',6)">→</button>
-
-    <div class="tile-header">RWR SYSTEM</div>
-    <h2>ZARZĄDZANIE KONTROLERAMI</h2>
-    <p>System do obsługi pracy kontrolerów biletów.</p>
-    <div class="stat-box">-40% CZASU</div>
-  </div>
-
-  <!-- APLIKACJA -->
-  <div class="tile">
-    <div id="apka">
-      <img src="apka1.jpg" style="width:100%">
-      <img src="apka2.jpg" style="width:100%; display:none">
-      <img src="apka3.jpg" style="width:100%; display:none">
-      <img src="apka4.jpg" style="width:100%; display:none">
-      <img src="apka6.jpg" style="width:100%; display:none">
-      <img src="apkapdf.jpg" style="width:100%; display:none">
-    </div>
-    <button onclick="prevSlide('apka',6)">←</button>
-    <button onclick="nextSlide('apka',6)">→</button>
-
-    <div class="tile-header">GLIKEMIA PREMIUM</div>
-    <h2>APLIKACJA ANDROID</h2>
-    <p>Aplikacja mobilna do monitorowania glukozy.</p>
-  </div>
+<h3>Glikemia Premium</h3>
+<div id="apka">
+<img src="apka1.jpg">
+<img src="apka2.jpg" style="display:none">
+<img src="apka3.jpg" style="display:none">
+<img src="apka4.jpg" style="display:none">
+<img src="apka6.jpg" style="display:none">
+<img src="apkapdf.jpg" style="display:none">
+</div>
+<button onclick="prevSlide('apka',6)">←</button>
+<button onclick="nextSlide('apka',6)">→</button>
 
 </div>
-
-<script>
-sliders = {
-  zaworski: 0,
-  barczewska: 0,
-  rwr: 0,
-  apka: 0
-};
-</script>
 `,
 
 KONTAKT: `
 <div class="tile">
-  <div class="tile-header">KONTAKT</div>
-  <h2>MASZ PROJEKT? WYŚLIJ BRIEF.</h2>
-  <p>progressorkit@gmail.com</p>
+<h2>MASZ PROJEKT? WYŚLIJ BRIEF</h2>
+<p>progressorkit@gmail.com</p>
 </div>
 `
+
 };
 
 function loadModule(key) {
-  document.getElementById('p-content').innerHTML = modules[key];
+  document.getElementById("p-content").innerHTML = modules[key];
 }
+
+// 🔥 START OD RAZU (to chciałeś)
+window.onload = () => {
+  loadModule("HERO");
+};
+
 </script>
+
+</body>
+</html>
