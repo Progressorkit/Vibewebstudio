@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>PROGRESSKIT STUDIO | ARCHITEKT ZYSKU</title>
+  <title>VIBE WEB STUDIO | ARCHITEKT ZYSKU</title>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -94,6 +94,29 @@
     .tile h2 { font-size: 24px; margin-bottom: 10px; color: #fff; letter-spacing: -1px; }
     .tile p { font-size: 14px; line-height: 1.6; color: #bbb; margin-bottom: 15px; }
 
+    /* PROJECT GALLERY STYLES */
+    .project-gallery {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--ui-red) transparent;
+    }
+
+    .project-gallery::-webkit-scrollbar { height: 4px; }
+    .project-gallery::-webkit-scrollbar-thumb { background: var(--ui-red); border-radius: 2px; }
+
+    .gallery-img {
+      height: 180px;
+      width: auto;
+      border: 1px solid rgba(0, 119, 255, 0.3);
+      flex-shrink: 0;
+      object-fit: cover;
+      background: #000;
+    }
+
     /* SPECIAL ELEMENTS */
     .price-tag { font-size: 20px; color: var(--ui-red-glow); font-weight: 900; display: block; margin: 10px 0; }
     .cta-button { 
@@ -124,7 +147,7 @@
   <div id="glass-overlay"></div>
 
   <header id="header-console">
-    <h1>PROGRESSKIT STUDIO // PROFIT MAXIMIZER</h1>
+    <h1>VIBE WEB STUDIO // PROFIT MAXIMIZER</h1>
     <nav class="nav-horizontal">
       <div class="nav-item active" onclick="loadModule('HERO')">START</div>
       <div class="nav-item" onclick="loadModule('ANALIZA')">PROBLEM/SOL</div>
@@ -136,8 +159,7 @@
   </header>
 
   <div id="panel">
-    <div id="p-content">
-      </div>
+    <div id="p-content"></div>
   </div>
 
   <div id="statusbar">
@@ -173,16 +195,49 @@
       DOWODY: `
         <div class="tile-grid">
           <div class="tile">
-            <div class="tile-header">CASE_STUDY_01: E-COMMERCE</div>
-            <h2>RE-DESIGN & OPTYMALIZACJA</h2>
-            <p>Problem: Wysoki współczynnik odrzuceń na mobile.</p>
-            <div class="stat-box">WYNIK: <span class="stat-num">+48% KONWERSJI</span> w 21 dni.</div>
+            <div class="tile-header">AUTOR: MAREK ZAWORSKI</div>
+            <div class="project-gallery">
+              <img src="zaworski1.png" class="gallery-img">
+              <img src="zaworski2.png" class="gallery-img">
+              <img src="zaworski3.png" class="gallery-img">
+              <img src="zaworski4.png" class="gallery-img">
+              <img src="zaworski5.png" class="gallery-img">
+              <img src="zaworski6.png" class="gallery-img">
+              <img src="zaworski7.png" class="gallery-img">
+            </div>
+            <h2>LEJEK SPRZEDAŻOWY</h2>
+            <p>Problem: Niska konwersja z ruchu organicznego i brak automatyzacji zapisu.</p>
+            <div class="stat-box">WYNIK: <span class="stat-num">SKALOWALNY SYSTEM</span> sprzedaży.</div>
           </div>
+
           <div class="tile">
-            <div class="tile-header">CASE_STUDY_02: LOGISTYKA</div>
-            <h2>SYSTEM ZARZĄDZANIA (RWR)</h2>
-            <p>Problem: Chaos w raportowaniu i błędy w fakturach.</p>
+            <div class="tile-header">SYSTEM: RWR SYSTEM</div>
+            <div class="project-gallery">
+              <img src="rwr0.png" class="gallery-img">
+              <img src="rwr1.png" class="gallery-img">
+              <img src="rwr2.png" class="gallery-img">
+              <img src="rwr3.png" class="gallery-img">
+              <img src="rwr4.png" class="gallery-img">
+              <img src="rwr5.png" class="gallery-img">
+            </div>
+            <h2>ZARZĄDZANIE KONTROLERAMI</h2>
+            <p>Problem: Chaos w raportowaniu i błędy w fakturach operacyjnych.</p>
             <div class="stat-box">WYNIK: <span class="stat-num">-40% CZASU</span> obsługi procesu.</div>
+          </div>
+
+          <div class="tile">
+            <div class="tile-header">PROJEKT: GLIKEMIA PREMIUM</div>
+            <div class="project-gallery">
+              <img src="apka1.jpg" class="gallery-img">
+              <img src="apka2.jpg" class="gallery-img">
+              <img src="apka3.jpg" class="gallery-img">
+              <img src="apka4.jpg" class="gallery-img">
+              <img src="apka6.jpg" class="gallery-img">
+              <img src="apkapdf.jpg" class="gallery-img">
+            </div>
+            <h2>APLIKACJA MOBILNA</h2>
+            <p>Problem: Brak czytelnego monitoringu danych medycznych w czasie rzeczywistym.</p>
+            <div class="stat-box">WYNIK: <span class="stat-num">INTUICYJNY UX</span> i analityka.</div>
           </div>
         </div>
       `,
@@ -230,7 +285,11 @@
           <p>Napisz konkretnie: Co chcesz osiągnąć? Jaki masz budżet? Jaki jest termin?</p>
           <div style="margin-top: 20px;">
             <p>E-MAIL: <span style="color:var(--ui-red-glow);">progresskit7@gmail.com</span></p>
-            <button class="cta-button" style="margin-top:20px;">POBIERZ BRIEF .PDF</button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
+                <a href="mailto:progresskit7@gmail.com" class="cta-button">WYŚLIJ E-MAIL</a>
+                <a href="https://www.facebook.com/profile.php?id=61574306963115" target="_blank" class="cta-button" style="background:#1877F2;">PROFIL FACEBOOK</a>
+                <button class="cta-button" style="background:transparent; border: 1px solid #fff;">POBIERZ BRIEF .PDF</button>
+            </div>
           </div>
         </div>
       `
