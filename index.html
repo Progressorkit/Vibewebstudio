@@ -3,93 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ProgressorKit Studio | Architekt Zysku</title>
+  <title>ProgressorKit Studio</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --ui-blue: #0077ff;
-      --ui-blue-glow: #00aaff;
-      --ui-red: #ff0000;
-      --ui-red-glow: #ff4444;
-    }
-
-    body {
-      background: #000; color: #fff; font-family: 'Courier New', monospace;
-      width: 100vw; height: 100vh; overflow: hidden;
-    }
-
+    body { background: #000; color: #fff; font-family: 'Courier New', monospace; overflow: hidden; }
+    
     #bg-image { 
       position: fixed; inset: 0; 
-      background: url('zdjtlo.png') no-repeat center center / cover; 
-      z-index: 1; pointer-events: none; 
+      background: url('Zrzut ekranu 2026-04-28 135244.png') no-repeat center center / cover; 
+      z-index: 1; 
     }
 
     #glass-overlay { 
       position: fixed; inset: 0; z-index: 2; 
-      background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, #000 100%), rgba(0, 8, 20, 0.7);
-      backdrop-filter: blur(18px) brightness(0.5);
-      -webkit-backdrop-filter: blur(18px) brightness(0.5);
+      background: rgba(0, 8, 20, 0.8); backdrop-filter: blur(20px); 
     }
 
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 500; position: fixed;
-      background: rgba(0,0,0,0.98); border-bottom: 2px solid var(--ui-blue);
-      padding: 15px; text-align: center;
+      background: #000; border-bottom: 2px solid #0077ff; padding: 15px; text-align: center;
     }
 
-    #header-console h1 {
-      color: var(--ui-red); font-size: 16px; letter-spacing: 4px; font-weight: 900;
-      text-shadow: 0 0 10px var(--ui-red); margin-bottom: 8px;
-    }
+    .nav-horizontal { display: flex; justify-content: center; gap: 10px; }
+    .nav-item { padding: 10px; border: 1px solid #0077ff; cursor: pointer; font-size: 10px; text-transform: uppercase; }
+    .nav-item.active { background: #0077ff; color: #000; }
 
-    .nav-horizontal { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    #panel { z-index: 300; position: fixed; top: 120px; left: 50%; transform: translateX(-50%); width: 90%; height: 75vh; overflow-y: auto; }
+    .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+    .tile { background: rgba(0, 20, 40, 0.9); border: 1px solid #0077ff; padding: 20px; }
     
-    .nav-item {
-      padding: 8px 15px; font-size: 9px; font-weight: 900; cursor: pointer;
-      border: 1px solid var(--ui-blue); color: #fff; transition: 0.3s;
-      background: rgba(0, 119, 255, 0.1); text-transform: uppercase;
-    }
-
-    .nav-item:hover, .nav-item.active { background: var(--ui-blue); color: #000; box-shadow: 0 0 15px var(--ui-blue-glow); }
-    .nav-item.important { border-color: var(--ui-red); color: var(--ui-red-glow); }
-
-    #panel {
-      z-index: 300; position: fixed; top: 125px; left: 50%;
-      transform: translateX(-50%); width: 95%; max-width: 1400px;
-      height: calc(100vh - 180px); overflow-y: auto; padding-bottom: 40px;
-    }
-
-    .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 15px; }
+    .case-visual { width: 100%; height: 200px; border: 1px solid #ff0000; margin: 10px 0; overflow: hidden; }
+    .case-visual img { width: 100%; height: 100%; object-fit: cover; }
     
-    .tile {
-      background: rgba(0, 15, 30, 0.9); border: 1px solid rgba(0, 119, 255, 0.2);
-      padding: 25px; animation: fadeIn 0.4s ease forwards;
-    }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    .tile-header { 
-      color: var(--ui-blue-glow); font-size: 10px; font-weight: bold; 
-      margin-bottom: 12px; border-left: 3px solid var(--ui-red); padding-left: 10px;
-      text-transform: uppercase; letter-spacing: 2px;
-    }
-
-    .tile h2 { font-size: 22px; margin-bottom: 10px; color: #fff; }
-    
-    .case-visual { 
-      margin: 15px 0; background: #000; border: 1px solid var(--ui-blue); 
-      height: 220px; overflow: hidden;
-    }
-    .case-visual img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: 0.3s; }
-    .case-visual:hover img { opacity: 1; transform: scale(1.02); }
-
-    .stat-result { background: rgba(0, 255, 100, 0.1); border: 1px solid #00ff66; padding: 10px; margin-top: 10px; font-weight: 900; color: #00ff66; font-size: 11px; text-align: center; }
-
-    #statusbar {
-      z-index: 500; position: fixed; bottom: 0; width: 100%;
-      background: #000; padding: 10px 20px; font-size: 10px;
-      display: flex; justify-content: space-between; color: var(--ui-blue); border-top: 1px solid var(--ui-blue);
-    }
+    .stat-result { color: #00ff66; border: 1px solid #00ff66; padding: 5px; text-align: center; margin-top: 10px; font-size: 12px; }
   </style>
 </head>
 <body>
@@ -98,105 +44,68 @@
   <div id="glass-overlay"></div>
 
   <header id="header-console">
-    <h1>PROGRESSORKIT STUDIO // ARCHITEKT TWOJEGO ZYSKU</h1>
+    <h1 style="color:#ff0000; letter-spacing: 5px; margin-bottom: 10px;">PROGRESSORKIT STUDIO</h1>
     <nav class="nav-horizontal">
       <div class="nav-item active" onclick="loadModule('START')">Start</div>
-      <div class="nav-item" onclick="loadModule('ROZWIAZANIA')">Rozwiązania</div>
       <div class="nav-item" onclick="loadModule('PROJEKTY')">Projekty</div>
-      <div class="nav-item" onclick="loadModule('OFERTA')">Oferta</div>
-      <div class="nav-item" onclick="loadModule('DLACZEGO')">Dlaczego ja?</div>
-      <div class="nav-item important" onclick="loadModule('KONTAKT')">Brief / Rozmowa</div>
+      <div class="nav-item" onclick="loadModule('KONTAKT')">Kontakt</div>
     </nav>
   </header>
 
-  <div id="panel">
-    <div id="p-content"></div>
-  </div>
-
-  <div id="statusbar">
-    <div>PROGRESSORKIT_OS: v15.0 // ASSETS: SYSTEM_SYNC // STATUS: ONLINE</div>
-    <div id="sys-time">00:00:00</div>
-  </div>
+  <div id="panel"><div id="p-content"></div></div>
 
   <script>
     const modules = {
       START: `
-        <div class="tile" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
-          <div class="tile-header">SYSTEM STATUS: READY</div>
-          <h2 style="font-size: 40px; line-height: 1.1; margin-bottom: 20px;">Terminujemy chaos. <br><span style="color:var(--ui-red);">Programujemy zysk.</span></h2>
-          <p style="font-size: 18px; max-width: 800px; margin: 0 auto 30px auto;">ProgressorKit Studio: Web + .NET / AI. Buduję narzędzia, które zwiększają sprzedaż i automatyzują Twoją firmę.</p>
-          <button class="nav-item active" style="padding:15px 30px" onclick="loadModule('PROJEKTY')">ZOBACZ PORTFOLIO</button>
+        <div class="tile" style="text-align:center">
+          <h2>TERMINUJEMY CHAOS. PROGRAMUJEMY ZYSK.</h2>
+          <p>ProgressorKit Studio: Web + .NET / AI.</p>
         </div>
       `,
-
       PROJEKTY: `
         <div class="tile-grid">
           <div class="tile">
-            <div class="tile-header">BRANDING: MAREK ZAWORSKI</div>
-            <h2>OBSERWATOR - STRONA AUTORA</h2>
+            <div class="tile-header">PROJEKT: RWR</div>
             <div class="case-visual">
-              <img src="Zrzut ekranu 2026-04-28 134453.jpg" alt="Marek Zaworski">
+              <img src="Zrzut ekranu 2026-04-28 135253.jpg">
             </div>
-            <p><strong>CEL:</strong> Klimatyczna wizytówka budująca markę osobistą autora kryminałów.</p>
-            <div class="stat-result">WIZERUNEK PREMIUM</div>
+            <p>System logistyczny RWR.</p>
+            <div class="stat-result">AUTOMATYZACJA</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">SYSTEM: RWR LOGISTYKA</div>
-            <h2>BACKEND & AUTOMATYZACJA</h2>
+            <div class="tile-header">PROJEKT: APKA</div>
             <div class="case-visual">
-              <img src="Zrzut ekranu 2026-04-28 134433.jpg" alt="RWR Logistics">
+              <img src="Zrzut ekranu 2026-04-28 135301.jpg">
             </div>
-            <p><strong>CEL:</strong> Pełna kontrola nad obiegiem dokumentów i zleceń logistycznych.</p>
-            <div class="stat-result">-40% CZASU OPERACYJNEGO</div>
+            <p>Glikemia Premium.</p>
+            <div class="stat-result">DESIGN UI</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">APP: GLIKEMIA PREMIUM</div>
-            <h2>HEALTH-TECH INTERFACE</h2>
+            <div class="tile-header">PROJEKT: ZAWORSKI</div>
             <div class="case-visual">
-              <img src="Zrzut ekranu 2026-04-28 134442.jpg" alt="Glikemia">
+              <img src="Zrzut ekranu 2026-04-28 135311.jpg">
             </div>
-            <p><strong>CEL:</strong> Intuicyjna aplikacja mobilna do monitorowania parametrów zdrowia.</p>
-            <div class="stat-result">UX/UI DESIGN</div>
+            <p>Marek Zaworski - Strona Autora.</p>
+            <div class="stat-result">BRANDING</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">BRAND: P.A. BARCZEWSKA</div>
-            <h2>EXPERTISE BRANDING</h2>
-            <p style="margin-top:20px;"><strong>CEL:</strong> Skalowanie zaufania i automatyzacja leadów eksperckich.</p>
-            <p>Nowoczesna architektura wizerunku nastawiona na konwersję ruchu w zapytania.</p>
-            <div class="stat-result">STRATEGIA KONWERSJI</div>
+            <div class="tile-header">PROJEKT: BARCZEWSKA</div>
+            <p style="margin-top:20px;">P.A. Barczewska - Marka osobista i automatyzacja leadów.</p>
+            <div class="stat-result">OPIS PROJEKTU</div>
           </div>
         </div>
       `,
-
-      ROZWIAZANIA: `<div class="tile"><h2>SYSTEMY I WEB</h2><p>Od Brand Web po Custom ERP .NET.</p></div>`,
-      OFERTA: `<div class="tile"><h2>OFERTA</h2><p>START / GROWTH / CUSTOM.</p></div>`,
-      DLACZEGO: `<div class="tile"><h2>MODEL PRACY</h2><p>Brak szablonów. Kod na własność.</p></div>`,
-      KONTAKT: `
-        <div class="tile" style="text-align:center">
-          <div class="tile-header">BRIEF / ROZMOWA</div>
-          <h2>POROZMAWIAJMY O ZYSKU</h2>
-          <a href="mailto:progressorkit@gmail.com" class="nav-item active" style="display:inline-block; margin-top:20px; text-decoration:none; padding:15px 30px">WYŚLIJ BRIEF</a>
-        </div>
-      `
+      KONTAKT: `<div class="tile"><h2>KONTAKT</h2><p>progressorkit@gmail.com</p></div>`
     };
 
     function loadModule(key) {
       document.getElementById('p-content').innerHTML = modules[key];
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-        if(item.innerText.toUpperCase().includes(key)) item.classList.add('active');
-      });
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     }
-
-    window.onload = () => {
-      loadModule('START');
-      setInterval(() => { 
-        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
-      }, 1000);
-    };
+    window.onload = () => loadModule('START');
   </script>
 </body>
 </html>
