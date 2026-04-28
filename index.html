@@ -68,7 +68,7 @@
       padding: 10px 10px 80px 10px; scroll-behavior: smooth;
     }
 
-    /* TILES - NEW GLASSMorphism WHITE STYLE */
+    /* TILES - GLASSMorphism WHITE STYLE */
     .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
     
     .tile {
@@ -76,10 +76,10 @@
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
       border: 1px solid var(--glass-border);
-      border-radius: 24px; /* Zaokrąglone rogi */
+      border-radius: 24px; 
       padding: 25px;
       position: relative;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); /* Efekt płynięcia */
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); 
       animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
       opacity: 0; transform: translateY(30px);
     }
@@ -107,6 +107,16 @@
     }
     .project-gallery img.active { opacity: 1; }
 
+    /* BRIEF STYLES */
+    .brief-section { margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+    .brief-section h3 { color: var(--ui-red); font-size: 14px; margin-bottom: 10px; }
+    .brief-item { margin-bottom: 15px; }
+    .brief-item label { display: block; font-size: 11px; color: var(--ui-blue-glow); margin-bottom: 5px; }
+    .brief-item textarea { 
+      width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); 
+      color: #fff; padding: 10px; font-family: 'Courier New', monospace; border-radius: 8px; resize: none;
+    }
+
     /* UI ELEMENTS */
     .price-tag { font-size: 22px; color: var(--ui-red-glow); font-weight: 900; display: block; margin: 15px 0; }
     
@@ -127,6 +137,18 @@
       z-index: 500; position: fixed; bottom: 0; width: 100%;
       background: rgba(0,0,0,0.9); padding: 10px 15px; font-size: 9px;
       display: flex; justify-content: space-between; color: var(--ui-blue); border-top: 1px solid var(--ui-blue);
+    }
+
+    /* PRINT OPTIMIZATION */
+    @media print {
+      body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+      #header-console, #statusbar, #bg-image, #glass-overlay, .nav-horizontal, .cta-button { display: none !important; }
+      #panel { position: static !important; width: 100% !important; height: auto !important; transform: none !important; padding: 0 !important; overflow: visible !important; }
+      .tile { background: #fff !important; color: #000 !important; border: 1px solid #000 !important; box-shadow: none !important; border-radius: 0 !important; page-break-inside: avoid; }
+      .tile h2, .tile-header { color: #000 !important; border-left: 4px solid #000 !important; }
+      .brief-item textarea { border: 1px solid #000 !important; color: #000 !important; background: #fff !important; }
+      .brief-section h3 { color: #000 !important; text-decoration: underline; }
+      .brief-item label { color: #555 !important; }
     }
 
     #panel::-webkit-scrollbar { width: 3px; }
@@ -188,43 +210,26 @@
         <div class="tile-grid">
           <div class="tile">
             <div class="tile-header">AUTOR: MAREK ZAWORSKI</div>
-            <div class="project-gallery" data-project="zaworski">
-              <img src="zaworski1.png" class="active">
-              <img src="zaworski2.png">
-              <img src="zaworski3.png">
-              <img src="zaworski4.png">
-              <img src="zaworski5.png">
-              <img src="zaworski6.png">
-              <img src="zaworski7.png">
+            <div class="project-gallery">
+              <img src="zaworski1.png" class="active"><img src="zaworski2.png"><img src="zaworski3.png"><img src="zaworski4.png"><img src="zaworski5.png"><img src="zaworski6.png"><img src="zaworski7.png">
             </div>
             <h2>LEJEK SPRZEDAŻOWY</h2>
             <p>Problem: Niska konwersja z ruchu organicznego i brak automatyzacji.</p>
             <div class="stat-box">WYNIK: <span class="stat-num">SKALOWALNY SYSTEM</span></div>
           </div>
-
           <div class="tile">
             <div class="tile-header">SYSTEM: RWR SYSTEM</div>
-            <div class="project-gallery" data-project="rwr">
-              <img src="rwr0.png" class="active">
-              <img src="rwr1.png">
-              <img src="rwr2.png">
-              <img src="rwr3.png">
-              <img src="rwr4.png">
-              <img src="rwr5.png">
+            <div class="project-gallery">
+              <img src="rwr0.png" class="active"><img src="rwr1.png"><img src="rwr2.png"><img src="rwr3.png"><img src="rwr4.png"><img src="rwr5.png">
             </div>
             <h2>ZARZĄDZANIE KONTROLERAMI</h2>
             <p>Problem: Chaos w raportowaniu i błędy w fakturach.</p>
             <div class="stat-box">WYNIK: <span class="stat-num">-40% CZASU</span> obsługi.</div>
           </div>
-
           <div class="tile">
             <div class="tile-header">APLIKACJA: GLIKEMIA PREMIUM</div>
-            <div class="project-gallery" data-project="glikemia">
-              <img src="apka1.jpg" class="active">
-              <img src="apka2.jpg">
-              <img src="apka3.jpg">
-              <img src="apka4.jpg">
-              <img src="apka6.jpg">
+            <div class="project-gallery">
+              <img src="apka1.jpg" class="active"><img src="apka2.jpg"><img src="apka3.jpg"><img src="apka4.jpg"><img src="apka6.jpg">
             </div>
             <h2>MONITOROWANIE ZDROWIA</h2>
             <p>Kompleksowe rozwiązanie mobile dla diabetyków z analityką danych.</p>
@@ -268,9 +273,55 @@
           <div class="tile-header">PROTOKÓŁ_KOMUNIKACJI</div>
           <h2>MASZ PROJEKT? WYŚLIJ BRIEF.</h2>
           <p>E-MAIL: <span style="color:var(--ui-red-glow);">progresskit7@gmail.com</span></p>
-          <a href="mailto:progresskit7@gmail.com" class="cta-button">WYŚLIJ E-MAIL</a>
+          <button class="cta-button" onclick="loadModule('BRIEF')">ROZPOCZNIJ BRIEF PROJEKTOWY</button>
           <a href="https://www.facebook.com/profile.php?id=61574306963115" target="_blank" class="cta-button fb">PROFIL FACEBOOK</a>
-          <button class="cta-button" style="background:transparent; border:1px solid #555;">POBIERZ BRIEF .PDF</button>
+        </div>
+      `,
+
+      BRIEF: `
+        <div class="tile">
+          <div class="tile-header">DOKUMENTACJA: BRIEF PROJEKTOWY</div>
+          <h2>ARCHITEKTURA ZYSKU</h2>
+          <p>Wypełnij poniższe pola. Możesz wydrukować ten dokument do PDF i wysłać na nasz e-mail.</p>
+          
+          <div class="brief-section">
+            <h3>01. FUNDAMENT BIZNESOWY</h3>
+            <div class="brief-item">
+              <label>Główny problem, który rozwiązuje Twój biznes:</label>
+              <textarea rows="2" placeholder="Napisz tutaj..."></textarea>
+            </div>
+            <div class="brief-item">
+              <label>Kim jest Twój idealny klient?</label>
+              <textarea rows="2" placeholder="Opisz personę..."></textarea>
+            </div>
+          </div>
+
+          <div class="brief-section">
+            <h3>02. CELE I TECHNOLOGIA</h3>
+            <div class="brief-item">
+              <label>Główne cele (np. sprzedaż, leady, automatyzacja):</label>
+              <textarea rows="2"></textarea>
+            </div>
+            <div class="brief-item">
+              <label>Wymagane integracje (np. CRM, AI, Płatności):</label>
+              <textarea rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="brief-section">
+            <h3>03. LOGISTYKA</h3>
+            <div class="brief-item">
+              <label>Zakładany budżet projektowy:</label>
+              <textarea rows="1" placeholder="np. Pakiet GROWTH"></textarea>
+            </div>
+            <div class="brief-item">
+              <label>Nieprzekraczalny termin wdrożenia:</label>
+              <textarea rows="1" placeholder="Data..."></textarea>
+            </div>
+          </div>
+
+          <button class="cta-button" onclick="window.print()" style="background:#222; border: 1px solid var(--ui-blue-glow);">ZAPISZ BRIEF DO PDF / DRUKUJ</button>
+          <button class="cta-button" onclick="loadModule('KONTAKT')" style="background:transparent; border:none; color:#555; font-size:10px;">ANULUJ I WRÓĆ</button>
         </div>
       `
     };
