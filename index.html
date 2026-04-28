@@ -230,4 +230,29 @@
           <p>Wybierz opcję, która najbardziej szanuje Twój czas.</p>
           <div style="margin-top: 30px;">
             <a href="mailto:progressorkit@gmail.com" class="cta-button">WYŚLIJ BRIEF PROJEKTOWY</a>
-            <button class="cta-button alt">UMÓ
+            <button class="cta-button alt">UMÓW ROZMOWĘ 15 MIN</button>
+          </div>
+          <p style="margin-top: 20px; font-size: 11px; color: var(--ui-blue-glow);">progressorkit@gmail.com // GITHUB: /progressorkit</p>
+        </div>
+      `
+    };
+
+    function loadModule(key) {
+      const content = document.getElementById('p-content');
+      content.innerHTML = modules[key];
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if(item.innerText.toUpperCase().includes(key)) item.classList.add('active');
+      });
+      document.getElementById('panel').scrollTop = 0;
+    }
+
+    window.onload = () => {
+      loadModule('START');
+      setInterval(() => { 
+        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
+      }, 1000);
+    };
+  </script>
+</body>
+</html>
