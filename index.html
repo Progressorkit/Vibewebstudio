@@ -6,36 +6,82 @@
   <title>ProgressorKit Studio</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #000; color: #fff; font-family: 'Courier New', monospace; overflow: hidden; }
-    
+    :root {
+      --ui-blue: #0077ff;
+      --ui-red: #ff0000;
+    }
+
+    body {
+      background: #000; color: #fff; font-family: 'Courier New', monospace;
+      width: 100vw; height: 100vh; overflow: hidden;
+    }
+
     #bg-image { 
       position: fixed; inset: 0; 
       background: url('Zrzut ekranu 2026-04-28 135244.png') no-repeat center center / cover; 
-      z-index: 1; 
+      z-index: 1; pointer-events: none; 
     }
 
     #glass-overlay { 
       position: fixed; inset: 0; z-index: 2; 
-      background: rgba(0, 8, 20, 0.8); backdrop-filter: blur(20px); 
+      background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, #000 100%), rgba(0, 8, 20, 0.7);
+      backdrop-filter: blur(18px) brightness(0.5);
+      -webkit-backdrop-filter: blur(18px) brightness(0.5);
     }
 
     #header-console {
       top: 0; left: 0; width: 100%; z-index: 500; position: fixed;
-      background: #000; border-bottom: 2px solid #0077ff; padding: 15px; text-align: center;
+      background: rgba(0,0,0,0.98); border-bottom: 2px solid var(--ui-blue);
+      padding: 15px; text-align: center;
     }
 
-    .nav-horizontal { display: flex; justify-content: center; gap: 10px; }
-    .nav-item { padding: 10px; border: 1px solid #0077ff; cursor: pointer; font-size: 10px; text-transform: uppercase; }
-    .nav-item.active { background: #0077ff; color: #000; }
+    #header-console h1 {
+      color: var(--ui-red); font-size: 16px; letter-spacing: 4px; font-weight: 900;
+      text-shadow: 0 0 10px var(--ui-red); margin-bottom: 8px;
+    }
 
-    #panel { z-index: 300; position: fixed; top: 120px; left: 50%; transform: translateX(-50%); width: 90%; height: 75vh; overflow-y: auto; }
-    .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
-    .tile { background: rgba(0, 20, 40, 0.9); border: 1px solid #0077ff; padding: 20px; }
+    .nav-horizontal { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
     
-    .case-visual { width: 100%; height: 200px; border: 1px solid #ff0000; margin: 10px 0; overflow: hidden; }
+    .nav-item {
+      padding: 8px 15px; font-size: 9px; font-weight: 900; cursor: pointer;
+      border: 1px solid var(--ui-blue); color: #fff; transition: 0.3s;
+      background: rgba(0, 119, 255, 0.1); text-transform: uppercase;
+    }
+
+    .nav-item:hover, .nav-item.active { background: var(--ui-blue); color: #000; }
+
+    #panel {
+      z-index: 300; position: fixed; top: 125px; left: 50%;
+      transform: translateX(-50%); width: 95%; max-width: 1400px;
+      height: calc(100vh - 180px); overflow-y: auto; padding-bottom: 40px;
+    }
+
+    .tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 15px; }
+    
+    .tile {
+      background: rgba(0, 15, 30, 0.9); border: 1px solid rgba(0, 119, 255, 0.2);
+      padding: 25px;
+    }
+
+    .tile-header { 
+      color: #00aaff; font-size: 10px; font-weight: bold; 
+      margin-bottom: 12px; border-left: 3px solid var(--ui-red); padding-left: 10px;
+      text-transform: uppercase;
+    }
+
+    .case-visual { 
+      margin: 15px 0; background: #000; border: 1px solid var(--ui-blue); 
+      height: 220px; overflow: hidden;
+    }
     .case-visual img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .stat-result { color: #00ff66; border: 1px solid #00ff66; padding: 5px; text-align: center; margin-top: 10px; font-size: 12px; }
+
+    .stat-result { border: 1px solid #00ff66; padding: 10px; margin-top: 10px; color: #00ff66; font-size: 11px; text-align: center; font-weight: 900; }
+
+    #statusbar {
+      z-index: 500; position: fixed; bottom: 0; width: 100%;
+      background: #000; padding: 10px 20px; font-size: 10px;
+      display: flex; justify-content: space-between; color: var(--ui-blue); border-top: 1px solid var(--ui-blue);
+    }
   </style>
 </head>
 <body>
@@ -44,7 +90,7 @@
   <div id="glass-overlay"></div>
 
   <header id="header-console">
-    <h1 style="color:#ff0000; letter-spacing: 5px; margin-bottom: 10px;">PROGRESSORKIT STUDIO</h1>
+    <h1>PROGRESSORKIT STUDIO</h1>
     <nav class="nav-horizontal">
       <div class="nav-item active" onclick="loadModule('START')">Start</div>
       <div class="nav-item" onclick="loadModule('PROJEKTY')">Projekty</div>
@@ -52,60 +98,82 @@
     </nav>
   </header>
 
-  <div id="panel"><div id="p-content"></div></div>
+  <div id="panel">
+    <div id="p-content"></div>
+  </div>
+
+  <div id="statusbar">
+    <div>PROGRESSORKIT_OS: v16.0 // ASSETS: 1:1 SYNC // STATUS: ONLINE</div>
+    <div id="sys-time">00:00:00</div>
+  </div>
 
   <script>
     const modules = {
       START: `
-        <div class="tile" style="text-align:center">
-          <h2>TERMINUJEMY CHAOS. PROGRAMUJEMY ZYSK.</h2>
+        <div class="tile" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+          <div class="tile-header">STATUS: READY</div>
+          <h2 style="font-size: 40px; margin-bottom: 20px;">TERMINUJEMY CHAOS. <br><span style="color:red;">PROGRAMUJEMY ZYSK.</span></h2>
           <p>ProgressorKit Studio: Web + .NET / AI.</p>
         </div>
       `,
+
       PROJEKTY: `
         <div class="tile-grid">
           <div class="tile">
-            <div class="tile-header">PROJEKT: RWR</div>
+            <div class="tile-header">SYSTEM: RWR LOGISTYKA</div>
             <div class="case-visual">
               <img src="Zrzut ekranu 2026-04-28 135253.jpg">
             </div>
-            <p>System logistyczny RWR.</p>
             <div class="stat-result">AUTOMATYZACJA</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">PROJEKT: APKA</div>
+            <div class="tile-header">APP: GLIKEMIA PREMIUM</div>
             <div class="case-visual">
               <img src="Zrzut ekranu 2026-04-28 135301.jpg">
             </div>
-            <p>Glikemia Premium.</p>
-            <div class="stat-result">DESIGN UI</div>
+            <div class="stat-result">HEALTH-TECH</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">PROJEKT: ZAWORSKI</div>
+            <div class="tile-header">BRANDING: MAREK ZAWORSKI</div>
             <div class="case-visual">
               <img src="Zrzut ekranu 2026-04-28 135311.jpg">
             </div>
-            <p>Marek Zaworski - Strona Autora.</p>
-            <div class="stat-result">BRANDING</div>
+            <div class="stat-result">WIZERUNEK PREMIUM</div>
           </div>
 
           <div class="tile">
-            <div class="tile-header">PROJEKT: BARCZEWSKA</div>
-            <p style="margin-top:20px;">P.A. Barczewska - Marka osobista i automatyzacja leadów.</p>
+            <div class="tile-header">BRAND: P.A. BARCZEWSKA</div>
+            <h2 style="margin-top:20px;">EXPERTISE BRANDING</h2>
+            <p>Skalowanie zaufania i automatyzacja leadów eksperckich.</p>
             <div class="stat-result">OPIS PROJEKTU</div>
           </div>
         </div>
       `,
-      KONTAKT: `<div class="tile"><h2>KONTAKT</h2><p>progressorkit@gmail.com</p></div>`
+
+      KONTAKT: `
+        <div class="tile" style="text-align:center">
+          <div class="tile-header">KONTAKT</div>
+          <h2>progressorkit@gmail.com</h2>
+        </div>
+      `
     };
 
     function loadModule(key) {
       document.getElementById('p-content').innerHTML = modules[key];
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if(item.innerText.toUpperCase().includes(key)) item.classList.add('active');
+      });
     }
-    window.onload = () => loadModule('START');
+
+    window.onload = () => {
+      loadModule('START');
+      setInterval(() => { 
+        document.getElementById('sys-time').innerText = new Date().toLocaleTimeString(); 
+      }, 1000);
+    };
   </script>
 </body>
 </html>
